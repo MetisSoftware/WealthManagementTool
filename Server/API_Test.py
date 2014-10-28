@@ -1,5 +1,5 @@
 import urllib.request as urlrequest
-import urllib.parse as urlparse 
+import urllib.parse as urlparse
 import json
 
 BASE_URL = "https://query.yahooapis.com/v1/public/yql?"
