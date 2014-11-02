@@ -1,6 +1,6 @@
 import urllib.request as urlrequest
 import urllib.parse as urlparse 
-import json, sys
+import json
 
 def query_api(yql_query):
 	BASE_URL = "https://query.yahooapis.com/v1/public/yql?"
