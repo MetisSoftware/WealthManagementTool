@@ -1,0 +1,20 @@
+{% extends "wms/header_template.html" %}
+{% block content %}
+    {% if client_list %}
+    <table border = "1">
+        <th>First Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        {% for client in client_list %}
+            <tr>
+                <td>{{ client.first_name}}</td>
+                <td>{{ client.surname}}</td>
+                <td>{{ client.email}}</td>
+            </tr>
+        {% endfor %}
+
+    </table>
+    {% else %}
+    <p>No client data</p>
+    {% endif %}
+{%  endblock %}

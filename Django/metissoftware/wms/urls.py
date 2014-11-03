@@ -1,9 +1,8 @@
-from django.conf.urls import patterns, include, url
-from django.contrib import admin
+from django.conf.urls import patterns, url
+
+from wms import views
 
 urlpatterns = patterns('wms.views',
-    url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'index', name='index'),
     url(r'^clients/', 'print_client', name='print_client'),
-
-)
+    )
