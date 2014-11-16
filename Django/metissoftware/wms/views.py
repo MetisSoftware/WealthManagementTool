@@ -33,10 +33,7 @@ def new_client(request):
             email = form.cleaned_data['email']
             post = m.Client.objects.create(
                 first_name = first_name, surname = surname, email = email)
-            return HttpResponseRedirect(reverse('post_detail', kwargs={
-                'post_id': post.id}))
-        else:
-            form = ClientForm()
+            return HttpResponseRedirect('/clients/')
 
     return render(request, 'wms/new_client.html', {
         'form': form,
