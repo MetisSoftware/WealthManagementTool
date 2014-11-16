@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 
 
 # Create your models here.
@@ -9,3 +10,4 @@ class Client(models.Model):
 
     def __str__(self):  # __unicode__ if using python 2
         return self.first_name
+
