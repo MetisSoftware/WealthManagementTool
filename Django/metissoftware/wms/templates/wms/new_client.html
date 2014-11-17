@@ -1,6 +1,7 @@
 {% extends "wms/header_template.html" %}
 {% block content %}
-    <form action="{% url  %}" method="post">
+    <form action="{% url "/clients/"  %}" method="post">
+       {% csrf_token %}
 
     </form>
 {%  endblock %}

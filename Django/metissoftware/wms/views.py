@@ -11,3 +11,11 @@ def index(request):
 def print_client(request):
     client_list = Client.objects.order_by()
     return render_to_response('wms/index.html',{'client_list': client_list})
+
+def create_client(request):
+    Client.
+    return render_to_response('wms/new_client.html',{'client': Client})
+
+def client_created(request):
+    client_list = Client.objects.order_by()
+    return render_to_response('wms/index.html',{'client_list': client_list})
