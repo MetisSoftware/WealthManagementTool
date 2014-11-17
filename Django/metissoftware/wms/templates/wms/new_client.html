@@ -1,7 +1,6 @@
-{% extends "wms/header_template.html" %}
-{% block content %}
-    <form action="{% url "/clients/"  %}" method="post">
-       {% csrf_token %}
 
-    </form>
-{%  endblock %}
+<form action='new_client.html' method='post'> 
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="Submit" />
+</form>
