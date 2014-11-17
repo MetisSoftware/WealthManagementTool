@@ -4,14 +4,14 @@ from django.forms import ModelForm
 
 # Create your models here.
 class Client(models.Model):
-    first_name = models.CharField(max_length=64)
-    middle_name = models.CharField(max_length=64)
-    surname = models.CharField(max_length=64)
-    email = models.EmailField()
-    mob_phone = models.SmallIntegerField(max_length=11)
-    home_phone = models.SmallIntegerField(max_length=11)
-    dob = models.DateField()
-    ni_number = models.CharField(max_length=8)
+    first_name = models.CharField(max_length=64,default="**DEFAULT**")
+    middle_name = models.CharField(max_length=64,null=True)
+    surname = models.CharField(max_length=64,default="**DEFAULT**")
+    email = models.EmailField(max_length=64,default="**DEFAULT**")
+    mob_phone = models.SmallIntegerField(max_length=11,null=True)
+    home_phone = models.SmallIntegerField(max_length=11,null=True)
+    dob = models.DateField(default="1990-01-01")
+    ni_number = models.CharField(max_length=8,default="DEFAULT")
 
 class ClientForm(ModelForm):
     class Meta:

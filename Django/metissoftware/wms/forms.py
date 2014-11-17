@@ -1,5 +1,6 @@
 from django.forms import ModelForm
-import models as m
+
+from wms import models as m
 
 
 class ClientForm(ModelForm):
