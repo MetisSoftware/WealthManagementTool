@@ -5,7 +5,6 @@ import datetime
 from wms.models import Client
 from wms.forms import ClientForm
 from wms import models as m
-from django.core.urlresolvers import reverse
 
 # Create your views here.
 
@@ -33,7 +32,7 @@ def new_client(request):
             email = form.cleaned_data['email']
             post = m.Client.objects.create(
                 first_name = first_name, surname = surname, email = email)
-            return HttpResponseRedirect('/clients/')
+            return HttpResponseRedirect('/new_client.html')
 
     return render(request, 'wms/new_client.html', {
         'form': form,
