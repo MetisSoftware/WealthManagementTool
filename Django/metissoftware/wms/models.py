@@ -13,6 +13,10 @@ class Client(models.Model):
     dob = models.DateField(default="1990-01-01")
     ni_number = models.CharField(max_length=8,default="DEFAULT")
 
+class FA(models.Model):
+    first_name = models.CharField(max_length=64,default="**DEFAULT**")
+
+
 class ClientForm(ModelForm):
     class Meta:
         model = Client
