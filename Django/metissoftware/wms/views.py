@@ -30,8 +30,14 @@ def new_client(request):
             first_name = form.cleaned_data['first_name']
             surname = form.cleaned_data['surname']
             email = form.cleaned_data['email']
+            mob_phone = form.cleaned_data['mob_phone']
+            home_phone = form.cleaned_data['home_phone']
+            dob = form.cleaned_data['dob']
+            ni_number = form.cleaned_data['ni_number']
             post = m.Client.objects.create(
-                first_name = first_name, surname = surname, email = email)
+                first_name = first_name, surname = surname, email = email, \
+                mob_phone = mob_phone, home_phone = home_phone, dob = dob, \
+                ni_number = ni_number)
             return HttpResponseRedirect('/new_client.html')
 
     return render(request, 'wms/new_client.html', {
