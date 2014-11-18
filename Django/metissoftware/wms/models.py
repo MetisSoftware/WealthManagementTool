@@ -11,7 +11,7 @@ class Client(models.Model):
     mob_phone = models.SmallIntegerField(max_length=11,null=True)
     home_phone = models.SmallIntegerField(max_length=11,null=True)
     dob = models.DateField(default="1990-01-01")
-    ni_number = models.CharField(max_length=8,default="DEFAULT")
+    ni_number = models.CharField(max_length=9,default="DEFAULT")
 
 class FA(models.Model):
     first_name = models.CharField(max_length=64,default="**DEFAULT**")
