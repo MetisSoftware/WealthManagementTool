@@ -6,7 +6,7 @@ ol,ul{list-style:none;margin:0;padding:0;}
 blockquote,q{quotes:none;}
 blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
 table{border-collapse:collapse;border-spacing:0;}
-/* start editing from here */
+
 a{text-decoration:none;}
 .txt-rt{text-align:right;}/* text align right */
 .txt-lt{text-align:left;}/* text align left */
@@ -23,6 +23,14 @@ nav.vertical ul li{	display:block;}/* vertical menu */
 nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
 img{max-width:100%;}
 /*end reset*/
+
+/* Colors 
+#dfb511: base orange color
+#E9CB58: lighter orange
+#B2910E: dark orange
+#1C1C1C: almost black
+#585858: grey
+*/
  body{
 	  font-family: 'Roboto', sans-serif;
  }
@@ -37,7 +45,7 @@ img{max-width:100%;}
  }
  .header_top{
 	padding:15px 0;
-	 border-bottom:2px solid #151515;
+	 border-bottom:2px solid #848484;
 	position: fixed;
 	z-index: 1;
 	width: 100%;
@@ -66,44 +74,44 @@ img{max-width:100%;}
       transition: all 0.5s ease;
  }
  .menu li a:hover {
-	 color:#D7DF01;
+	 color:#dfb511;
  } 
  .menu li.login a{
- 	    -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #5E610B;
-		-moz-box-shadow:inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #5E610B;
-		 box-shadow:inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #5E610B;
-	    background: #D7DF01;
-		background: -moz-linear-gradient(top,  #D7DF01 0%, #D7DF01 0%, #AEB404 100%, #AEB404 100%);
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#AEB404), color-stop(0%,#AEB404), color-stop(100%,#D7DF01), color-stop(100%,#D7DF01));
-		background: -webkit-linear-gradient(top,  #AEB404 0%,#AEB404 0%,#AEB404 100%,#AEB404 100%);
-		background: -o-linear-gradient(top,  #AEB404 0%,#AEB404 0%,#AEB404 100%,#AEB404 100%);
-		background: -ms-linear-gradient(top,  #AEB404 0%,#AEB404 0%,#AEB404 100%,#AEB404 100%);
-		background: linear-gradient(to bottom,  #AEB404 0%,#AEB404 0%,#D7DF01 100%,#D7DF01 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#AEB404', endColorstr='#D7DF01',GradientType=0 );
-	  border: 1px solid #5E610B;
+ 	    -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #B2910E;
+		-moz-box-shadow:inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #B2910E;
+		 box-shadow:inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #B2910E;
+	    background: #dfb511;
+		background: -moz-linear-gradient(top,  #E9CB58 0%,#E9CB58 0%, #dfb511 100%, #dfb511 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E9CB58), color-stop(0%,#E9CB58), color-stop(100%,#dfb511), color-stop(100%,#dfb511));
+		background: -webkit-linear-gradient(top,  #E9CB58 0%,#E9CB58 0%,#dfb511 100%, #dfb511 100%);
+		background: -o-linear-gradient(top,  #E9CB58 0%,#E9CB58 0%,#dfb511 100%,#dfb511 100%);
+		background: -ms-linear-gradient(top,  #E9CB58 0%,#E9CB58 0%,#dfb511 100%,#dfb511 100%);
+		background: linear-gradient(to bottom, #E9CB58 0%,#E9CB58 0%,#dfb511 100%,#dfb511 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfb511', endColorstr='#E9CB58',GradientType=0 );
+	  border: 1px solid #B2910E;
 	  font-weight:normal;
-	  color: #848484;
+	  color: #1C1C1C;
 	  border-radius:1px;
 	  -webkit-border-radius:1px;
 	  -moz-border-radius:1px;
 	  -o-border-radius:1px;
  }
  .menu li.login a:hover{
- 	    background: #D7DF01;
-		background: -moz-linear-gradient(top,  #AEB404 0%, #AEB404 0%, #FFFF00 100%, #FFFF00 100%);
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFF00), color-stop(0%,#FFFF00), color-stop(100%,#AEB404), color-stop(100%,#AEB404));
-		background: -webkit-linear-gradient(top,  #FFFF00 0%,#FFFF00 0%,#FFFF00 100%,#FFFF00 100%);
-		background: -o-linear-gradient(top,  #FFFF00 0%,#FFFF00 0%,#FFFF00 100%,#FFFF00 100%);
-		background: -ms-linear-gradient(top,  #FFFF00 0%,#FFFF00 0%,#FFFF00 100%,#FFFF00 100%);
-		background: linear-gradient(to bottom,  #FFFF00 0%,#FFFF00 0%,#FFFF00 100%,#FFFF00 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFF00', endColorstr='#AEB404',GradientType=0 );
+ 	    background: #B2910E;
+		background: -moz-linear-gradient(top,  #dfb511 0%, #dfb511 0%, #B2910E 100%, #B2910E 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dfb511), color-stop(0%,#dfb511), color-stop(100%,#B2910E), color-stop(100%,#B2910E));
+		background: -webkit-linear-gradient(top,  #dfb511 0%,#dfb511 0%,#B2910E 100%,#B2910E 100%);
+		background: -o-linear-gradient(top,  #dfb511 0%,#dfb511 0%,#B2910E 100%,#B2910E 100%);
+		background: -ms-linear-gradient(top,  #dfb511 0%,#dfb511 0%,#B2910E 100%,#B2910E 100%);
+		background: linear-gradient(to bottom,  #dfb511 0%,#dfb511 0%,#B2910E 100%,#B2910E 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfb511', endColorstr='#B2910E',GradientType=0 );
  }
  .menu li.login a:active{
 	    -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 2px 1px rgba(58, 22, 104, 0.81);
 		-moz-box-shadow:inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 2px 1px rgba(58, 22, 104, 0.81);
 		 box-shadow:inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 2px 1px rgba(58, 22, 104, 0.81);
-		 border: 1px solid #AEB404;
-		 background:#FFFF00;
+		 border: 1px solid #B2910E;
+		 background:#dfb511;
 }
 /********** Login *************/
 /*-------LOGIN STARTS HERE -------*/
@@ -136,7 +144,7 @@ img{max-width:100%;}
 	top: -10px;
 	border-left:10px solid rgba(0, 0, 0, 0);
 	border-right:10px solid rgba(0, 0, 0, 0);
-	border-bottom:10px solid #F4FA58;
+	border-bottom:10px solid #dfb511;
 }
 /* Login Form */
 #loginForm {
@@ -144,8 +152,8 @@ img{max-width:100%;}
     border-radius:3px 0 3px 3px;
     -moz-border-radius:3px 0 3px 3px;
     margin-top: 0px;
-	background: #F4FA58;
-	border: 1px solid #848484;
+	background: #dfb511;
+	border: 1px solid #1C1C1C;
 }
 #loginForm fieldset {
     margin:0 0 10px 0;
@@ -161,16 +169,8 @@ fieldset#body {
     padding:15px 15px;
     margin:0;
 }
-#loginForm #checkbox {
-    width:auto;
-    margin:3px 6px 0 0;
-    float:left;
-    padding:0;
-    border:0;
-    *margin:-3px 9px 0 0; /* IE7 Fix */
-}
 #body label {
-    color:#848484;
+    color:#1C1C1C;
     margin:10px 0 0 0;
     display:block;
     float:left;
@@ -190,7 +190,7 @@ fieldset#body {
 #loginForm input {
     width:92%;
     border:1px solid #F4FA58;
-	color: #848484;
+	color: #1C1C1C;
 	background:#FFF;
     padding:8px 8px;
     font-size:0.85em;
@@ -202,8 +202,8 @@ fieldset#body {
     width:auto;
     float:left;
     font-family: 'Roboto', sans-serif;
-    background:#AEB404;
-    color:#848484#848484;
+    background:#E9CB58;
+    color:#1C1C1C;
     font-size:0.8em;
     padding:8px 15px;
     border:none;
@@ -221,7 +221,7 @@ fieldset#body {
 	-moz-border-radius:2px; -webkit-border-radius:2px; -o-border-radius:2px;
 }
 #loginForm #login:hover {
-	background:#5E610B;
+	background:#B2910E;
 }
 /* Forgot your password */
 #loginForm span{
@@ -229,7 +229,7 @@ fieldset#body {
     padding:0px 0px 15px 0px;
 }
 #loginForm span a{
-    color:#383838;
+    color:#1C1C1C;
     text-shadow:1px 1px #929292;
     font-size:0.8em;
     font-weight:500;
@@ -671,7 +671,7 @@ input:focus {
 }
   .copy_right p{
 	font-size:1em;
-	color:#F3F781;
+	color:#E9CB58;
  }
  .copy_right p a{
     	color:#FFF;
