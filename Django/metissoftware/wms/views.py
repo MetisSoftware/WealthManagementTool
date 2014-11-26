@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 import datetime
 from wms.models import Client
+from wms.models import FAtoClient
 from wms.forms import ClientForm
 from wms import models as m
 
@@ -15,6 +16,12 @@ def index(request):
 
 
 def print_client(request):
+    get_params = request.GET
+    if get_params.get("fa")!=None:
+        client_list = Client.objects.filter(fa__ni_number=get_params.get("fa"))
+        print(client_list)
+        return render_to_response('wms/index.html', {'client_list': client_list})
+
     client_list = Client.objects.order_by()
     return render_to_response('wms/index.html', {'client_list': client_list})
 
