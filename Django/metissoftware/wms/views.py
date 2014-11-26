@@ -3,7 +3,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 import datetime
 from wms.models import Client
-from wms.models import FAtoClient
 from wms.forms import ClientForm
 from wms import models as m
 

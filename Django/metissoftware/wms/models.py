@@ -31,12 +31,6 @@ class Client(models.Model):
     def __str__(self):
         return self.surname+" - "+self.ni_number
 
-class FAtoClient(models.Model):
-    fa = models.ForeignKey(FA)
-    client = models.ForeignKey(Client)
-
-    def __str__(self):
-        return self.fa.surname+" - "+self.fa.ni_number+ " -> "+self.client.surname+" - "+self.client.ni_number
 
 class ClientForm(ModelForm):
     class Meta:
