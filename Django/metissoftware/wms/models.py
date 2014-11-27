@@ -35,7 +35,8 @@ class Client(models.Model):
 class ClientForm(ModelForm):
     class Meta:
         model = Client
-        fields = ['first_name', 'middle_name', 'surname', 'email', 'mob_phone', 'home_phone', 'dob', 'ni_number']
+        fields = ['first_name', 'middle_name', 'surname', 'email',
+                  'mob_phone', 'home_phone', 'dob', 'ni_number']
 
     def __str__(self):  # __unicode__ if using python 2
         return self.first_name
