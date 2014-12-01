@@ -1,6 +1,14 @@
+{% extends "wms/base.html" %}
 
-<form action='new_client.html' method='post'> 
+
+{% block title %}Add Client{% endblock %}
+
+{% block content %}
+
+<form action='clients.html' method='post'> 
 	{% csrf_token %}
 	{{ form.as_p }}
 	<input type="submit" value="Submit" />
 </form>
+
+{% endblock %}
