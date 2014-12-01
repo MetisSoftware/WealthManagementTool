@@ -1,0 +1,31 @@
+{% extends "wms/base.html" %}
+{% block content %}
+
+{% if client_list %}
+<table border = "1">
+	<th>First Name</th>
+	<th>Surname</th>
+	<th>Email</th>
+	<th>Mobile Number</th>
+	<th>Home Number</th>
+	<th>Date Of Birth</th>
+	<th>National Insurance Number</th>
+	<th>Financial Advisor</th>
+	{% for client in client_list %}
+	<tr>
+		<td>{{ client.first_name}}</td>
+		<td>{{ client.surname}}</td>
+		<td>{{ client.email}}</td>
+		<td>{{ client.mob_phone}}</td>
+		<td>{{ client.home_phone}}</td>
+		<td>{{ client.dob}}</td>
+		<td>{{ client.ni_number}}</td>
+		<td>{{ client.fa}}</td>
+	</tr>
+	{% endfor %}
+
+</table>
+{% else %}
+<p>No client data</p>
+{% endif %}
+{%  endblock %}
