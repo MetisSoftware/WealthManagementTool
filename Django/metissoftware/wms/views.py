@@ -44,7 +44,7 @@ def new_client(request):
                 first_name = first_name, surname = surname, email = email, \
                 mob_phone = mob_phone, home_phone = home_phone, dob = dob, \
                 ni_number = ni_number, fa = fa)
-            return HttpResponseRedirect('wms/new_client.html')
+            return HttpResponseRedirect('/clients/')
 
     return render(request, 'wms/new_client.html', {
         'form': form,
