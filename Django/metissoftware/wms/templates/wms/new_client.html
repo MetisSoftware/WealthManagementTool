@@ -8,7 +8,7 @@
 <form action='new_client.html' method='post'> 
 	{% csrf_token %}
 	{{ form.as_p }}
-	<input type="submit" value="Submit" />
+	<div><input class ="add_client" type="submit"  value="Submit" /></div>
 </form>
 
 {% endblock %}
