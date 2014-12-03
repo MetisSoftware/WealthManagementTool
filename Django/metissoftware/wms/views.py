@@ -9,8 +9,7 @@ from wms import models as m
 
 
 def index(request):
-    return HttpResponse("The time when this page was created is: "
-                        + datetime.datetime.now().strftime("%H:%M"))
+    return HttpResponseRedirect('index.html')
 
 
 def print_client(request):
