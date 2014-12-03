@@ -10,6 +10,9 @@ from wms import models as m
 
 def index(request):
     return HttpResponseRedirect('index.html')
+    
+def appointments(request):
+    return render_to_response('wms/appointments.html')
 
 
 def print_client(request):

@@ -7,4 +7,5 @@ urlpatterns = patterns('wms.views',
     url(r'^$', TemplateView.as_view(template_name="wms/index.html")),
     url(r'^new_client.html', 'new_client', name='new_client'),
     url(r'^clients/', 'print_client', name='print_client'),
+    url(r'^appointments/', 'appointments', name='appointments'),
 )
