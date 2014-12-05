@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-import datetime
 from wms.models import Client, ClientForm
 from wms import models as m
 
@@ -42,10 +41,11 @@ def new_client(request):
             dob = form.cleaned_data['dob']
             ni_number = form.cleaned_data['ni_number']
             fa = form.cleaned_data['fa']
+            cash = form.cleaned_data['cash']
             post = m.Client.objects.create(
                 first_name = first_name, surname = surname, email = email, \
                 mob_phone = mob_phone, home_phone = home_phone, dob = dob, \
-                ni_number = ni_number, fa = fa)
+                ni_number = ni_number, fa = fa, cash = cash)
             return HttpResponseRedirect('/clients/')
 
     return render(request, 'wms/new_client.html', {
