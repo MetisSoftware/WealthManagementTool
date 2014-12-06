@@ -3,11 +3,25 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from wms.models import Client, ClientForm
 from wms import models as m
-
+from wms import scripts
+import datetime
+import json
 # Create your views here.
 
 
 def index(request):
+    get_params = request.GET
+    print(get_params.get("symbol"))
+    if get_params.get("symbol")!=None:
+        yesterday = (datetime.datetime.now() + datetime.timedelta(-1))#Get today and remove 1 day
+        yesterdayminus5 = yesterday + datetime.timedelta(-7)
+        query = "select * from yahoo.finance.historicaldata where symbol = '"+get_params.get("symbol")+\
+                                     "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
+                                     yesterday.strftime("%Y-%m-%d")+"'"
+        stock_result = scripts.query_api(query)
+        print(stock_result['query']['results']['quote'])
+        return render_to_response('wms/index.html', {'symbol':get_params.get("symbol"),'stock_json': stock_result['query']['results']['quote']})
+
     return HttpResponseRedirect('index.html')
     
 def appointments(request):

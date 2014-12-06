@@ -3,4 +3,25 @@
 {% block content %}
 <div class = greenbutton><a href="/clients/">View Clients</a></div>
 <div class = greenbutton><a href="/new_client.html">Add Client</a></div>
+
+{% if stock_json %}
+    <H2>{{ symbol }}</H2>
+    <table style="border:1px solid black;" cellspacing="20">
+
+    {% for key in stock_json.1 %}
+        <th>{{ key }}</th>
+    {% endfor %}
+
+    {% for result in stock_json %}
+	    <tr>
+            {% for key,data in result.items %}
+                <td>{{ data }}</td>
+            {% endfor %}
+	    </tr>
+    {% endfor %}
+
+
+</table>
+
+{% endif %}
 {%  endblock %}
