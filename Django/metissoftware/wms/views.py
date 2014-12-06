@@ -13,8 +13,12 @@ def index(request):
     get_params = request.GET
     print(get_params.get("symbol"))
     if get_params.get("symbol")!=None:
-        yesterday = (datetime.datetime.now() + datetime.timedelta(-1))#Get today and remove 1 day
-        yesterdayminus5 = yesterday + datetime.timedelta(-7)
+        if get_params.get("days")!=None:
+            days = int(get_params.get("days"))
+        else:
+            days = 5
+        yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
+        yesterdayminus5 = yesterday - datetime.timedelta(days=days)
         query = "select * from yahoo.finance.historicaldata where symbol = '"+get_params.get("symbol")+\
                                      "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
                                      yesterday.strftime("%Y-%m-%d")+"'"
