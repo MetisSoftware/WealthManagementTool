@@ -26,7 +26,7 @@ def index(request):
         print(stock_result['query']['results']['quote'])
         return render_to_response('wms/index.html', {'symbol':get_params.get("symbol"),'stock_json': stock_result['query']['results']['quote']})
 
-    return HttpResponseRedirect('index.html')
+    return render_to_response('wms/index.html',{})
     
 def appointments(request):
     return render_to_response('wms/appointments.html')
