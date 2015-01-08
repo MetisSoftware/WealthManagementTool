@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
+from django.core.validators import RegexValidator
 
 
 # Create your models here.
@@ -16,6 +17,7 @@ class User(models.Model):
 
 
 class FA(User):
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 9 digits allowed.")
     mob_number = models.CharField(max_length=11, null=True)
     off_number = models.CharField(max_length=11, null=True)
     password = models.CharField(max_length=64, default="**DEFAULT**")
@@ -25,9 +27,12 @@ class FA(User):
 
 
 class Client(User):
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 9 digits allowed.")
     middle_name = models.CharField(max_length=64, null=True)
-    home_phone = models.CharField(max_length=11, null=True)
-    mob_phone = models.CharField(max_length=11, null=True)
+    home_phone = models.CharField(max_length=11, validators=[phone_regex], blank=True)
+    mob_phone = models.CharField(max_length=11, validators=[phone_regex], blank=True)
+    #home_phone = models.CharField(max_length=11, null=True)
+    #mob_phone = models.CharField(max_length=11, null=True)
     cash = models.DecimalField(max_digits=20,decimal_places=2)
     fa = models.ForeignKey(FA)
 
