@@ -6,14 +6,14 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet", type="text/css", href="{% static 'wms/css/style.css' %}" />
 		<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700,500,900' rel='stylesheet' type='text/css'>
-		<script src="{% static "wms/js/jquery.min.js"}" type="text/javascript"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
 		<script src="{% static "wms/js/script.js" %}" type="text/javascript"></script>
-		<script src="web/js/jquery.magnific-popup.js" type="text/javascript"></script>
-		<link href="web/css/magnific-popup.css" rel="stylesheet" type="text/css">
+		<script src="{% static "wms/js/jquery.magnific-popup.js" %}" type="text/javascript"></script>
+		<link href="{% static "wms/css/magnific-popup.css" %}" rel="stylesheet" type="text/css">
 		<!-- Add fancyBox main JS and CSS files -->
-		<script type="text/javascript" src="web/js/jquery.fancybox.js"></script>
-		<link rel="stylesheet" type="text/css" href="web/css/jquery.fancybox.css" media="screen" />
-		<script type="text/javascript" src="web/js/jquery.fancybox-media.js"></script>	
+		<script type="text/javascript" src="{% static "wms/js/jquery.fancybox.js" %}"></script>
+		<link rel="stylesheet" type="text/css" href="{% static "wms/css/jquery.fancybox.css" %}" media="screen" />
+		<script type="text/javascript" src="{% static "wms/js/jquery.fancybox-media.js" %}"></script>	
 	</head>
 	<body>
 		<div class="header" id="home">
