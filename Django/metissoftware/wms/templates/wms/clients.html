@@ -2,15 +2,18 @@
 {% block content %}
 <div class = greenbutton align= "left"><a href="/new_client.html">Add Client</a></div>
 {% if client_list %}
-<table border = "1">
-	<th>First Name</th>
-	<th>Surname</th>
-	<th>Email</th>
-	<th>Mobile Number</th>
-	<th>Home Number</th>
-	<th>Date Of Birth</th>
-	<th>National Insurance Number</th>
-	<th>Financial Advisor</th>
+<table>
+<tbody>
+	<tr>
+		<th>First Name</th>
+		<th>Surname</th>
+		<th>Email</th>
+		<th>Mobile Number</th>
+		<th>Home Number</th>
+		<th>Date Of Birth</th>
+		<th>National Insurance Number</th>
+		<th>Financial Advisor</th>
+	</tr>
 	{% for client in client_list %}
 	<tr>
 		<td>{{ client.first_name}}</td>
@@ -23,7 +26,7 @@
 		<td>{{ client.fa}}</td>
 	</tr>
 	{% endfor %}
-
+</tbody>
 </table>
 {% else %}
 <p>No client data</p>
