@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import ModelForm
+from django.forms import ModelForm, TextInput
 from django.core.validators import RegexValidator
 
 
@@ -71,6 +71,9 @@ class ClientForm(ModelForm):
         model = Client
         fields = ['first_name', 'middle_name', 'surname', 'email',
                   'mob_phone', 'home_phone', 'dob', 'ni_number', 'fa', 'cash']
+        widgets = {
+            'cash': TextInput(attrs={'placeholder': '0.00', 'cols': '1', 'rows': '1'}),
+        }
 
     def __str__(self):
         return self.first_name
