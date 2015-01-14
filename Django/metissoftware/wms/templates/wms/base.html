@@ -1,75 +1,75 @@
 {% load staticfiles %}
 <html>
-	<head>
-		<title>{% block title %}Wealth Management Tool{% endblock %}</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet", type="text/css", href="{% static 'wms/css/style.css' %}" />
-		<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700,500,900' rel='stylesheet' type='text/css'>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
-		<script src="{% static "wms/js/script.js" %}" type="text/javascript"></script>
-		<script src="{% static "wms/js/jquery.magnific-popup.js" %}" type="text/javascript"></script>
-		<link href="{% static "wms/css/magnific-popup.css" %}" rel="stylesheet" type="text/css">
-		<!-- Add fancyBox main JS and CSS files -->
-		<script type="text/javascript" src="{% static "wms/js/jquery.fancybox.js" %}"></script>
-		<link rel="stylesheet" type="text/css" href="{% static "wms/css/jquery.fancybox.css" %}" media="screen" />
-		<script type="text/javascript" src="{% static "wms/js/jquery.fancybox-media.js" %}"></script>	
-	</head>
-	<body>
-		<div class="header" id="home">
-			<div class="header_top">
-				<div class="wrap">
-					<div class="logo">
-						<a href="/"><img src="{% static "wms/images/logo.png" %}" alt="" height="54" width="200" /></a>
-					</div>	
-					<div class="menu">
-						<ul>
-							<li><a href="/">Home</a></li>
-							<li><a href="/clients/">Clients</a></li>
-							<li><a href="/appointments/">My Appointments</a></li>			    
-							<li class="login" >
-								<div id="loginContainer"><a href="#" id="loginButton"><span>Login</span></a>
-									<div id="loginBox">                
-										<form id="loginForm">
-											<fieldset id="body">
-												<fieldset>
-													<label for="email">Email Address</label>
-													<input type="text" name="email" id="email">
-												</fieldset>
-												<fieldset>
-													<label for="password">Password</label>
-													<input type="password" name="password" id="password">
-												</fieldset>
-												<input type="submit" id="login" value="Sign in">
-										</form>
-									</div>
-								</div>
-							</li>
-							<div class="clear"></div>
-						</ul>
-					</div>							
-					<div class="clear"></div>
-				</div>
-			</div>
-		</div>			      	
-		<div class="main">
-			<div class="content">	
-				<div class="content_top">  
-					<div class="wrap">                                  		
-						<div class="banner_desc">
-							{% block content %}
-							{% endblock %}
-						</div>
-					</div>  
-					<div class="clear"></div>
-				</div>
-			</div>
-	</div>
+    <head>
+        <title>{% block title %}Wealth Management Tool{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet", type="text/css", href="{% static 'wms/css/style.css' %}" />
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700,500,900' rel='stylesheet' type='text/css'>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+        <script src="{% static "wms/js/script.js" %}" type="text/javascript"></script>
+        <script src="{% static "wms/js/jquery.magnific-popup.js" %}" type="text/javascript"></script>
+        <link href="{% static "wms/css/magnific-popup.css" %}" rel="stylesheet" type="text/css">
+        <!-- Add fancyBox main JS and CSS files -->
+        <script type="text/javascript" src="{% static "wms/js/jquery.fancybox.js" %}"></script>
+        <link rel="stylesheet" type="text/css" href="{% static "wms/css/jquery.fancybox.css" %}" media="screen" />
+        <script type="text/javascript" src="{% static "wms/js/jquery.fancybox-media.js" %}"></script>	
+    </head>
+    <body>
+        <div class="header" id="home">
+            <div class="header_top">
+                <div class="wrap">
+                    <div class="logo">
+                        <a href="/"><img src="{% static "wms/images/logo.png" %}" alt="" height="54" width="200" /></a>
+                    </div>	
+                    <div class="menu">
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/clients/">Clients</a></li>
+                            <li><a href="/appointments/">My Appointments</a></li>			    
+                            <li class="login" >
+                                <div id="loginContainer"><a href="#" id="loginButton"><span>Login</span></a>
+                                    <div id="loginBox">                
+                                        <form id="loginForm">
+                                            <fieldset id="body">
+                                                <fieldset>
+                                                    <label for="email">Email Address</label>
+                                                    <input type="text" name="email" id="email">
+                                                </fieldset>
+                                                <fieldset>
+                                                    <label for="password">Password</label>
+                                                    <input type="password" name="password" id="password">
+                                                </fieldset>
+                                                <input type="submit" id="login" value="Sign in">
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                            <div class="clear"></div>
+                        </ul>
+                    </div>							
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>			      	
+        <div class="main">
+            <div class="content">	
+                <div class="content_top">  
+                    <div class="wrap">                                  		
+                        <div class="banner_desc">
+                            {% block content %}
+                            {% endblock %}
+                        </div>
+                    </div>  
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
 
-			<div class="copy_right">
-				<div class="wrap">
-					<p>© 2014-2015 Wealth Management Tool by  <a href="http://www.metissoftware.co.uk" target="_blank"> Metis Software </a> . </p>
-				</div>
-			</div> 		 
-	</body>
+        <div class="copy_right">
+            <div class="wrap">
+                <p>© 2014-2015 Wealth Management Tool by  <a href="http://www.metissoftware.co.uk" target="_blank"> Metis Software </a> . </p>
+            </div>
+        </div> 		 
+    </body>
 </html>
