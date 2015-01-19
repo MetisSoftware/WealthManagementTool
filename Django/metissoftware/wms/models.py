@@ -37,6 +37,7 @@ class FAUserManager(BaseUserManager):
                           surname=surname, dob=dob, ni_number=ni_number)
 
         user.set_password(password)
+        user.is_staff = True
         user.save(using=self._db)
         return user
 
@@ -47,6 +48,7 @@ class FAUserManager(BaseUserManager):
                                 ni_number, password, **extra_fields)
 
         user.is_superuser = True
+        user.is_staff = True
         user.save(using=self._db)
         return user
 
@@ -59,8 +61,16 @@ class FA(AbstractBaseUser, PermissionsMixin):
     ni_regex = RegexValidator(regex=r'^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\s*\d\s*){6}([A-D]|\s)$', message="Must be in the format: 'AA999999A', restrictions to characters apply'")
     ni_number = models.CharField(
         max_length=9, validators=[ni_regex], primary_key=True)
+    is_staff=models.BooleanField(default=False)
+    is_admin=models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'surname', 'dob', 'ni_number']
+
+    def get_full_name(self):
+        return self.email
+
+    def get_short_name(self):
+        return self.email
 
     objects = FAUserManager()
 
