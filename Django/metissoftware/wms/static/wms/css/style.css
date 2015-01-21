@@ -258,6 +258,19 @@ input:focus {
 	font-family: 'Roboto', sans-serif;
 }
 
+label{
+width: 15em;
+float: left;
+text-align:right;
+margin-right: -5.5em;
+display: block;
+}
+
+input{
+width: 10em;
+}
+
+
 table{
   display: block;
   font-family: 'Roboto', sans-serif;
