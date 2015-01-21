@@ -258,7 +258,7 @@ input:focus {
 	font-family: 'Roboto', sans-serif;
 }
 
-label{
+.formLabel{
 width: 15em;
 float: left;
 text-align:right;
