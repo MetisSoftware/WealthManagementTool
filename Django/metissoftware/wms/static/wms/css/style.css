@@ -37,7 +37,8 @@ img{max-width:100%;}
 */
  body{
 	  font-family: 'Roboto', sans-serif;
-	  background:#585858;
+	  background-image: url("http://frumph.net/images/bgs/background-grey-burst.jpg");
+	 
  }
  .wrap{
 	width:80%;
@@ -245,7 +246,7 @@ input:focus {
 /*** main ****/
 .content_top{	
 	position:relative;
-	background:#585858;
+	background-image: url("http://frumph.net/images/bgs/background-grey-burst.jpg");
 }
 .banner_desc{
 	float:left;
