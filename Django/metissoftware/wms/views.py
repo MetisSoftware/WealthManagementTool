@@ -13,8 +13,8 @@ import json
 # Create your views here.
 
 
-@login_required
 def index(request):
+    request.session.set_test_cookie()
     get_params = request.GET
     print(get_params.get("symbol"))
     if get_params.get("symbol")!=None:
@@ -22,18 +22,22 @@ def index(request):
             days = int(get_params.get("days"))
         else:
             days = 5
-        yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
-        yesterdayminus5 = yesterday - datetime.timedelta(days=days)
-        query = "select * from yahoo.finance.historicaldata where symbol = '"+get_params.get("symbol")+\
-                                     "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
-                                     yesterday.strftime("%Y-%m-%d")+"'"
-        stock_result = scripts.query_api(query)
-        print(stock_result['query']['results']['quote'])
-        return render_to_response('wms/index.html', {'symbol':get_params.get("symbol"),'stock_json': stock_result['query']['results']['quote']})
+            yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
+            yesterdayminus5 = yesterday - datetime.timedelta(days=days)
+            query = "select * from yahoo.finance.historicaldata where symbol = '"+get_params.get("symbol")+\
+                "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
+                yesterday.strftime("%Y-%m-%d")+"'"
+            stock_result = scripts.query_api(query)
+            print(stock_result['query']['results']['quote'])
+            return render_to_response('wms/index.html', {'symbol':get_params.get("symbol"),'stock_json': stock_result['query']['results']['quote']})
 
     return render_to_response('wms/index.html',{})
 
+
 def appointments(request):
+    if request.session.test_cookie_worked():
+        print ("TEST cookie worked!")
+        request.session.delete_test_cookie()
     return render_to_response('wms/appointments.html')
 
 
@@ -73,7 +77,7 @@ def new_client(request):
 
     return render(request, 'wms/new_client.html', {
         'form': form,
-        })
+    })
 
 
 class LoginView(FormView):
@@ -83,7 +87,7 @@ class LoginView(FormView):
 
     def form_valid(self, form):
         user = authenticate(username=self.request.POST['username'],
-                                      password=self.request.POST['password'])
+                            password=self.request.POST['password'])
         if user is not None:
             login(self.request, user)
             return HttpResponseRedirect('wms/index.html')
