@@ -99,7 +99,16 @@ class Client(User):
     )
     cash = models.DecimalField(max_digits=20, decimal_places=2)
     fa = models.ForeignKey(FA)
-
+    twitter_username = models.CharField(validators=[RegexValidator(
+                                                    regex="^(\w){1,15}$",
+                                                    message="Not a valid username,please remove @ and max of 15 cahracters"
+                                                    )],
+                                        null=True, max_length= 15)
+    twitter_widget_id = models.CharField(max_length=18, null=True,
+                                         validators=[RegexValidator(
+                                             regex='[\d]{18}',
+                                             message="Not a valid Twitter widget id. must be 18 digits"
+                                         )])
     def __str__(self):
         return self.surname + " - " + self.ni_number
 

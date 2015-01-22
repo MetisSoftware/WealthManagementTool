@@ -7,3 +7,4 @@ admin.site.register(FA)
 admin.site.register(Market)
 admin.site.register(Share)
 admin.site.register(Stock)
+

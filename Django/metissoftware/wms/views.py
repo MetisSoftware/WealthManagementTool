@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from wms.models import Client, ClientForm
+from wms.models import Client, ClientForm, Share
 from wms import models as m
 from wms import scripts
 import datetime
@@ -87,8 +87,11 @@ def client_details(request):
     else:
         try:
             client = Client.objects.get(ni_number=get_params.get('client'))
-            print(client)
-            return render_to_response('wms/client_details.html',{'client_details':client})
+            shares = Share.objects.filter(owner=get_params.get('client'))
+            totals= {}
+
+            return render_to_response('wms/client_details.html',
+                                      {'client_details': client,'shares': shares})
         except ObjectDoesNotExist:
             return render_to_response('wms/client_details.html',{})
 

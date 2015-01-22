@@ -1,7 +1,7 @@
 {% extends "wms/base.html" %}
 {% block content %}
 {% if client_details %}
-    <table>
+<table>
     <tr>
         <th>First Name</th>
 		<th>Surname</th>
@@ -25,6 +25,29 @@
         <td>{{ client_details.fa}}</td>
     </tr>
 </table>
+    <table>
+    <tr>
+        <th>Stock</th>
+		<th>Date bought</th>
+		<th>Amount</th>
+		<th>Price($)</th>
+		<th>Total($)</th>
+	</tr>
+    {% for share in shares %}
+    <tr>
+        <td>{{ share.stock}}</td>
+        <td>{{ share.buy_date}}</td>
+        <td>{{ share.amount}}</td>
+        <td>{{ share.price}}</td>
+
+        <td><script>document.write({{ share.price }}*{{ share.amount }})</script></td>
+
+
+    </tr>
+    {% endfor %}
+</table>
+    <a class="twitter-timeline" href="https://twitter.com/{{ client_details.twitter_username }}" data-widget-id="{{ client_details.twitter_widget_id }}">Tweets</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 {% else %}
 <p>No client data</p>
 {% endif %}
