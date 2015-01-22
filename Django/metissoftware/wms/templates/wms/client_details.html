@@ -46,9 +46,11 @@
     </tr>
     {% endfor %}
 </table>
-    <a class="twitter-timeline" href="https://twitter.com/{{ client_details.twitter_username }}" data-widget-id="{{ client_details.twitter_widget_id }}">Tweets</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-{% else %}
+    {% if twitter == True %}
+        <a class="twitter-timeline" href="https://twitter.com/{{ client_details.twitter_username }}" data-widget-id="{{ client_details.twitter_widget_id }}">Tweets</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    {% endif %}
+    {% else %}
 <p>No client data</p>
 {% endif %}
 {%  endblock %}

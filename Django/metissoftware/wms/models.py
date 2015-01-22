@@ -103,8 +103,8 @@ class Client(User):
                                                     regex="^(\w){1,15}$",
                                                     message="Not a valid username,please remove @ and max of 15 cahracters"
                                                     )],
-                                        null=True, max_length= 15)
-    twitter_widget_id = models.CharField(max_length=18, null=True,
+                                        blank=True, max_length= 15)
+    twitter_widget_id = models.CharField(max_length=18, blank=True,
                                          validators=[RegexValidator(
                                              regex='[\d]{18}',
                                              message="Not a valid Twitter widget id. must be 18 digits"

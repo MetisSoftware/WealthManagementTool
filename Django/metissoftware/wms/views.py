@@ -88,10 +88,13 @@ def client_details(request):
         try:
             client = Client.objects.get(ni_number=get_params.get('client'))
             shares = Share.objects.filter(owner=get_params.get('client'))
-            totals= {}
-
+            print(client.twitter_username)
+            if client.twitter_username=="":
+                twitter = False
+            else:
+                twitter = True
             return render_to_response('wms/client_details.html',
-                                      {'client_details': client,'shares': shares})
+                                      {'client_details': client,'shares': shares,'twitter':twitter})
         except ObjectDoesNotExist:
             return render_to_response('wms/client_details.html',{})
 
