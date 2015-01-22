@@ -1,11 +1,12 @@
 {% extends "wms/base.html" %}
+{% load staticfiles %}
+
 
 {% block content %}
-<div class = greenbutton><a href="/clients/">View Clients</a></div>
-<div class = greenbutton><a href="/new_client.html">Add Client</a></div>
 
 {% if stock_json %}
-    <H2>{{ symbol }}</H2>
+    <H1>{{ symbol }}</H1>
+    <canvas id="stock_graph" width="600" height="400"></canvas>
     <table style="border:1px solid black;" cellspacing="20">
 
     {% for key in stock_json.1 %}
@@ -23,5 +24,54 @@
 
 </table>
 
+
+    <script>
+
+
+    var dates = [];
+    var open = [];
+    var close = [];
+
+    {% for result in stock_json %}
+        dates[dates.length] = {{result.Date}};
+        open[open.length] = {{ result.Open }};
+        close[close.length] = {{ result.Close }};
+    {% endfor %}
+
+document.write(dates);
+
+
+    var stock_graph = document.getElementById('stock_graph').getContext('2d');
+    var stockData = {
+	labels : dates,
+	datasets : [
+		{
+            label : "Open",
+			fillColor : "rgba(172,0,0,0)",
+			strokeColor : "#2ecc71",
+			pointColor : "#2ecc71",
+			pointStrokeColor : "#34495e",
+			data : open,
+            showTooltips: true
+		},
+         {
+            label : "Close",
+			fillColor : "rgba(0,0,300,0)",
+			strokeColor : "#c0392b",
+			pointColor : "#c0392b",
+			pointStrokeColor : "#34495e",
+			data : close
+		}
+
+	]
+}
+
+    new Chart(stock_graph).Line(stockData);
+</script>
+
+
 {% endif %}
+
+    <div class = greenbutton><a href="/clients/">View Clients</a></div>
+<div class = greenbutton><a href="/new_client.html">Add Client</a></div>
 {%  endblock %}

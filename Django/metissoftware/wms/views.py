@@ -17,22 +17,24 @@ import json
 def index(request):
     request.session.set_test_cookie()
     get_params = request.GET
+    symbol = get_params.get("symbol")
+    if symbol ==None:
+        symbol = "GOOG"
     print(get_params.get("symbol"))
-    if get_params.get("symbol")!=None:
-        if get_params.get("days")!=None:
-            days = int(get_params.get("days"))
-        else:
-            days = 5
-        yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
-        yesterdayminus5 = yesterday - datetime.timedelta(days=days)
-        query = "select * from yahoo.finance.historicaldata where symbol = '"+get_params.get("symbol")+\
-                "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
-                yesterday.strftime("%Y-%m-%d")+"'"
-        stock_result = scripts.query_api(query)
-        print(stock_result['query']['results']['quote'])
-        return render_to_response('wms/index.html', {'symbol':get_params.get("symbol"),'stock_json': stock_result['query']['results']['quote']})
+    if get_params.get("days")!=None:
+        days = int(get_params.get("days"))
+    else:
+        days = 5
+    yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
+    yesterdayminus5 = yesterday - datetime.timedelta(days=days)
+    query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
+            "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
+            yesterday.strftime("%Y-%m-%d")+"'"
+    stock_result = scripts.query_api(query)
+    print(stock_result['query']['results']['quote'])
+    return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']})
 
-    return render_to_response('wms/index.html',{})
+    #return render_to_response('wms/index.html',{})
 
 
 def appointments(request):
