@@ -38,6 +38,7 @@ class FAUserManager(BaseUserManager):
 
         user.set_password(password)
         user.is_staff = True
+        user.is_active = True
         user.save(using=self._db)
         return user
 
@@ -64,6 +65,7 @@ class FA(AbstractBaseUser, PermissionsMixin):
         max_length=9, validators=[ni_regex], primary_key=True)
     is_staff=models.BooleanField(default=False)
     is_admin=models.BooleanField(default=False)
+    is_active=models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'surname', 'dob', 'ni_number']
 
