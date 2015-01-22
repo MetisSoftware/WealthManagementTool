@@ -4,6 +4,6 @@ from wms.views import ClientCreate, ClientUpdate, ClientDelete
 from wms import views
 
 urlpatterns = patterns('wms.views',
-    url(r'^$', 'new_client', name='new_client'),
-    url(r'^clients/', 'print_client', name='print_client'),
+    # url(r'^$', 'new_client', name='new_client'),
+    # url(r'^clients/', 'print_clients', name='print_clients'),
     )

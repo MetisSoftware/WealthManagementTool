@@ -5,6 +5,7 @@ from django.views.generic.edit import FormView
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from wms.models import Client, ClientForm
 from wms import models as m
 from wms import scripts
@@ -22,14 +23,14 @@ def index(request):
             days = int(get_params.get("days"))
         else:
             days = 5
-            yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
-            yesterdayminus5 = yesterday - datetime.timedelta(days=days)
-            query = "select * from yahoo.finance.historicaldata where symbol = '"+get_params.get("symbol")+\
+        yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
+        yesterdayminus5 = yesterday - datetime.timedelta(days=days)
+        query = "select * from yahoo.finance.historicaldata where symbol = '"+get_params.get("symbol")+\
                 "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
                 yesterday.strftime("%Y-%m-%d")+"'"
-            stock_result = scripts.query_api(query)
-            print(stock_result['query']['results']['quote'])
-            return render_to_response('wms/index.html', {'symbol':get_params.get("symbol"),'stock_json': stock_result['query']['results']['quote']})
+        stock_result = scripts.query_api(query)
+        print(stock_result['query']['results']['quote'])
+        return render_to_response('wms/index.html', {'symbol':get_params.get("symbol"),'stock_json': stock_result['query']['results']['quote']})
 
     return render_to_response('wms/index.html',{})
 
@@ -41,7 +42,7 @@ def appointments(request):
     return render_to_response('wms/appointments.html')
 
 
-def print_client(request):
+def print_clients(request):
     get_params = request.GET
     if get_params.get("fa")!=None:
         client_list = Client.objects.filter(fa__ni_number=get_params.get("fa"))
@@ -78,6 +79,18 @@ def new_client(request):
     return render(request, 'wms/new_client.html', {
         'form': form,
     })
+
+def client_details(request):
+    get_params = request.GET
+    if(get_params.get('client')==None):
+        return HttpResponseRedirect('/clients/')
+    else:
+        try:
+            client = Client.objects.get(ni_number=get_params.get('client'))
+            print(client)
+            return render_to_response('wms/client_details.html',{'client_details':client})
+        except ObjectDoesNotExist:
+            return render_to_response('wms/client_details.html',{})
 
 
 class LoginView(FormView):
