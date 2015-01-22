@@ -2,12 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="183e4d5c-b029-4fb4-bb4e-80a7716afde2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Django/metissoftware/wms/templates/wms/client_details.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Django/metissoftware/db.sqlite3" afterPath="$PROJECT_DIR$/Django/metissoftware/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Django/metissoftware/wms/templates/wms/clients.html" afterPath="$PROJECT_DIR$/Django/metissoftware/wms/templates/wms/clients.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Django/metissoftware/metissoftware/urls.py" afterPath="$PROJECT_DIR$/Django/metissoftware/metissoftware/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Django/metissoftware/wms/urls.py" afterPath="$PROJECT_DIR$/Django/metissoftware/wms/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Django/metissoftware/wms/views.py" afterPath="$PROJECT_DIR$/Django/metissoftware/wms/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="WealthManagementTool.iws" />
@@ -458,12 +452,18 @@
       <created>1417811983548</created>
       <updated>1417811983548</updated>
     </task>
+    <task id="LOCAL-00001" summary="Implemented clients details page, added link from clients overview page and reduced data to that page. fixed index page days error">
+      <created>1421935325610</created>
+      <updated>1421935325610</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="false" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32864866" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -519,6 +519,8 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
+    <MESSAGE value="Implemented clients details page, added link from clients overview page and reduced data to that page. fixed index page days error" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented clients details page, added link from clients overview page and reduced data to that page. fixed index page days error" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
