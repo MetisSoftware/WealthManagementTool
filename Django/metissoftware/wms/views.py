@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.views.generic.edit import FormView
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from wms.models import Client, ClientForm
 from wms import models as m
 from wms import scripts
@@ -9,6 +13,7 @@ import json
 # Create your views here.
 
 
+@login_required
 def index(request):
     get_params = request.GET
     print(get_params.get("symbol"))
@@ -27,7 +32,7 @@ def index(request):
         return render_to_response('wms/index.html', {'symbol':get_params.get("symbol"),'stock_json': stock_result['query']['results']['quote']})
 
     return render_to_response('wms/index.html',{})
-    
+
 def appointments(request):
     return render_to_response('wms/appointments.html')
 
@@ -69,3 +74,17 @@ def new_client(request):
     return render(request, 'wms/new_client.html', {
         'form': form,
         })
+
+
+class LoginView(FormView):
+    template_name = 'wms/login.html'
+    form_class = AuthenticationForm
+    success_url = 'wms/index.html'
+
+    def form_valid(self, form):
+        user = authenticate(username=self.request.POST['username'],
+                                      password=self.request.POST['password'])
+        if user is not None:
+            login(self.request, user)
+            return HttpResponseRedirect('wms/index.html')
+        return HttpResponseRedirect('wms/index.html')

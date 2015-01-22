@@ -48,6 +48,7 @@ class FAUserManager(BaseUserManager):
                                 ni_number, password, **extra_fields)
 
         user.is_superuser = True
+        user.is_active = True
         user.is_staff = True
         user.save(using=self._db)
         return user
@@ -71,6 +72,16 @@ class FA(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.email
+
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+
+    #@property
+    #def is_staff(self):
+        #return self.is_admin
 
     objects = FAUserManager()
 

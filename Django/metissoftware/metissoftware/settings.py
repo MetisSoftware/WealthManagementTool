@@ -83,3 +83,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'wms.FA'
+LOGIN_URL = '/wms/login'

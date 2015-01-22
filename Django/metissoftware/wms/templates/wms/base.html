@@ -27,6 +27,9 @@
                             <li><a href="/">Home</a></li>
                             <li><a href="/clients/">Clients</a></li>
                             <li><a href="/appointments/">My Appointments</a></li>			    
+                            {% if user.is_authenticated %}
+                            Welcome user, you are logged in..
+                            {% else %}
                             <li class="login" >
                                 <div id="loginContainer"><a href="#" id="loginButton"><span>Login</span></a>
                                     <div id="loginBox">                
@@ -45,6 +48,7 @@
                                     </div>
                                 </div>
                             </li>
+                            {% endif %}
                             <div class="clear"></div>
                         </ul>
                     </div>							
