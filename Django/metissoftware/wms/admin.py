@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-class UserCreationForm(forms.ModelForm):
+class FACreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
     password1 = forms.CharField(label='Password',
@@ -15,7 +15,8 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = FA
-        fields = ('email', 'dob')
+        fields = ('email', 'dob', 'first_name', 'surname',
+                  'ni_number')
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -27,13 +28,13 @@ class UserCreationForm(forms.ModelForm):
 
     def save(self, commit=True):
         # Save password in hashed format for security
-        user = super(UserCreation, self).save(commit=False)
+        user = super(FACreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
             return user
 
-class UserChangeForm(forms.ModelForm):
+class FAChangeForm(forms.ModelForm):
     """A form for updating users. Includes all the fields on
     the user, but replaces the password field with admin's
     password hash display field.
@@ -42,22 +43,25 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = FA
-        fields = ('email', 'password', 'dob', 'is_active', 'is_admin')
+        fields = ('email', 'password', 'dob', 'is_active', 'is_admin',
+                  'first_name', 'surname', 'ni_number')
 
         def clean_password(self):
             return self.initial["password"]
 
-class MyUserAdmin(UserAdmin):
+class FAAdmin(UserAdmin):
     # Add and change user instances
-    form = UserChangeForm
-    add_form = UserCreationForm
+    form = FAChangeForm
+    add_form = FACreationForm
 
     # Fields used displaying user model
     # override useradmin
     list_display = ('email', 'dob', 'is_admin')
     list_filter = ('is_admin',)
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'dob', 'password',
+                           'first_name', 'surname', 'ni_number'
+                           )}),
         ('Personal info', {'fields': ('dob',)}),
         ('Permissions', {'fields': ('is_admin',)}),
     )
@@ -66,7 +70,8 @@ class MyUserAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('email', 'dob', 'password1',
-                       'password2')}
+                       'password2', 'first_name', 'surname',
+                       'ni_number')}
         ),
     )
     search_fields = ('email',)
@@ -80,10 +85,9 @@ admin.site.unregister(Group)
 
 
 
-
 # Register your models here.
 admin.site.register(Client)
-admin.site.register(FA)
+admin.site.register(FA, FAAdmin)
 admin.site.register(Market)
 admin.site.register(Share)
 admin.site.register(Stock)
