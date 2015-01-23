@@ -8,6 +8,7 @@
 	{% csrf_token %}
 	<form action='new_client.html' method='post'>
     {{ form.non_field_errors }}
+    <div class="container">
     <div >
         {{ form.first_name.errors }}
         <label class="formLabel" for="id_first_name">First Name:</label>
@@ -61,6 +62,7 @@
         {{ form.cash }}
     </div>
 	<div><input class ="add_client" type="submit"  value="Submit" /></div>
+    </div>
 </form>
 
 {% endblock %}

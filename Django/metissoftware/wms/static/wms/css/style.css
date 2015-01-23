@@ -258,12 +258,38 @@ input:focus {
 	font-family: 'Roboto', sans-serif;
 }
 
+input {
+	font-family: 'Roboto', sans-serif;
+	display:block;
+	font-size:1.2em;
+	font-weight:500;
+	margin: 1em 3em;
+	width: 10em;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+select {
+	font-family: 'Roboto', sans-serif;
+	display:block;
+	font-size:1.2em;
+	font-weight:500;
+	margin: 1em 3em;
+	width: 10em;
+}
 .formLabel{
 width: 15em;
 float: left;
 text-align:right;
-margin-right: -5.5em;
+margin-right: 1em;
 display: block;
+}
+
+.container{
+	width:50%;
+	margin:0em auto;
 }
 
 table{
@@ -311,7 +337,7 @@ table{
 	padding-top:3px;
 }
 
-input {
+input.login {
 	font-family: 'Roboto', sans-serif;
 	display:block;
 	font-size:1.2em;
@@ -323,6 +349,7 @@ input {
 	-o-transition: all 0.5s ease;
 	transition: all 0.5s ease;
 }
+
 
 input.add_client {
 	font-family: 'Roboto', sans-serif;
