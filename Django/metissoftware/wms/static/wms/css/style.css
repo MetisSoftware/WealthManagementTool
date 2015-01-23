@@ -38,7 +38,6 @@ img{max-width:100%;}
  body{
 	  font-family: 'Roboto', sans-serif;
 	  background-image: url("http://frumph.net/images/bgs/background-grey-burst.jpg");
-	 
  }
  .wrap{
 	width:80%;
@@ -51,7 +50,7 @@ img{max-width:100%;}
  }
  .header_top{
 	padding:15px 0;
-	 border-bottom:2px solid #848484;
+	border-bottom:2px solid #848484;
 	position: fixed;
 	z-index: 1;
 	width: 100%;
@@ -250,6 +249,7 @@ input:focus {
 }
 .banner_desc{
 	width:100%;
+	min-height: 32.6em;
 	padding:10em 0 3em 0;
 	text-align:center;
 	color: #FFF;
@@ -482,6 +482,7 @@ input.add_client:hover{
 	padding:20px 0;
 	text-align:center;
 	background:#1C1C1C;
+	position:relative;
 }
   .copy_right p{
 	font-size:1em;
