@@ -70,10 +70,10 @@ class FA(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['first_name', 'surname', 'dob', 'ni_number']
 
     def get_full_name(self):
-        return self.email
+        return "%s" % self.email
 
     def get_short_name(self):
-        return self.email
+        return "%s" % self.email
 
     def has_perm(self, perm, obj=None):
         return True
