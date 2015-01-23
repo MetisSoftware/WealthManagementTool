@@ -7,7 +7,7 @@
 {% if stock_json %}
     <H1>{{ symbol }}</H1>
     <canvas id="stock_graph" width="600" height="400"></canvas>
-    <table  cellspacing="20">
+    <table>
 
     {% for key in stock_json.1 %}
         <th>{{ key }}</th>

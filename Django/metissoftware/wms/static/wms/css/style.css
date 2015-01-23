@@ -249,7 +249,6 @@ input:focus {
 	background-image: url("http://frumph.net/images/bgs/background-grey-burst.jpg");
 }
 .banner_desc{
-	float:left;
 	width:100%;
 	padding:10em 0 3em 0;
 	text-align:center;
@@ -268,14 +267,12 @@ display: block;
 }
 
 table{
-  display: block;
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   font-size: 1em;
   overflow: auto;
   width: auto;
-  margin-left:auto; 
-  margin-right:auto;
+  margin: 1em auto;
   }
   
   th {
@@ -316,10 +313,10 @@ table{
 
 input {
 	font-family: 'Roboto', sans-serif;
-	display:inline;
+	display:block;
 	font-size:1.2em;
 	font-weight:500;
-	margin:5px 15px;
+	margin: 0.3em auto;
 	width: 10em;
 	-webkit-transition: all 0.5s ease;
 	-moz-transition: all 0.5s ease;
@@ -329,7 +326,7 @@ input {
 
 input.add_client {
 	font-family: 'Roboto', sans-serif;
-	    -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #B2910E;
+	-webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #B2910E;
 	-moz-box-shadow:inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #B2910E;
 	 box-shadow:inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #B2910E;
     background: #dfb511;
@@ -343,7 +340,7 @@ input.add_client {
  	border: 1px solid #B2910E;
   	font-weight:normal;
   	width: auto;
-  	margin:15px 15px;
+  	margin: 1em auto;
   	padding:10px 30px;
   	color: #1C1C1C;
   	border-radius:1px;
