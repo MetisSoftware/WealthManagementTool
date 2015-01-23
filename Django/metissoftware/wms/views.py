@@ -37,6 +37,7 @@ def index(request):
     #return render_to_response('wms/index.html',{})
 
 
+@login_required
 def appointments(request):
     if request.session.test_cookie_worked():
         print ("TEST cookie worked!")
@@ -44,6 +45,7 @@ def appointments(request):
     return render_to_response('wms/appointments.html')
 
 
+@login_required
 def print_clients(request):
     get_params = request.GET
     if get_params.get("fa")!=None:
@@ -55,6 +57,7 @@ def print_clients(request):
     return render_to_response('wms/clients.html', {'client_list': client_list})
 
 
+@login_required
 def new_client(request):
     if request.method == 'GET':
         form = ClientForm()
@@ -82,6 +85,7 @@ def new_client(request):
         'form': form,
     })
 
+@login_required
 def client_details(request):
     get_params = request.GET
     if(get_params.get('client')==None):
