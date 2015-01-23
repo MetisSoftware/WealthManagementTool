@@ -111,6 +111,13 @@ img{max-width:100%;}
 		background: linear-gradient(to bottom,  #dfb511 0%,#dfb511 0%,#B2910E 100%,#B2910E 100%);
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfb511', endColorstr='#B2910E',GradientType=0 );
  }
+
+ .menu h1 {
+ 	color: #dfb511;
+ 	font-size:1em;
+	font-weight:500;
+	margin:5px 15px;
+ }
 }
 /********** Login *************/
 /*-------LOGIN STARTS HERE -------*/

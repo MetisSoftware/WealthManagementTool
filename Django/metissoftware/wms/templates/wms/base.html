@@ -30,7 +30,7 @@
                             <li><a href="/clients/">Clients</a></li>
                             <li><a href="/appointments/">My Appointments</a></li>			    
                             {% if user.is_authenticated %}
-                            Welcome {{ user.email }}, you are logged in <a href="/wms/logout">[logout]</a></p>
+                            <li><h1>Welcome {{ user.email }}, you are logged in</h1></li> <li><h1><a href="/wms/logout">[logout]</a> </h1> </li>
                             {% else %}
                             <li class="login" >
                                 <div id="loginContainer"><a href="#" id="loginButton"><span>Login</span></a>
