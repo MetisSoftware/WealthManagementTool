@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.views.generic.edit import FormView
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -57,6 +58,7 @@ def print_clients(request):
     return render_to_response('wms/clients.html', {'client_list': client_list})
 
 
+@csrf_exempt
 @login_required
 def new_client(request):
     if request.method == 'GET':
