@@ -44,14 +44,12 @@ def appointments(request):
 
 @login_required
 def print_clients(request):
-    get_params = request.GET
-    if get_params.get("fa")!=None:
-        client_list = Client.objects.filter(fa__ni_number=get_params.get("fa"))
-        print(client_list)
-        return render_to_response('wms/clients.html', {'client_list': client_list}, context_instance=RequestContext(request))
-
-    client_list = Client.objects.order_by()
+    current_user = request.user
+    #client_list = Client.objects.filter(fa__ni_number=get_params.get("fa"))
+    client_list = Client.objects.filter(fa__ni_number=current_user.ni_number)
+    print(client_list)
     return render_to_response('wms/clients.html', {'client_list': client_list}, context_instance=RequestContext(request))
+
 
 
 @login_required
