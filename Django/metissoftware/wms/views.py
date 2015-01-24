@@ -2,11 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.views.generic.edit import FormView
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.template import RequestContext
 from wms.models import Client, ClientForm, Share
 from wms import models as m
 from wms import scripts
@@ -16,7 +16,6 @@ import json
 
 
 def index(request):
-    request.session.set_test_cookie()
     get_params = request.GET
     symbol = get_params.get("symbol")
     if symbol ==None:
@@ -33,17 +32,14 @@ def index(request):
             yesterday.strftime("%Y-%m-%d")+"'"
     stock_result = scripts.query_api(query)
     print(stock_result['query']['results']['quote'])
-    return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']})
+    return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']}, context_instance=RequestContext(request))
 
     #return render_to_response('wms/index.html',{})
 
 
 @login_required
 def appointments(request):
-    if request.session.test_cookie_worked():
-        print ("TEST cookie worked!")
-        request.session.delete_test_cookie()
-    return render_to_response('wms/appointments.html')
+    return render_to_response('wms/appointments.html', context_instance=RequestContext(request))
 
 
 @login_required
@@ -52,13 +48,12 @@ def print_clients(request):
     if get_params.get("fa")!=None:
         client_list = Client.objects.filter(fa__ni_number=get_params.get("fa"))
         print(client_list)
-        return render_to_response('wms/clients.html', {'client_list': client_list})
+        return render_to_response('wms/clients.html', {'client_list': client_list}, context_instance=RequestContext(request))
 
     client_list = Client.objects.order_by()
-    return render_to_response('wms/clients.html', {'client_list': client_list})
+    return render_to_response('wms/clients.html', {'client_list': client_list}, context_instance=RequestContext(request))
 
 
-#@csrf_exempt
 @login_required
 def new_client(request):
     if request.method == 'GET':
@@ -102,9 +97,9 @@ def client_details(request):
             else:
                 twitter = True
             return render_to_response('wms/client_details.html',
-                                      {'client_details': client,'shares': shares,'twitter':twitter})
+                                      {'client_details': client,'shares': shares,'twitter':twitter}, context_instance=RequestContext(request))
         except ObjectDoesNotExist:
-            return render_to_response('wms/client_details.html',{})
+            return render_to_response('wms/client_details.html',{}, context_instance=RequestContext)
 
 
 class LoginView(FormView):
