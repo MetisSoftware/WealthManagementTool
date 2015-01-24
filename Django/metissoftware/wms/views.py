@@ -58,7 +58,7 @@ def print_clients(request):
     return render_to_response('wms/clients.html', {'client_list': client_list})
 
 
-@csrf_exempt
+#@csrf_exempt
 @login_required
 def new_client(request):
     if request.method == 'GET':
