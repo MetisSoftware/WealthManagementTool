@@ -37,7 +37,7 @@ class FAUserManager(BaseUserManager):
                           surname=surname, dob=dob, ni_number=ni_number)
 
         user.set_password(password)
-        user.is_staff = True
+        user.is_staff = False
         user.is_active = True
         user.save(using=self._db)
         return user
