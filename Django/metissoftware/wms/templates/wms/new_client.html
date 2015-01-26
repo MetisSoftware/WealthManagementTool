@@ -4,65 +4,63 @@
 {% block title %}Add Client{% endblock %}
 
 {% block content %}
-
-<form action='new_client.html' method='post'>
-    {% csrf_token %}
+ 
+	{% csrf_token %}
+	<form action='new_client.html' method='post'>
     {{ form.non_field_errors }}
-    <div class="container">
-        <div >
-            {{ form.first_name.errors }}
-            <label class="formLabel" for="id_first_name">First Name:</label>
-
-            {{ form.first_name }}
-        </div>
-        <div>
-            {{ form.middle_name.errors }}
-            <label class="formLabel" for="id_middle_name">Middle Name:</label>
-            {{ form.middle_name }}
-        </div>
-        <div>
-            {{ form.surname.errors }}
-            <label class="formLabel" for="id_surname">Surname:</label>
-            {{ form.surname }}
-        </div>
-        <div >
-            {{ form.email.errors }}
-            <label class="formLabel" for="id_email">Email:</label>
-            {{ form.email }}
-        </div>
-        <div>
-            {{ form.mob_phone.errors }}
-            <label class="formLabel" for="id_mob_phone">Mobile Phone Number:</label>
-            {{ form.mob_phone }}
-        </div>
-        <div>
-            {{ form.home_phone.errors }}
-            <label class="formLabel" for="id_home_phone">Home Phone Number:</label>
-            {{ form.home_phone }}
-        </div>
-        <div >
-            {{ form.dob.errors }}
-            <label class="formLabel" for="id_dob">Date Of Birth:</label>
-            {{ form.dob }}
-        </div>
-        <div >
-            {{ form.ni_number.errors }}
-            <label class="formLabel" for="ni_number">National Insurance Number:</label>
-
-            {{ form.ni_number }}
-        </div>
-        <div>
-            {{ form.fa.errors }}
-            <label class="formLabel" for="id_fa">Financial Advisor:</label>
-            {{ form.fa }}
-        </div>
-        <div>
-            {{ form.cash.errors }}
-            <label class="formLabel" for="id_cash">Cash:</label>
-            {{ form.cash }}
-        </div>
-        <div><input class ="add_client" type="submit"  value="Submit" /></div>
+    <div >
+        {{ form.first_name.errors }}
+        <label class="formLabel" for="id_first_name">First Name:</label>
+	
+        {{ form.first_name }}
     </div>
+    <div>
+        {{ form.middle_name.errors }}
+        <label class="formLabel" for="id_middle_name">Middle Name:</label>
+        {{ form.middle_name }}
+    </div>
+    <div>
+        {{ form.surname.errors }}
+        <label class="formLabel" for="id_surname">Surname:</label>
+        {{ form.surname }}
+    </div>
+    <div >
+        {{ form.email.errors }}
+        <label class="formLabel" for="id_email">Email:</label>
+        {{ form.email }}
+    </div>
+    <div>
+        {{ form.mob_phone.errors }}
+        <label class="formLabel" for="id_mob_phone">Mobile Phone Number:</label>
+        {{ form.mob_phone }}
+    </div>
+    <div>
+        {{ form.home_phone.errors }}
+        <label class="formLabel" for="id_home_phone">Home Phone Number:</label>
+        {{ form.home_phone }}
+    </div>
+    <div >
+        {{ form.dob.errors }}
+        <label class="formLabel" for="id_dob">Date Of Birth:</label>
+        {{ form.dob }}
+    </div>
+    <div >
+        {{ form.ni_number.errors }}
+        <label class="formLabel" for="ni_number">National Insurance Number:</label>
+	
+        {{ form.ni_number }}
+    </div>
+    <div>
+        {{ form.fa.errors }}
+        <label class="formLabel" for="id_fa">Financial Advisor:</label>
+        {{ form.fa }}
+    </div>
+    <div>
+        {{ form.cash.errors }}
+        <label class="formLabel" for="id_cash">Cash:</label>
+        {{ form.cash }}
+    </div>
+	<div><input class ="add_client" type="submit"  value="Submit" /></div>
 </form>
 
 {% endblock %}
