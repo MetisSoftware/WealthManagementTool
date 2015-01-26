@@ -146,7 +146,8 @@ class ClientForm(ModelForm):
     class Meta:
         model = Client
         fields = ['first_name', 'middle_name', 'surname', 'email',
-                  'mob_phone', 'home_phone', 'dob', 'ni_number', 'fa', 'cash']
+                  'mob_phone', 'home_phone', 'dob', 'ni_number', 'fa', 'cash',
+                  'twitter_username', 'twitter_widget_id']
         widgets = {
             'cash': TextInput(
                 attrs={'placeholder': '0.00', 'cols': '1', 'rows': '1'}
