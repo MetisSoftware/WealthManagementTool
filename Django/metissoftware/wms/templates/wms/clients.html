@@ -1,29 +1,29 @@
 {% extends "wms/base.html" %}
 {% block content %}
-<div class = greenbutton align= "left"><a href="/new_client.html">Add Client</a></div>
+<div class = greenbutton align= "center"><a href="/new_client.html">Add Client</a></div>
 {% if client_list %}
 <table>
-<tbody>
-	<tr>
-		<th>First Name</th>
-		<th>Surname</th>
-		<th>Email</th>
-        <th>FA(TO BE REMOVED)</th>
-	</tr>
-	{% for client in client_list %}
-            <tr>
-                <td>
-                    <a href="/client_details/?client={{client.ni_number}}">
-                        {{ client.first_name}}
-                    </a>
-                </td>
-                <td>{{ client.surname}}</td>
-                <td>{{ client.email}}</td>
-                <td>{{ client.fa}}</td>
-            </tr>
+    <tbody>
+        <tr>
+            <th>First Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th>FA(TO BE REMOVED)</th>
+        </tr>
+        {% for client in client_list %}
+        <tr>
+            <td>
+                <a href="/client_details/?client={{client.ni_number}}">
+                    {{ client.first_name}}
+                </a>
+            </td>
+            <td>{{ client.surname}}</td>
+            <td>{{ client.email}}</td>
+            <td>{{ client.fa}}</td>
+        </tr>
 
-	{% endfor %}
-</tbody>
+        {% endfor %}
+    </tbody>
 </table>
 {% else %}
 <p>No client data</p>

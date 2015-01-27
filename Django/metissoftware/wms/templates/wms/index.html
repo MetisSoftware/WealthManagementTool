@@ -5,67 +5,24 @@
 {% block content %}
 
 {% if stock_json %}
-    <div>
-        <form action="" method="get">
-            <input id="symbol_input" type="text" name="symbol"/><br>
-            <input type="submit" value="Submit"/>
-        </form>
-    </div>
+    <H1>{{ symbol }}</H1>
+    <canvas id="stock_graph" width="600" height="400"></canvas>
+    <table>
 
-    <div id="graph_div">
-        <div >
-            <p class="stockTitle"  >Buy at: {{ stock_json.0.Close }}</p>
-            <p class="stockTitle stockSymbol" style="font-size: 200%">
-                <script>document.write("{{ symbol }}".toUpperCase());</script>
-            </p>
-            <p id="stockGrowth" class="stockTitle">
-                <img id="stockGrowthImage" src="" width="15px" height="15px"/>
-                <script>
-
-                    var growth = (({{ stock_json.0.Close }} - {{  stock_json.1.Close}}) / {{ stock_json.1.Close}}).toFixed(2);
-
-                    if (growth > 0){
-                        document.getElementById("stockGrowthImage").src="{% static "wms/images/up-arrow.png" %}";
-                        document.getElementById("stockGrowth").style.color = "green";
-
-                    }else if(growth < 0){
-                       document.getElementById("stockGrowthImage").src="{% static "wms/images/down-arrow.png" %}";
-                       document.getElementById("stockGrowth").style.color = "red";
-                    }else{
-                       document.getElementById("stockGrowthImage").src="{% static "wms/images/middle-arrow.png" %}";
-                       document.getElementById("stockGrowth").style.color = "white";
-                    }
-                    document.write(growth+"%");
-
-                </script>
-            </p>
-        </div>
-        <div>
-            <canvas id="stock_graph" width="900" height="400"></canvas>
-            <div id="lineLegend"></div>
-        </div>
-
-    <br><br/>
-    <table class = "display_table" style="border:1px solid black;" cellspacing="20">
-
-
-    {% for key in stock_json.0 %}
+    {% for key in stock_json.1 %}
         <th>{{ key }}</th>
     {% endfor %}
 
     {% for result in stock_json %}
 	    <tr>
             {% for key,data in result.items %}
-                <td width="30%">{{ data }}</td>
+                <td>{{ data }}</td>
             {% endfor %}
 	    </tr>
     {% endfor %}
 
 
 </table>
-    </div>
-
-
 
 
     <script>
@@ -75,15 +32,13 @@
     var open = [];
     var close = [];
 
-    {% for result in stock_json reversed %}
+    {% for result in stock_json %}
+        dates[dates.length] = {{result.Date}};
         open[open.length] = {{ result.Open }};
         close[close.length] = {{ result.Close }};
-        dates[dates.length] = "{{ result.Date }}";
     {% endfor %}
 
-
-
-
+document.write(dates);
 
 
     var stock_graph = document.getElementById('stock_graph').getContext('2d');
@@ -96,7 +51,8 @@
 			strokeColor : "#2ecc71",
 			pointColor : "#2ecc71",
 			pointStrokeColor : "#34495e",
-			data : open
+			data : open,
+            showTooltips: true
 		},
          {
             label : "Close",
@@ -106,19 +62,16 @@
 			pointStrokeColor : "#34495e",
 			data : close
 		}
+
 	]
 }
-    var opts = {scaleFontColor: "#ffffff",
-        scaleLineColor: "#ffffff",
-        scaleGridLineColor: "#ffffff",
-        scaleShowLabels: true
-    }
 
-    new Chart(stock_graph).Line(stockData, opts);
-    legend(document.getElementById("lineLegend"), stockData);
-
+    new Chart(stock_graph).Line(stockData);
 </script>
 
 
 {% endif %}
+
+    <div class = greenbutton><a href="/clients/">View Clients</a></div>
+<div class = greenbutton><a href="/new_client.html">Add Client</a></div>
 {%  endblock %}
