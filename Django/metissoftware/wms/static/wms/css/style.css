@@ -35,6 +35,49 @@ img{max-width:100%;}
 #4DB870: light green
 #006B24: dark green
 */
+
+.stockTitle{
+    display: inline;
+}
+.stockSymbol{
+    font-size: 200%;
+    left: 25%;
+}
+.legend {
+    width: 10em;
+    border: 1px solid white;
+}
+
+.legend .title {
+    display: block;
+    margin-bottom: 0.5em;
+    line-height: 1.2em;
+    padding: 0 0.3em;
+}
+
+.legend .color-sample {
+    display: block;
+    float: left;
+    width: 1em;
+    height: 1em;
+    border: 2px solid; /* Comment out if you don't want to show the fillColor */
+    border-radius: 0.5em; /* Comment out if you prefer squarish samples */
+    margin-right: 0.5em;
+}
+
+#graph_div{
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+.display_table table{
+    width:100%;
+    border-collapse:collapse;
+}
+.display_table td{
+    width: 100%;
+}
  body{
 	  font-family: 'Roboto', sans-serif;
 	  background-image: url("http://frumph.net/images/bgs/background-grey-burst.jpg");

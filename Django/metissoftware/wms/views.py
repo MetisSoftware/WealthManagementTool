@@ -18,7 +18,7 @@ import json
 def index(request):
     get_params = request.GET
     symbol = get_params.get("symbol")
-    if symbol ==None:
+    if symbol ==None or symbol=="":
         symbol = "GOOG"
     print(get_params.get("symbol"))
     if get_params.get("days")!=None:
@@ -31,7 +31,6 @@ def index(request):
             "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
             yesterday.strftime("%Y-%m-%d")+"'"
     stock_result = scripts.query_api(query)
-    print(stock_result['query']['results']['quote'])
     return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']}, context_instance=RequestContext(request))
 
     #return render_to_response('wms/index.html',{})
@@ -70,10 +69,14 @@ def new_client(request):
             ni_number = form.cleaned_data['ni_number']
             fa = form.cleaned_data['fa']
             cash = form.cleaned_data['cash']
+            twitter_username = form.cleaned_data['twitter_username']
+            twitter_widget_id = form.cleaned_data['twitter_widget_id']
+
             post = m.Client.objects.create(
                 first_name = first_name, surname = surname, email = email, \
                 mob_phone = mob_phone, home_phone = home_phone, dob = dob, \
-                ni_number = ni_number, fa = fa, cash = cash)
+                ni_number = ni_number, fa = fa, cash = cash,\
+                twitter_username = twitter_username, twitter_widget_id = twitter_widget_id)
             return HttpResponseRedirect('/clients/')
 
     return render(request, 'wms/new_client.html', {

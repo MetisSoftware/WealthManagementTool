@@ -61,6 +61,18 @@
             <label class="formLabel" for="id_cash">Cash:</label>
             {{ form.cash }}
         </div>
+
+        <div>
+            {{ form.twitter_username.errors }}
+            <label class="formLabel" for="id_twitter_username">Twitter Username:</label>
+            {{ form.twitter_username }}
+        </div>
+
+        <div>
+            {{ form.twitter_widget_id.errors }}
+            <label class="formLabel" for="id_twitter_widget_id">Twitter Widget Id:</label>
+            {{ form.twitter_widget_id }}
+        </div>
         <div><input class ="add_client" type="submit"  value="Submit" /></div>
     </div>
 </form>
