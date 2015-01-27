@@ -72,13 +72,10 @@ def new_client(request):
             ni_number = form.cleaned_data['ni_number']
             fa = form.cleaned_data['fa']
             cash = form.cleaned_data['cash']
-            twitter_username = form.cleaned_data['twitter_username']
-            twitter_widget_id = form.cleaned_data['twitter_widget_id']
             post = m.Client.objects.create(
                 first_name = first_name, surname = surname, email = email, \
                 mob_phone = mob_phone, home_phone = home_phone, dob = dob, \
-                ni_number = ni_number, fa = fa, cash = cash, \
-                twitter_username = twitter_username, twitter_widget_id = twitter_widget_id)
+                ni_number = ni_number, fa = fa, cash = cash)
             return HttpResponseRedirect('/clients/')
 
     return render(request, 'wms/new_client.html', {
