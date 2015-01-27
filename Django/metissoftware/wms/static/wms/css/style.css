@@ -127,8 +127,8 @@ img{max-width:100%;}
  .menu li.login a{
  	    -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #B2910E;
 		-moz-box-shadow:inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #B2910E;
-		 box-shadow:inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #B2910E;
-	    background: #dfb511;
+		box-shadow:inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 1px #B2910E;
+	    	background: #dfb511;
 		background: -moz-linear-gradient(top,  #E9CB58 0%,#E9CB58 0%, #dfb511 100%, #dfb511 100%);
 		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E9CB58), color-stop(0%,#E9CB58), color-stop(100%,#dfb511), color-stop(100%,#dfb511));
 		background: -webkit-linear-gradient(top,  #E9CB58 0%,#E9CB58 0%,#dfb511 100%, #dfb511 100%);
@@ -299,7 +299,7 @@ input:focus {
 }
 .banner_desc{
 	width:100%;
-	min-height: 32.6em;
+	min-height: 41.9em;
 	padding:10em 0 3em 0;
 	text-align:center;
 	color: #FFF;
@@ -356,7 +356,7 @@ table{
     background-color: #dfb511;
     color: white;
     font-weight: normal;
-    padding: 1em 1.5em;
+    padding: 1em 1em;
     text-align: center;
   }
   td {
@@ -561,6 +561,7 @@ input.add_client:hover{
 	text-align:center;
 	background:#1C1C1C;
 	position:relative;
+	width: 100%;
 }
   .copy_right p{
 	font-size:1em;
@@ -592,7 +593,7 @@ input.add_client:hover{
  		width:90%;
  	}
  	.banner_desc{
-       width:60%; 	
+       	width:60%; 	
  	}
  	.banner_desc h1{
  	   font-size:3em;
