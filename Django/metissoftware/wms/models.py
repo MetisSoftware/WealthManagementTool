@@ -7,17 +7,6 @@ from django.contrib.auth.models import (
 
 # Create your models here.
 
-class User(models.Model):
-    first_name = models.CharField(max_length=64, default="**DEFAULT**")
-    surname = models.CharField(max_length=64, default="**DEFAULT**")
-    dob = models.DateField(default="1990-01-01")
-    ni_regex = RegexValidator(regex=r'^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\s*\d\s*){6}([A-D]|\s)$', message="Must be in the format: 'AA999999A', restrictions to characters apply'")
-    ni_number = models.CharField(max_length=9, validators=[ni_regex], primary_key=True)
-    email = models.EmailField(max_length=64, default="**DEFAULT**")
-
-    class Meta:
-        abstract = True
-
 
 class FAUserManager(BaseUserManager):
     def create_user(self, email, first_name, surname,
@@ -88,7 +77,13 @@ class FA(AbstractBaseUser, PermissionsMixin):
     objects = FAUserManager()
 
 
-class Client(User):
+class Client(models.Model):
+    first_name = models.CharField(max_length=64)
+    surname = models.CharField(max_length=64)
+    dob = models.DateField(default="1990-01-01")
+    ni_regex = RegexValidator(regex=r'^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\s*\d\s*){6}([A-D]|\s)$', message="Must be in the format: 'AA999999A', restrictions to characters apply'")
+    ni_number = models.CharField(max_length=9, validators=[ni_regex], primary_key=True)
+    email = models.EmailField(max_length=64)
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',
         message="Not a valid phone number. Up to 9 digits allowed.")

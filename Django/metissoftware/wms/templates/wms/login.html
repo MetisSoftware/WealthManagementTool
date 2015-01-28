@@ -1,7 +1,7 @@
 {% extends "wms/base.html" %}
 {% block content %}
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+<p>Your username or password didn't match. Please try again.</p>
 {% endif %}
 
 <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
@@ -10,6 +10,6 @@
     {{ form }}
   </table>
   <input class="add_client" type="submit" value="login" />
-  <input type="hidden" name="next" value="/" />
+  <input type="hidden" name="next" value="{{ next }}" />
 </form>
 {% endblock %}
