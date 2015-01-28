@@ -7,8 +7,10 @@
 {% if stock_json %}
     <div style="align-content: center">
         <form action="" method="get">
-            <input id="symbol_input" type="text" name="symbol"/><br>
-            <input type="submit" value="Submit"/>
+            <div class="container"><label class="formLabel">Stock Symbol:</label>
+		<input id="symbol_input" type="text" name="symbol"/>
+	    </div><br>
+            <input class="add_client" type="submit" value="Submit"/>
         </form>
     </div>
 
