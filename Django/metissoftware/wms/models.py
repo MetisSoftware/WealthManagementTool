@@ -28,6 +28,7 @@ class FAUserManager(BaseUserManager):
         user.set_password(password)
         user.is_staff = False
         user.is_active = True
+        user.is_superuser = False
         user.save(using=self._db)
         return user
 
@@ -69,10 +70,6 @@ class FA(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return True
-
-    #@property
-    #def is_staff(self):
-        #return self.is_admin
 
     objects = FAUserManager()
 

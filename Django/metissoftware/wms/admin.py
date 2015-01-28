@@ -45,10 +45,11 @@ class FAAdmin(UserAdmin):
     add_form = FACreationForm
     form = FAChangeForm
 
-    list_display = ('email', 'dob', 'is_superuser')
+    list_display = ('email', 'dob', 'is_superuser', 'is_staff', 'is_active')
     fieldsets = (
-        (None, {'fields': ('first_name', 'surname', 'ni_number',
-                           'is_staff', 'is_admin', 'is_active', 'password')}),
+        (None, {'fields': ('first_name', 'surname', 'ni_number', 'email',
+                           'is_superuser', 'is_staff', 'is_admin',
+                           'is_active', 'password')}),
     )
 
     add_fieldsets = (
