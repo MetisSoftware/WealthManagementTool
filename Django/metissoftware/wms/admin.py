@@ -11,7 +11,8 @@ class FACreationForm(forms.ModelForm):
     class Meta:
         model = FA
         fields = ('first_name', 'surname', 'email', 'dob',
-                  'ni_number', 'is_staff', 'is_admin', 'is_active'
+                  'ni_number', 'is_superuser', 'is_staff',
+                  'is_admin', 'is_active'
                   )
 
     def clean_password(self):
@@ -20,37 +21,48 @@ class FACreationForm(forms.ModelForm):
             raise forms.ValidationError("Empty password")
         return password
 
-
     def save(self, commit=True):
         user = super(FACreationForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
         return user
 
 
+class FAChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = FA
+        fields = ('first_name', 'surname', 'email', 'dob',
+                  'ni_number', 'is_superuser', 'is_staff',
+                  'is_admin', 'is_active')
+
+    def clean_password(self):
+        return self.initial["password"]
+
+
 class FAAdmin(UserAdmin):
     add_form = FACreationForm
+    form = FAChangeForm
 
-    list_display = ('email', 'dob', 'is_admin')
+    list_display = ('email', 'dob', 'is_superuser')
     fieldsets = (
         (None, {'fields': ('first_name', 'surname', 'ni_number',
-                           'is_staff','is_admin', 'is_active')
-        }),
+                           'is_staff', 'is_admin', 'is_active', 'password')}),
     )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
             'fields': ('first_name', 'surname', 'ni_number',
-                       'email', 'dob', 'is_staff', 'is_admin', 'password')
+                       'email', 'dob', 'is_staff',
+                       'is_superuser', 'is_admin', 'password')
         }),
     )
 
     search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ()
-
-
 
 
 # Register your models here.
