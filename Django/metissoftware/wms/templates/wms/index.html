@@ -126,7 +126,9 @@
     var opts = {scaleFontColor: "#ffffff",
         scaleLineColor: "#ffffff",
         scaleGridLineColor: "#ffffff",
-        scaleShowLabels: true
+        scaleShowLabels: true,
+        bezierCurve: false,
+        scaleShowVerticalLines: false
     }
 
     new Chart(stock_graph).Line(stockData, opts);
