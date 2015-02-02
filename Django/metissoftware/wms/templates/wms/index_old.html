@@ -1,0 +1,141 @@
+{% extends "wms/base.html" %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+{% if stock_json %}
+    <div style="align-content: center">
+        <form action="" method="get">
+            <div class="container"><label class="formLabel">Stock Symbol:</label>
+		<input id="symbol_input" type="text" name="symbol"/>
+	    </div><br>
+            <input class="add_client" type="submit" value="Submit"/>
+        </form>
+    </div>
+
+    <div id="graph_div">
+        <div >
+            <p class="stockTitle"  >Buy at: {{ stock_json.0.Close }}</p>
+            <p class="stockTitle stockSymbol" style="font-size: 200%">
+                <script>document.write("{{ symbol }}".toUpperCase());</script>
+            </p>
+            <p id="stockGrowth" class="stockTitle">
+               <script>
+
+                    var growth = (({{ stock_json.0.Close }} - {{  stock_json.1.Close}}) / {{ stock_json.1.Close}}).toFixed(2);
+
+                    if (growth > 0){
+                        document.getElementById("stockGrowth").style.color = "green";
+                        document.write('&#x25B2;');
+
+                    }else if(growth < 0){
+                        document.getElementById("stockGrowth").style.color = "red";
+                        document.write('&#x25BC;');
+                    }else{
+                        document.getElementById("stockGrowth").style.color = "white";
+                        document.write('&#9654;');
+                    }
+                    document.write(growth+"%");
+
+                </script>
+            </p>
+        </div>
+        <div>
+            <canvas id="stock_graph" width="900" height="400"></canvas>
+            <div id="lineLegend"></div>
+        </div>
+
+    <br><br/>
+    <table class = "display_table" style="border:1px solid black;" cellspacing="20">
+
+
+    {% for key in stock_json.0 %}
+        <th>{{ key }}</th>
+    {% endfor %}
+
+    {% for result in stock_json %}
+	    <tr>
+            {% for key,data in result.items %}
+                <td>{{ data }}</td>
+            {% endfor %}
+	    </tr>
+    {% endfor %}
+
+
+</table>
+    </div>
+
+
+    <script>
+
+
+    var dates = [];
+    var open = [];
+    var close = [];
+	var high = [];
+	var low = [];
+
+    {% for result in stock_json reversed%}
+        dates[dates.length] = "{{result.Date}}";
+        open[open.length] = {{ result.Open }};
+        close[close.length] = {{ result.Close }};
+		high[high.length] = {{ result.High }};
+		low[low.length] = {{ result.Low }};
+    {% endfor %}
+
+    var stock_graph = document.getElementById('stock_graph').getContext('2d');
+    var stockData = {
+	labels : dates,
+	datasets : [
+		{
+            label : "Open",
+			fillColor : "rgba(223,181,17,0)",
+			strokeColor : "#DFB511",
+			pointColor : "#DFB511",
+			pointStrokeColor : "#34495e",
+			data : open
+		},
+         {
+            label : "Close",
+			fillColor : "rgba(0,107,195,0)",
+			strokeColor : "#006BC3",
+			pointColor : "#006BC3",
+			pointStrokeColor : "#34495e",
+			data : close
+		},
+		{
+            label : "High",
+			fillColor : "rgba(9,192,9,0)",
+			strokeColor : "#09C009",
+			pointColor : "#09C009",
+			pointStrokeColor : "#34495e",
+			data : high
+		},
+		{
+            label : "Low",
+			fillColor : "rgba(218,7,7,0)",
+			strokeColor : "#DA0707",
+			pointColor : "#DA0707",
+			pointStrokeColor : "#34495e",
+			data : low
+		}
+
+	]
+    }
+    var opts = {scaleFontColor: "#ffffff",
+        scaleLineColor: "#ffffff",
+        scaleGridLineColor: "#ffffff",
+        scaleShowLabels: true,
+        bezierCurve: false,
+        scaleShowVerticalLines: false,
+        responsive: true
+    }
+
+    new Chart(stock_graph).Line(stockData, opts);
+    legend(document.getElementById("lineLegend"),stockData);
+</script>
+
+
+{% endif %}
+{%  endblock %}

@@ -1,0 +1,163 @@
+
+ body{
+	  font-family: 'Roboto', sans-serif;
+	  background-image: url("http://frumph.net/images/bgs/background-grey-burst.jpg");
+ }
+
+
+ /****LEGEND****/
+ .legend {
+    width: 5em;
+    border: 1px solid white;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+
+.legend .title {
+    display: block;
+    margin-bottom: 0.5em;
+    line-height: 1.2em;
+    padding: 0 0.3em;
+}
+
+.legend .color-sample {
+    display: block;
+    float: left;
+    width: 1em;
+    height: 1em;
+    border: 2px solid; /* Comment out if you don't want to show the fillColor */
+    border-radius: 0.5em; /* Comment out if you prefer squarish samples */
+    margin-right: 0.5em;
+}
+/***LEGEND ENDS****/
+
+/********** Login *************/
+/*-------LOGIN STARTS HERE -------*/
+#loginContainer {
+    position:relative;
+}
+#loginContainer a span{
+  display:block;
+  padding:4px 25px;
+}
+/* Login Button */
+#loginButton {
+    display:inline-block;
+    position:relative;
+    z-index:30;
+    cursor:pointer;
+}
+/* Login Box */
+#loginBox {
+    position:absolute;
+    top:10px;
+    right:0px;
+    display:none;
+    z-index:29;
+}
+#loginForm:after {
+	content: '';
+	position: absolute;
+	right: 40px;
+	top: -10px;
+	border-left:10px solid rgba(0, 0, 0, 0);
+	border-right:10px solid rgba(0, 0, 0, 0);
+	border-bottom:10px solid #dfb511;
+}
+/* Login Form */
+#loginForm {
+    width:248px;
+    border-radius:3px 0 3px 3px;
+    -moz-border-radius:3px 0 3px 3px;
+    margin-top: 0px;
+	background: #dfb511;
+	border: 1px solid #1C1C1C;
+}
+#loginForm fieldset {
+    margin:0 0 10px 0;
+    display:block;
+    border:0;
+    padding:0;
+}
+fieldset#body {
+    border-radius:3px;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    -o-border-radius:3px;
+    padding:15px 15px;
+    margin:0;
+}
+#body label {
+    color:#1C1C1C;
+    margin:10px 0 0 0;
+    display:block;
+    float:left;
+    font-size:0.8em;
+}
+#loginForm #body fieldset label{
+    display:block;
+    float:none;
+    margin:0 0 6px 0;
+}
+#body label i{
+	color: #848484;
+	text-shadow: 1px 1px #848484;
+    font-weight:500;
+}
+/* Default Input */
+#loginForm input {
+    width:92%;
+    border:1px solid #F4FA58;
+	color: #1C1C1C;
+	background:#FFF;
+    padding:8px 8px;
+    font-size:0.85em;
+    font-family: 'Roboto', sans-serif;
+    -webkit-apperance:none;
+}
+/* Sign In Button */
+#loginForm #login {
+    width:auto;
+    float:left;
+    font-family: 'Roboto', sans-serif;
+    background:#E9CB58;
+    color:#1C1C1C;
+    font-size:0.8em;
+    padding:8px 15px;
+    border:none;
+    box-shadow:none;
+    -moz-box-shadow:none;
+    -webkit-box-shadow:none;
+    -webkit-apperance:none;
+    margin:0 12px 0 0;
+    cursor:pointer;
+    *padding:7px 2px 8px 2px; /* IE7 Fix */
+    transition: all .5s;
+	-webkit-transition: all .5s;
+	-moz-transition: all .5s;
+	-o-transition: all .5s;
+	-moz-border-radius:2px; -webkit-border-radius:2px; -o-border-radius:2px;
+}
+#loginForm #login:hover {
+	background:#B2910E;
+}
+/* Forgot your password */
+#loginForm span{
+    display:block;
+    padding:0px 0px 15px 0px;
+}
+#loginForm span a{
+    color:#1C1C1C;
+    text-shadow:1px 1px #929292;
+    font-size:0.8em;
+    font-weight:500;
+    background: none;
+	border: none;
+	box-shadow: none;
+}
+#loginForm span a:hover{
+	text-decoration:underline;
+}
+input:focus {
+    outline:none;
+}
