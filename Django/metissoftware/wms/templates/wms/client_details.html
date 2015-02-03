@@ -74,7 +74,7 @@
             <tbody>
                 {% for share in shares %}
                 <tr>
-                    <td>{{ share.stock}}</td>
+                    <td><a href="/?symbol={{share.stock}}">{{ share.stock}}</a></td>
                     <td>{{ share.buy_date}}</td>
                     <td>{{ share.amount}}</td>
                     <td>{{ share.price}}</td>
