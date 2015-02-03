@@ -1,9 +1,6 @@
 {% extends "wms/base_boot.html" %}
 {% load staticfiles %}
 
-
-
-
 {% block content %}
 
 {% if stock_json %}
@@ -23,7 +20,7 @@
                 <p id="stockGrowth" class="stockTitle bottom-align-text">
                    <script>
 
-                        var growth = (({{ stock_json.0.Close }} - {{  stock_json.1.Close}}) / {{ stock_json.1.Close}}).toFixed(2);
+                        var growth = ((({{ stock_json.0.Close }} - {{  stock_json.1.Close}}) / {{ stock_json.1.Close}})*100).toFixed(2);
 
                         if (growth > 0){
                             document.getElementById("stockGrowth").style.color = "green";
@@ -36,25 +33,26 @@
                             document.getElementById("stockGrowth").style.color = "white";
                             document.write('&#9654;');
                         }
-                        document.write(growth+"%");
+                        document.write(({{ stock_json.0.Close }} - {{  stock_json.1.Close}}).toFixed(2) +" ("+growth+"%)");
 
                     </script>
                 </p>
             </div>
 
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" style="padding-top: 5">
                 <form class="form-inline "action="" method="get">
-                    <div class="container ">
+                    <div class="col-md-10">
                         <label class="sr-only">Stock Symbol</label>
-                        <input id="symbol_input" class="form-control input-sm" type="text" name="symbol" placeholder="Stock Symbol"/>
-                        <input class="btn btn-default btn-xs" type="submit" value="Submit"/>
+                        <input id="symbol_input" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
                     </div>
-                </form>
-    </div>
-    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-default " type="submit" value="Submit" >Go</button>
+                    </div>
 
-    <div id="graph_div" class="col-md-12 ">
+
+                </form>
+        </div>
         <div class="col-md-11">
             <canvas id="stock_graph" ></canvas>
         </div>
@@ -62,11 +60,11 @@
             <div id="lineLegend" ></div>
         </div>
 
-    <br><br/>
     </div>
-    <h2 class="text-center" style="color: #ffffff">Results</h2>
-    <div class="table-responsive col-md-12">
-        <table class = "table table-hover table-condensed" style="background-color: #ffffff">
+
+    <div class="table-responsive col-md-12 well">
+        <h1 class="text-center" style="color: #000000">Results</h1>
+        <table class = "table table-hover table-condensed table-bordered" style="background-color: #ffffff">
 
         {% for key in stock_json.0 %}
             <th>{{ key }}</th>
@@ -142,9 +140,9 @@
 
 	]
     }
-    var opts = {scaleFontColor: "#ffffff",
-        scaleLineColor: "#ffffff",
-        scaleGridLineColor: "#ffffff",
+    var opts = {scaleFontColor: "#000000",
+        scaleLineColor: "#000000",
+        scaleGridLineColor: "#000000",
         scaleShowLabels: true,
         bezierCurve: false,
         scaleShowVerticalLines: false,

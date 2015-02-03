@@ -1,31 +1,38 @@
-{% extends "wms/base.html" %}
+{% extends "wms/base_boot.html" %}
 {% block content %}
-<div class = greenbutton align= "center"><a href="/new_client.html">Add Client</a></div>
-{% if client_list %}
-<table>
-    <tbody>
-        <tr>
-            <th>First Name</th>
-            <th>Surname</th>
-            <th>Email</th>
-            <th>FA(TO BE REMOVED)</th>
-        </tr>
-        {% for client in client_list %}
-        <tr>
-            <td>
-                <a href="/client_details/?client={{client.ni_number}}">
-                    {{ client.first_name}}
-                </a>
-            </td>
-            <td>{{ client.surname}}</td>
-            <td>{{ client.email}}</td>
-            <td>{{ client.fa}}</td>
-        </tr>
+<div class="col-md-12 well">
+    <div class="col-md-12">
+        <button class = "btn btn-default" align= "center"><a href="/new_client.html">Add Client</a></button>
+    </div>
+    {% if client_list %}
+    <div class="table-responsive col-md-12">
+        <table class="table table-hover table-bordered" style="background-color: #ffffff">
+            <thead>
+                <th>First Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>FA(TO BE REMOVED)</th>
 
-        {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>No client data</p>
-{% endif %}
-{%  endblock %}
+            </thead>
+            <tbody>
+                {% for client in client_list %}
+                <tr>
+                    <td>
+                        <a href="/client_details/?client={{client.ni_number}}">
+                            {{ client.first_name}}
+                        </a>
+                    </td>
+                    <td>{{ client.surname}}</td>
+                    <td>{{ client.email}}</td>
+                    <td>{{ client.fa}}</td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>No client data</p>
+    {% endif %}
+</div>
+    {%  endblock %}

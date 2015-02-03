@@ -1,51 +1,92 @@
-{% extends "wms/base.html" %}
+{% extends "wms/base_boot.html" %}
+{% load staticfiles %}
 {% block content %}
 {% if client_details %}
-<table>
-    <tr>
-        <th>First Name</th>
-		<th>Surname</th>
-		<th>Email</th>
-		<th>Mobile Number</th>
-		<th>Home Number</th>
-		<th>Date Of Birth</th>
-		<th>National Insurance Number</th>
-        <th>Cash</th>
-		<th>Financial Advisor</th>
-	</tr>
-    <tr>
-        <td>{{ client_details.first_name}}</td>
-        <td>{{ client_details.surname}}</td>
-        <td>{{ client_details.email}}</td>
-        <td>{{ client_details.mob_phone}}</td>
-        <td>{{ client_details.home_phone}}</td>
-        <td>{{ client_details.dob}}</td>
-        <td>{{ client_details.ni_number}}</td>
-        <td>{{ client_details.cash }}</td>
-        <td>{{ client_details.fa}}</td>
-    </tr>
-</table>
-    <table>
-    <tr>
-        <th>Stock</th>
-		<th>Date bought</th>
-		<th>Amount</th>
-		<th>Price($)</th>
-		<th>Total($)</th>
-	</tr>
-    {% for share in shares %}
-    <tr>
-        <td>{{ share.stock}}</td>
-        <td>{{ share.buy_date}}</td>
-        <td>{{ share.amount}}</td>
-        <td>{{ share.price}}</td>
+    <div class="table-responsive col-md-2 well">
+        <!--
+        <table class="table" style="background-color: #ffffff">
+            <tr>
+                <th>First Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Mobile Number</th>
+                <th>Home Number</th>
+                <th>Date Of Birth</th>
+                <th>National Insurance Number</th>
+                <th>Cash</th>
+                <th>Financial Advisor</th>
+            </tr>
+            <tr>
+                <td>{{ client_details.first_name}}</td>
+                <td>{{ client_details.surname}}</td>
+                <td>{{ client_details.email}}</td>
+                <td>{{ client_details.mob_phone}}</td>
+                <td>{{ client_details.home_phone}}</td>
+                <td>{{ client_details.dob}}</td>
+                <td>{{ client_details.ni_number}}</td>
+                <td>{{ client_details.cash }}</td>
+                <td>{{ client_details.fa}}</td>
+            </tr>
+        </table>
+        -->
+        <img class="img-responsive img-thumbnail" src="{% static "wms/images/person-placeholder.png"  %}" alt="Person Placeholder">
+        <p class="lead">{{client_details.first_name}} {{client_details.middle_name}} {{client_details.surname}}</p>
+        <ul class="list-unstyled">
+            <li>
+                <strong>Email:</strong> {{ client_details.email}}
+            </li>
+            <li>
+                <strong>Phone:</strong>
+                <ul class="">
+                    <li>
+                        <strong>Mobile:</strong> {{ client_details.mob_phone}}
+                    </li>
+                    <li>
+                        <strong>Home:</strong> {{ client_details.home_phone}}
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <strong>NI:</strong> {{ client_details.ni_number}}
+            </li>
+            <li>
+                <strong>Dob:</strong> {{ client_details.dob}}
+            </li>
+            <li>
+                <strong>Financial Advisor:</strong> {{client_details.fa}}
+            </li>
+        </ul>
+    </div>
 
-        <td><script>document.write({{ share.price }}*{{ share.amount }})</script></td>
+    <div class="table-responsive col-md-10 well">
+        <div class="col-md-2 col-md-offset-10">
+            <label class="sr-only">Stock Symbol</label>
+            <input id="symbol_input" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
+        </div>
+        <table class="table table-hover table-bordered table-condensed" style="background-color: #ffffff">
+            <thead>
+                <th>Stock</th>
+                <th>Date bought</th>
+                <th>Amount</th>
+                <th>Price($)</th>
+                <th>Total($)</th>
+            </thead>
+            <tbody>
+                {% for share in shares %}
+                <tr>
+                    <td>{{ share.stock}}</td>
+                    <td>{{ share.buy_date}}</td>
+                    <td>{{ share.amount}}</td>
+                    <td>{{ share.price}}</td>
+
+                    <td><script>document.write({{ share.price }}*{{ share.amount }})</script></td>
 
 
-    </tr>
-    {% endfor %}
-</table>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+     </div>
     {% if twitter == True %}
         <a class="twitter-timeline" href="https://twitter.com/{{ client_details.twitter_username }}" data-widget-id="{{ client_details.twitter_widget_id }}">Tweets</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
