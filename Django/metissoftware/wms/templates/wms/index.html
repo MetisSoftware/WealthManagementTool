@@ -1,12 +1,9 @@
 {% extends "wms/base_boot.html" %}
 {% load staticfiles %}
-
 {% block content %}
-
 {% if stock_json %}
     <div id="stock_info" class="col-md-12 well">
-    <div class="col-md-3" >
-        </div>
+    <div class="col-md-3" ></div>
         <div class="col-md-6 text-center" style="padding-top: 10">
             <div class="col-md-4" >
                 <p class="stockTitle "  >Buy at: {{ stock_json.0.Close }}</p>
@@ -19,8 +16,8 @@
             <div class="col-md-4">
                 <p id="stockGrowth" class="stockTitle bottom-align-text">
                    <script>
-
-                        var growth = ((({{ stock_json.0.Close }} - {{  stock_json.1.Close}}) / {{ stock_json.1.Close}})*100).toFixed(2);
+                        var change = ({{stock_json.0.Close}} - {{stock_json.1.Close}}).toFixed(2);
+                        var growth = ((change/ {{stock_json.1.Close}})*100).toFixed(2);
 
                         if (growth > 0){
                             document.getElementById("stockGrowth").style.color = "green";
@@ -33,7 +30,7 @@
                             document.getElementById("stockGrowth").style.color = "white";
                             document.write('&#9654;');
                         }
-                        document.write(({{ stock_json.0.Close }} - {{  stock_json.1.Close}}).toFixed(2) +" ("+growth+"%)");
+                        document.write(Math.abs(change) +" ("+growth+"%)");
 
                     </script>
                 </p>
