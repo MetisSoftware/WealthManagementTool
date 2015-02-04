@@ -1,9 +1,25 @@
-{% extends "wms/base.html" %}
+{% extends "wms/base_boot.html" %}
+{% load staticfiles %}
 {% block content %}
-<script class="ai1ec-widget-placeholder" data-widget="ai1ec-superwidget" data-action="month">
-	(function(){var d=document,s=d.createElement('script'),
-	i='ai1ec-script-sw';if(d.getElementById(i))return;s.async=1;
-	s.id=i;s.src='http://live-timely-gktjrvpf.time.ly/?ai1ec_super_widget';
-	d.getElementsByTagName('head')[0].appendChild(s);})();
-</script>
+    <link href="{%static 'wms/css/fullcalendar/fullcalendar.css'%}" rel="stylesheet">
+    <script src="{%static 'wms/js/fullcalendar/moment.min.js'%}"></script>
+    <script src="{%static 'wms/js/fullcalendar/fullcalendar.js'%}"></script>
+    <div class="col-md-9 panel panel-default" >
+        <div  id="calendar">
+            <script type="text/javascript">
+                $(document).ready(function(){
+                        $('#calendar').fullCalendar({
+
+                        })
+
+                });
+
+            </script>
+        </div>
+        <div class="col-md-3">
+
+        </div>
+
+
+    </div>
 {% endblock %}

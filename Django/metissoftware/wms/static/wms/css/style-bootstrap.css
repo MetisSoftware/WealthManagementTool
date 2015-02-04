@@ -2,6 +2,8 @@
  body{
 	  font-family: 'Roboto', sans-serif;
 	  background-image: url("http://frumph.net/images/bgs/background-grey-burst.jpg");
+      background-repeat: no-repeat;
+      background-attachment: fixed;
  }
 
 
