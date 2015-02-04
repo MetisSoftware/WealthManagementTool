@@ -13,6 +13,9 @@ WealthManagementTool
 
 ##Database
 - Current database is sqlite3 located at `WealthManagementTool/Django/metissoftware/db.sqlite3`
+- If problems with migrations try running:
+- python manage.py makemigrations
+- python manage.py migrations
 
 ##Models
 - `WealthManagementTool/Django/metissoftware/wms/models.py` holds the models
