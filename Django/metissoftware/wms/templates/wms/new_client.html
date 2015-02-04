@@ -1,80 +1,81 @@
-{% extends "wms/base.html" %}
+{% extends "wms/base_boot.html" %}
 
 
 {% block title %}Add Client{% endblock %}
 
 {% block content %}
-
-<form action='new_client.html' method='post'>
+<div class="col-md-3" ></div>
+<div class="table-responsive col-md-6 well">
+<form class="form-horizontal" role="form" action='new_client.html' method='post'>
     {% csrf_token %}
     {{ form.non_field_errors }}
-    <div class="container">
-        <div >
+        <div class="form-group">
             {{ form.first_name.errors }}
-            <label class="formLabel" for="id_first_name">First Name:</label>
+            <label class="control-label col-sm-6" for="id_first_name">First Name:</label>
 
             {{ form.first_name }}
         </div>
-        <div>
+        <div class="form-group">
             {{ form.middle_name.errors }}
-            <label class="formLabel" for="id_middle_name">Middle Name:</label>
+            <label class="control-label col-sm-6" for="id_middle_name">Middle Name:</label>
             {{ form.middle_name }}
         </div>
-        <div>
+        <div class="form-group">
             {{ form.surname.errors }}
-            <label class="formLabel" for="id_surname">Surname:</label>
+            <label class="control-label col-sm-6" for="id_surname">Surname:</label>
             {{ form.surname }}
         </div>
-        <div >
+        <div class="form-group">
             {{ form.email.errors }}
-            <label class="formLabel" for="id_email">Email:</label>
+            <label class="control-label col-sm-6" for="id_email">Email:</label>
             {{ form.email }}
         </div>
-        <div>
+        <div class="form-group">
             {{ form.mob_phone.errors }}
-            <label class="formLabel" for="id_mob_phone">Mobile Phone Number:</label>
+            <label class="control-label col-sm-6" for="id_mob_phone">Mobile Phone Number:</label>
             {{ form.mob_phone }}
         </div>
-        <div>
+        <div class="form-group">
             {{ form.home_phone.errors }}
-            <label class="formLabel" for="id_home_phone">Home Phone Number:</label>
+            <label class="control-label col-sm-6" for="id_home_phone">Home Phone Number:</label>
             {{ form.home_phone }}
         </div>
-        <div >
+        <div class="form-group">
             {{ form.dob.errors }}
-            <label class="formLabel" for="id_dob">Date Of Birth:</label>
+            <label class="control-label col-sm-6" for="id_dob">Date Of Birth:</label>
             {{ form.dob }}
         </div>
-        <div >
+        <div class="form-group">
             {{ form.ni_number.errors }}
-            <label class="formLabel" for="ni_number">National Insurance Number:</label>
+            <label class="control-label col-sm-6" for="ni_number">National Insurance Number:</label>
 
             {{ form.ni_number }}
         </div>
-        <div>
+        <div class="form-group">
             {{ form.fa.errors }}
-            <label class="formLabel" for="id_fa">Financial Advisor:</label>
+            <label class="control-label col-sm-6" for="id_fa">Financial Advisor:</label>
             {{ form.fa }}
         </div>
-        <div>
+        <div class="form-group">
             {{ form.cash.errors }}
-            <label class="formLabel" for="id_cash">Cash:</label>
-            {{ form.cash }}
+            <label class="control-label col-sm-6" for="id_cash">Cash:</label>
+            <{{ form.cash }}
         </div>
 
-        <div>
+        <div class="form-group">
             {{ form.twitter_username.errors }}
-            <label class="formLabel" for="id_twitter_username">Twitter Username:</label>
+            <label class="control-label col-sm-6" for="id_twitter_username">Twitter Username:</label>
             {{ form.twitter_username }}
         </div>
 
-        <div>
+        <div class="form-group">
             {{ form.twitter_widget_id.errors }}
-            <label class="formLabel" for="id_twitter_widget_id">Twitter Widget Id:</label>
+            <label class="control-label col-sm-6" for="id_twitter_widget_id">Twitter Widget Id:</label>
             {{ form.twitter_widget_id }}
         </div>
-        <div><input class ="add_client" type="submit"  value="Submit" /></div>
+        <div class ="col-sm-3"></div>
+        <div class ="col-sm-6"><input class ="btn btn-success" type="submit"  value="Submit" /></div>
     </div>
 </form>
-
+</div>
 {% endblock %}
