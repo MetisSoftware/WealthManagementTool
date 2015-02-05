@@ -116,4 +116,4 @@ class LoginView(FormView):
         if user is not None:
             login(self.request, user)
             return HttpResponseRedirect('wms/index.html')
-        return HttpResponseRedirect('wms/index.html')
+        return HttpResponseRedirect('wms/appointments.html')

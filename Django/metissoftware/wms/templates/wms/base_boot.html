@@ -1,99 +1,101 @@
 {% load staticfiles %}
 <html>
-    <head>
-        <title>{% block title %}Wealth Management Tool{% endblock %}</title>
+<head>
+<title>{% block title %}Wealth Management Tool{% endblock %}</title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <!-- Font files-->
-        <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700,500,900' rel='stylesheet' type='text/css'>
-        <!-- CSS files
-        <link rel="stylesheet" type="text/css" href="{% static 'wms/css/style.css' %}" />
-        -->
-        <link rel="stylesheet" type="text/css" href="{% static 'wms/css/style-bootstrap.css' %}" />
-        <link href="{% static "wms/css/bootstrap.css" %}" rel="stylesheet">
-        <link href="{% static "wms/css/magnific-popup.css" %}" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" type="text/css" href="{% static "wms/css/jquery.fancybox.css" %}" media="screen" />
-        <link href="{% static "wms/css/bootstrap-sticky-footer.css" %}" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- Font files-->
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700,500,900' rel='stylesheet' type='text/css'>
+<!-- CSS files
+	<link rel="stylesheet" type="text/css" href="{% static 'wms/css/style.css' %}" />
+	-->
+<link rel="stylesheet" type="text/css" href="{% static 'wms/css/style-bootstrap.css' %}" />
+<link href="{% static "wms/css/bootstrap.css" %}" rel="stylesheet">
+<link href="{% static "wms/css/magnific-popup.css" %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static "wms/css/jquery.fancybox.css" %}" media="screen" />
+<link href="{% static "wms/css/bootstrap-sticky-footer.css" %}" rel="stylesheet">
 
-        <!-- JS files-->
-        <script src="{% static "wms/js/Chart.js" %}" type="text/javascript" ></script>
-        <script src="{% static "wms/js/legend.js"%}" type="text/javascript" ></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
-        <script src="{% static "wms/js/script.js" %}" type="text/javascript"></script>
-        <script src="{% static "wms/js/jquery.magnific-popup.js" %}" type="text/javascript"></script>
-        <script src="{% static "wms/js/jquery.fancybox.js" %}" type="text/javascript" ></script>
-        <script src="{% static "wms/js/jquery.fancybox-media.js" %}" type="text/javascript" ></script>
-        <script src="{% static "wms/js/bootstrap.js" %}" type="text/javascript" ></script>
-        <script src="{% static 'wms/js/list.js'%}" type="text/javascript"></script>
+<!-- JS files-->
+<script src="{% static "wms/js/Chart.js" %}" type="text/javascript" ></script>
+<script src="{% static "wms/js/legend.js"%}" type="text/javascript" ></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+<script src="{% static "wms/js/script.js" %}" type="text/javascript"></script>
+<script src="{% static "wms/js/jquery.magnific-popup.js" %}" type="text/javascript"></script>
+<script src="{% static "wms/js/jquery.fancybox.js" %}" type="text/javascript" ></script>
+<script src="{% static "wms/js/jquery.fancybox-media.js" %}" type="text/javascript" ></script>
+<script src="{% static "wms/js/bootstrap.js" %}" type="text/javascript" ></script>
+<script src="{% static 'wms/js/list.js'%}" type="text/javascript"></script>
 
 
-    </head>
-    <body >
-        <nav class="navbar navbar-default navbar-fixed-top" id="home">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="/" class="navbar-brand">
-                        <img src="{% static "wms/images/logo.png" %}" alt="Wealth Management Tool" height="54" width="180" style="margin-top: -15px;" /></a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a id="home" href="/">Home</a></li>
-                        <li><a id="clients" href="/clients/">Clients</a></li>
-                        <li><a id="appointments" href="/appointments/">My Appointments</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        {% if user.is_authenticated %}
-                        <li class="text-center" style="padding-top: 15px;padding-bottom: 15px;">Welcome {{ user.email }}.</li>
-                        <li ><a href="/wms/logout">Logout</a>
-                        </li>
-                        {% else %}
-                        <li class="login" >
-                            <a href="#" id="loginButton"><span>Login</span></a>
-                            <div id="loginContainer">
-                                <div id="loginBox">
-                                    <form id="loginForm">
-                                        <fieldset id="body">
-                                            <fieldset>
-                                                <label for="email">Email Address</label>
-                                                <input class="login" type="text" name="email" id="email">
-                                            </fieldset>
-                                            <fieldset>
-                                                <label for="password">Password</label>
-                                                <input class="login" type="password" name="password" id="password">
-                                            </fieldset>
-                                            <input type="submit" id="login" value="Sign in">
-                                        </fieldset>
-                                    </form>
-                                </div>
-                            </div>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
-                <div class="clear"></div>
-            </div>
+</head>
+<body >
+<nav class="navbar navbar-default navbar-fixed-top" id="home">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="/" class="navbar-brand">
+				<img src="{% static "wms/images/logo.png" %}" alt="Wealth Management Tool" height="54" width="180" style="margin-top: -15px;" /></a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a id="home" href="/">Home</a></li>
+				<li><a id="clients" href="/clients/">Clients</a></li>
+				<li><a id="appointments" href="/appointments/">My Appointments</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				{% if user.is_authenticated %}
+				<li class="text-center" style="padding-top: 15px;padding-bottom: 15px;">Welcome {{ user.email }}.</li>
+				<li ><a href="/logout">Logout</a>
+				</li>
+				{% else %}
+				<li class="login" >
+				<a href="#" id="loginButton"><span>Login</span></a>
+				<div id="loginContainer">
+					<div id="loginBox">
+						<form id="loginForm" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+							{% csrf_token %}
+							<fieldset id="body">
+								<fieldset>
+									<label for="id_username">Email Address</label>
+									<input class="login" type="text" name="username" id="id_username">
+								</fieldset>
+								<fieldset>
+									<label for="id_password">Password</label>
+									<input class="login" type="password" name="password" id="id_password">
+								</fieldset>
+								<input type="submit" id="login" value="Sign in">
+								<input type="hidden" name="next" value="/" />
+							</fieldset>
+						</form>
+					</div>
+				</div>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+		<div class="clear"></div>
+	</div>
 
-        </nav>
+</nav>
 
-        <div class="container" style="overflow-x: hidden">
+<div class="container" style="overflow-x: hidden">
 
-            {% block content %}
-            {% endblock %}
+	{% block content %}
+	{% endblock %}
 
-        </div>
+</div>
 
-        <footer class="footer">
-            <div class="container">
-                <p class="text-center" style="color:#FFFFFF;">© 2014-2015 Wealth Management Tool by  <a style="color:#dfb511;"href="http://www.metissoftware.co.uk" target="_blank"> Metis Software </a>.</p>
-            </div>
-        </footer>
-    </body>
+<footer class="footer">
+	<div class="container">
+		<p class="text-center" style="color:#FFFFFF;">© 2014-2015 Wealth Management Tool by  <a style="color:#dfb511;"href="http://www.metissoftware.co.uk" target="_blank"> Metis Software </a>.</p>
+	</div>
+</footer>
+</body>
 </html>
