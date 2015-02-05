@@ -3,7 +3,7 @@
 {% block content %}
 {% if client_details %}
     <div class="table-responsive col-md-3 well">
-        <img class="img-responsive img-thumbnail" src="{% static 'wms/images/person-placeholder.png'  %}" alt="Person Placeholder">
+	    <img class="img-responsive img-thumbnail" src="{{ client_details.image.url }}" alt="Person Placeholder">
         <p class="lead">{{client_details.first_name}} {{client_details.middle_name}} {{client_details.surname}}</p>
         <ul class="list-unstyled">
             <li>
