@@ -76,7 +76,9 @@ class FA(AbstractBaseUser, PermissionsMixin):
 
 class Client(models.Model):
     first_name = models.CharField(max_length=64)
+    middle_name = models.CharField(max_length=64, null=True)
     surname = models.CharField(max_length=64)
+    image = models.ImageField('client_images')
     dob = models.DateField(default="1990-01-01")
     ni_regex = RegexValidator(regex=r'^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\s*\d\s*){6}([A-D]|\s)$', message="Must be in the format: 'AA999999A', restrictions to characters apply'")
     ni_number = models.CharField(max_length=9, validators=[ni_regex], primary_key=True)
@@ -84,7 +86,6 @@ class Client(models.Model):
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',
         message="Not a valid phone number. Up to 9 digits allowed.")
-    middle_name = models.CharField(max_length=64, null=True)
     home_phone = models.CharField(
         max_length=11, validators=[phone_regex], blank=True
     )
@@ -139,7 +140,7 @@ class Share(models.Model):
 class ClientForm(ModelForm):
     class Meta:
         model = Client
-        fields = ['first_name', 'middle_name', 'surname', 'email',
+        fields = ['first_name', 'middle_name', 'surname', 'images', 'email',
                   'mob_phone', 'home_phone', 'dob', 'ni_number', 'fa', 'cash',
                   'twitter_username', 'twitter_widget_id']
         widgets = {

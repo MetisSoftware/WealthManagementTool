@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
+from django.core.urlresolvers import reverse
 from wms.models import Client, ClientForm, Share
 from wms import models as m
 from wms import scripts
@@ -49,7 +50,6 @@ def print_clients(request):
     return render_to_response('wms/clients.html', {'client_list': client_list}, context_instance=RequestContext(request))
 
 
-
 @login_required
 def new_client(request):
     if request.method == 'GET':
@@ -60,6 +60,7 @@ def new_client(request):
         # Check if data is valid then redirect user (temporary measure)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
+            middle_name = form.cleaned_data['middle_name']
             surname = form.cleaned_data['surname']
             email = form.cleaned_data['email']
             mob_phone = form.cleaned_data['mob_phone']
@@ -71,12 +72,14 @@ def new_client(request):
             twitter_username = form.cleaned_data['twitter_username']
             twitter_widget_id = form.cleaned_data['twitter_widget_id']
 
-            post = m.Client.objects.create(
-                first_name = first_name, surname = surname, email = email, \
-                mob_phone = mob_phone, home_phone = home_phone, dob = dob, \
-                ni_number = ni_number, fa = fa, cash = cash,\
-                twitter_username = twitter_username, twitter_widget_id = twitter_widget_id)
-            return HttpResponseRedirect('/clients/')
+            client = m.Client.objects.create(
+                first_name = first_name, middle_name = middle_name,\
+                surname = surname, email = email, mob_phone = mob_phone,\
+                home_phone = home_phone, dob = dob, ni_number = ni_number,\
+                fa = fa, cash = cash, twitter_username = twitter_username, \
+                twitter_widget_id = twitter_widget_id)
+            return HttpResponseRedirect(reverse('/clients/',
+                                                kwargs= {'email': client.email}))
 
     return render(request, 'wms/new_client.html', {
         'form': form,
