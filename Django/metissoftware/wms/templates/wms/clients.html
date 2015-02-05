@@ -4,7 +4,7 @@
 {% block content %}
     <div class="panel panel-default col-md-12 col-sm-12 ">
         <div class="panel-body col-md-12">
-            <a class="btn btn-success" href="/new_client.html" role="button">Add Client</a>
+            <a class="btn btn-success" href="/wmt/new_client.html" role="button">Add Client</a>
             <a class = "btn btn-danger" href="#RemoveClient" role="button">Remove Client</a>
         </div>
     </div>
@@ -18,9 +18,9 @@
         <li>
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <a  href="/client_details/?client={{client.ni_number}}"><img src="{% static 'wms/images/person-placeholder.png'  %}" class="img-responsive img-thumbnail" style="max-width: 200px"></a>
+                    <a  href="/wmt/client_details/?client={{client.ni_number}}"><img src="{% static 'wms/images/person-placeholder.png'  %}" class="img-responsive img-thumbnail" style="max-width: 200px"></a>
                     <div class="caption">
-                        <h3 class="name"><a href="/client_details/?client={{client.ni_number}}">{{client.first_name}} {{client.surname}}</a></h3>
+                        <h3 class="name"><a href="/wmt/client_details/?client={{client.ni_number}}">{{client.first_name}} {{client.surname}}</a></h3>
                         <p>
                             <table>
                             <tr>

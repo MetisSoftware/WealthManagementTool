@@ -44,6 +44,7 @@ def appointments(request):
 @login_required
 def print_clients(request):
     current_user = request.user
+
     client_list = Client.objects.filter(fa__ni_number=current_user.ni_number)
     print(client_list)
     return render_to_response('wms/clients.html', {'client_list': client_list}, context_instance=RequestContext(request))
@@ -76,7 +77,7 @@ def new_client(request):
                 mob_phone = mob_phone, home_phone = home_phone, dob = dob, \
                 ni_number = ni_number, fa = fa, cash = cash,\
                 twitter_username = twitter_username, twitter_widget_id = twitter_widget_id)
-            return HttpResponseRedirect('/clients/')
+            return HttpResponseRedirect('/wmt/clients/')
 
     return render(request, 'wms/new_client.html', {
         'form': form,

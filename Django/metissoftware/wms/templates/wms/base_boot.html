@@ -40,19 +40,19 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="/" class="navbar-brand">
+                    <a href="/wmt/" class="navbar-brand">
                         <img src="{% static "wms/images/logo.png" %}" alt="Wealth Management Tool" height="54" width="180" style="margin-top: -15px;" /></a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a id="home" href="/">Home</a></li>
-                        <li><a id="clients" href="/clients/">Clients</a></li>
-                        <li><a id="appointments" href="/appointments/">My Appointments</a></li>
+                        <li><a id="home" href="/wmt/">Home</a></li>
+                        <li><a id="clients" href="/wmt/clients/">Clients</a></li>
+                        <li><a id="appointments" href="/wmt/appointments/">My Appointments</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_authenticated %}
                         <li class="text-center" style="padding-top: 15px;padding-bottom: 15px;">Welcome {{ user.email }}.</li>
-                        <li ><a href="/wms/logout">Logout</a>
+                        <li ><a href="/wmt/logout">Logout</a>
                         </li>
                         {% else %}
                         <li class="login" >
