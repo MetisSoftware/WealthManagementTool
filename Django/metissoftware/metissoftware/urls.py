@@ -9,6 +9,6 @@ urlpatterns = patterns('wms.views',
     url(r'^clients/', 'print_clients', name='print_clients'),
     url(r'^client_details/', 'client_details', name='client_details'),
     url(r'^wms/login/$', login, {'template_name': 'wms/login.html'}),
-    url(r'^logout/$', logout, {'next_page': '/wmt/'}),
+    url(r'^wms/logout/$', logout, {'next_page': '/'}),
     url(r'^appointments/', 'appointments', name='appointments'),
 )
