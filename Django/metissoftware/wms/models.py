@@ -80,7 +80,7 @@ class Client(models.Model):
     first_name = models.CharField(max_length=64)
     middle_name = models.CharField(max_length=64, null=True)
     surname = models.CharField(max_length=64)
-    image = models.ImageField(upload_to='client_images', default=os.path.join(settings.MEDIA_ROOT, 'person-placeholder.png'))
+    image = models.ImageField(upload_to='client_images', default='/media/person-placeholder.png')
     dob = models.DateField(default="1990-01-01")
     ni_regex = RegexValidator(regex=r'^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\s*\d\s*){6}([A-D]|\s)$', message="Must be in the format: 'AA999999A', restrictions to characters apply'")
     ni_number = models.CharField(max_length=9, validators=[ni_regex], primary_key=True)
