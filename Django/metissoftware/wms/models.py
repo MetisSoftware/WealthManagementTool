@@ -74,7 +74,7 @@ class Event(models.Model):
     fa = models.ForeignKey(FA)
     startDateTime = models.DateTimeField()
     endDateTime = models.DateTimeField()
-    type = models.CharField(max=64)
+    type = models.CharField(max_length=64, default="meeting")
     title = models.CharField(max_length=128)
 
     def __str__(self):
