@@ -1,11 +1,61 @@
 {% extends "wms/base_boot.html" %}
-{% block content %}\
-<div class="well col-md-12 col-sm-12">
-<script class="ai1ec-widget-placeholder" data-widget="ai1ec-superwidget" data-action="month">
-	(function(){var d=document,s=d.createElement('script'),
-	i='ai1ec-script-sw';if(d.getElementById(i))return;s.async=1;
-	s.id=i;s.src='http://live-timely-gktjrvpf.time.ly/?ai1ec_super_widget';
-	d.getElementsByTagName('head')[0].appendChild(s);})();
-</script>
-</div>
+{% load staticfiles %}
+{% block content %}
+    <link href="{%static 'wms/css/fullcalendar/fullcalendar.css'%}" rel="stylesheet">
+    <script src="{%static 'wms/js/fullcalendar/moment.min.js'%}"></script>
+    <script src="{%static 'wms/js/fullcalendar/fullcalendar.js'%}"></script>
+    <div class="col-md-9 panel panel-default" >
+        <div  id="calendar">
+            <script type="text/javascript">
+
+                var event_list =[
+                                {%for event in events%}
+                                    {
+                                        title : '{{event.title}}',
+                                        start : '{{event.startDateTime|date }}',
+                                        end : '{{event.endDateTime|date }}'
+                                    },
+                                {% endfor %}
+                            ];
+
+                $(document).ready(function(){
+                        $('#calendar').fullCalendar({
+                            header:{
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'agendaDay, agendaWeek, month'
+                            },
+                            defaultView: 'agendaWeek',
+                            editable: true,
+                            allDaySlot: false,
+                            selectable: true,
+
+                            select: function(start, end) {
+                            var title = prompt('Event Title:');
+                            var eventData;
+                            if (title) {
+                                eventData = {
+                                    title: title,
+                                    start: start,
+                                    end: end
+                                };
+                                $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+                            }
+                            $('#calendar').fullCalendar('unselect');
+                            },
+                            events: event_list
+
+                        })
+
+
+                });
+
+            </script>
+        </div>
+        <div class="col-md-3">
+
+        </div>
+
+
+    </div>
 {% endblock %}
