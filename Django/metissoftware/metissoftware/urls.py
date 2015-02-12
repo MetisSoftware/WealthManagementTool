@@ -11,4 +11,5 @@ urlpatterns = patterns('wms.views',
     url(r'^wms/login/$', login, {'template_name': 'wms/login.html'}),
     url(r'^logout/$', logout, {'next_page': '/wmt/'}),
     url(r'^appointments/', 'appointments', name='appointments'),
+    url(r'^create_appointment/', 'create_appointment', name='create_appointment'),
 )
