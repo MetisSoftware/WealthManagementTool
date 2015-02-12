@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
-from wms.models import Client, ClientForm, Share
+from wms.models import Client, ClientForm, Share, Event
 from wms import models as m
 from wms import scripts
 import datetime
@@ -38,7 +38,9 @@ def index(request):
 
 @login_required
 def appointments(request):
-    return render_to_response('wms/appointments.html', context_instance=RequestContext(request))
+    current_user = request.user
+    events = Event.objects.filter(fa__ni_number=current_user.ni_number)
+    return render_to_response('wms/appointments.html',{'events': events}, context_instance=RequestContext(request))
 
 
 @login_required

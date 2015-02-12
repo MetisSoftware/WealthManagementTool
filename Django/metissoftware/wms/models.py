@@ -4,10 +4,6 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 
-
-# Create your models here.
-
-
 class FAUserManager(BaseUserManager):
     def create_user(self, email, first_name, surname,
                     dob, ni_number, password, **extra_fields):
@@ -73,6 +69,12 @@ class FA(AbstractBaseUser, PermissionsMixin):
 
     objects = FAUserManager()
 
+class Event(models.Model):
+    fa = models.ForeignKey(FA)
+    startDateTime = models.DateTimeField()
+    endDateTime = models.DateTimeField()
+
+    title = models.CharField(max_length=128)
 
 class Client(models.Model):
     first_name = models.CharField(max_length=64)

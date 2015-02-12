@@ -7,10 +7,46 @@
     <div class="col-md-9 panel panel-default" >
         <div  id="calendar">
             <script type="text/javascript">
+
+                var event_list =[
+                                {%for event in events%}
+                                    {
+                                        title : '{{event.title}}',
+                                        start : '{{event.startDateTime|date }}',
+                                        end : '{{event.endDateTime|date }}'
+                                    },
+                                {% endfor %}
+                            ];
+
                 $(document).ready(function(){
                         $('#calendar').fullCalendar({
+                            header:{
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'agendaDay, agendaWeek, month'
+                            },
+                            defaultView: 'agendaWeek',
+                            editable: true,
+                            allDaySlot: false,
+                            selectable: true,
+
+                            select: function(start, end) {
+                            var title = prompt('Event Title:');
+                            var eventData;
+                            if (title) {
+                                eventData = {
+                                    title: title,
+                                    start: start,
+                                    end: end
+                                };
+                                $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+                            }
+                            $('#calendar').fullCalendar('unselect');
+                            },
+                            events: event_list
 
                         })
+
 
                 });
 
