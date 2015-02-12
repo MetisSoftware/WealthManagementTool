@@ -13,10 +13,42 @@
                                     {
                                         title : '{{event.title}}',
                                         start : '{{event.startDateTime|date:"c"}}',
-                                        end : '{{event.endDateTime|date:"c"}}'
+                                        end : '{{event.endDateTime|date:"c"}}',
+                                    {% if event.type == "client" %}
+                                        backgroundColor : '#16a085',
+                                    {% elif event.type == "fa" %}
+                                        backgroundColor : '#8e44ad',
+                                    {% elif event.type == "pot_client" %}
+                                        backgroundColor : '#d35400',
+                                    {% elif event.type == "holiday"%}
+                                        backgroundColor : '#c0392b'
+                                    {% endif %}
+
                                     },
                                 {% endfor %}
                             ];
+
+                function post(eventData){
+                    $.ajax({
+                                url: "create_appointment/",
+                                type: "POST",
+                                data: eventData,
+
+                                success: function (json) {
+                                    console.log("Success");
+                                    alert('Successfully called');
+                                    $('#calendar').fullCalendar('renderEvent', eventData, true);
+                                },
+
+                                error: function (xhr, errmsg, err) {
+                                    alert('fail called');
+                                    console.log(xhr.status + ": " + xhr.responseText);
+
+                                }
+
+                            }
+                    )
+                }
 
                 $(document).ready(function(){
                         $('#calendar').fullCalendar({
@@ -35,11 +67,13 @@
                             var eventData;
                             if (title) {
                                 eventData = {
-                                    title: title,
-                                    start: start,
-                                    end: end
+                                    'title': title,
+                                    'start': start,
+                                    'end': end
                                 };
-                                $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+                                post(eventData)
+
+
                             }
                             $('#calendar').fullCalendar('unselect');
                             },

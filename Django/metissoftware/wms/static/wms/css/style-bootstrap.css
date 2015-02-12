@@ -163,3 +163,7 @@ fieldset#body {
 input:focus {
     outline:none;
 }
+/* Calendar */
+#calendar {
+    padding-top: 10px;
+}
