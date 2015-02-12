@@ -12,8 +12,8 @@
                                 {%for event in events%}
                                     {
                                         title : '{{event.title}}',
-                                        start : '{{event.startDateTime|date }}',
-                                        end : '{{event.endDateTime|date }}'
+                                        start : '{{event.startDateTime|date:"c"}}',
+                                        end : '{{event.endDateTime|date:"c"}}'
                                     },
                                 {% endfor %}
                             ];
