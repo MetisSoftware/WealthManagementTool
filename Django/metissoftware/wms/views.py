@@ -42,8 +42,9 @@ def appointments(request):
     events = Event.objects.filter(fa__ni_number=current_user.ni_number)
     return render_to_response('wms/appointments.html',{'events': events}, context_instance=RequestContext(request))
 
+@login_required
 def create_appointment(request):
-    print("test");
+    print("test")
     if(request.method == 'POST'):
         post_text = request.POST.get('the_post')
 
@@ -51,13 +52,15 @@ def create_appointment(request):
         start = post_text['start']
         end = post_text['end']
 
-        Event(fa=request.user.ni_number, startDateTime = start, endDateTime = end, title = title, type="meeting")
+        Event(fa=request.user.ni_number, startDateTime=start, endDateTime=end, title=title, type="meeting")
         print("pass")
         return HttpResponse(
             json.dump({"success":"success"}),
-            content_type='application/json'
-        )
+            content_type='application/json',
 
+        )
+    else:
+        return render(request,'wms/appointments.html', context_instance=RequestContext(request) )
 
 @login_required
 def print_clients(request):
