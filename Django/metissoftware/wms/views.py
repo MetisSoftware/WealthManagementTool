@@ -50,7 +50,8 @@ def create_appointment(request):
         title = post_text.get("title","")
         start = post_text.get("start","")
         end = post_text.get("end","")
-        m.Event.objects.create(fa=request.user, startDateTime=start, endDateTime=end, title=title, type="meeting")
+        type = post_text.get("type","")
+        m.Event.objects.create(fa=request.user, startDateTime=start, endDateTime=end, title=title, type=type)
         print("pass")
         data = {"success":"success"};
         return HttpResponse(
