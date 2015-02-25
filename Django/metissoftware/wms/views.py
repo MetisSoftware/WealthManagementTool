@@ -6,6 +6,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
+
 from django.template import RequestContext
 from wms.models import Client, ClientForm, Share, Event
 from wms import models as m
@@ -20,7 +22,6 @@ def index(request):
     symbol = get_params.get("symbol")
     if symbol ==None or symbol=="":
         symbol = "GOOG"
-    print(get_params.get("symbol"))
     if get_params.get("days")!=None:
         days = int(get_params.get("days"))
     else:
@@ -42,20 +43,18 @@ def appointments(request):
     events = Event.objects.filter(fa__ni_number=current_user.ni_number)
     return render_to_response('wms/appointments.html',{'events': events}, context_instance=RequestContext(request))
 
-@login_required
+@csrf_protect
 def create_appointment(request):
-    print("test")
     if(request.method == 'POST'):
-        post_text = request.POST.get('the_post')
-
-        title = post_text['title']
-        start = post_text['start']
-        end = post_text['end']
-
-        Event(fa=request.user.ni_number, startDateTime=start, endDateTime=end, title=title, type="meeting")
+        post_text = request.POST
+        title = post_text.get("title","")
+        start = post_text.get("start","")
+        end = post_text.get("end","")
+        m.Event.objects.create(fa=request.user, startDateTime=start, endDateTime=end, title=title, type="meeting")
         print("pass")
+        data = {"success":"success"};
         return HttpResponse(
-            json.dump({"success":"success"}),
+            json.dumps(data),
             content_type='application/json',
 
         )
