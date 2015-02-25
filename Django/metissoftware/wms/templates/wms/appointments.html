@@ -7,53 +7,38 @@
     <div class="col-md-9 panel panel-default" >
         <div  id="calendar">
             <script type="text/javascript">
+
+                function type_color(type){
+                    if (type=="client"){
+                        return "#16a085";
+                    }else if(type=="fa"){
+                        return "#8e44ad";
+                    }else if(type=="pot_client"){
+                        return "#d35400";
+                    }else if(type=="holiday"){
+                        return "#c0392b";
+                    }
+                }
+
                 var event_list =[
                                 {%for event in events%}
                                     {   title : '{{event.title}}',
                                         start : '{{event.startDateTime|date:"c"}}',
                                         end : '{{event.endDateTime|date:"c"}}',
-                                    {% if event.type == "client" %}
-                                        backgroundColor : '#16a085',
-                                    {% elif event.type == "fa" %}
-                                        backgroundColor : '#8e44ad',
-                                    {% elif event.type == "pot_client" %}
-                                        backgroundColor : '#d35400',
-                                    {% elif event.type == "holiday"%}
-                                        backgroundColor : '#c0392b'
-                                    {% endif %}
+                                        backgroundColor : type_color('{{ event.type }}')
                                     },
                                 {% endfor %}
                             ];
+                var eventData ={
+                    title:"",
+                    start:"",
+                    end:"",
+                    backgroundColor:""
+                };
 
-                function post(eventData){
-                    $.ajax({
-                                url: "/create_appointment/",
-                                type: "POST",
 
-                                data: {
-                                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                                        'title': "test",
-                                        'start': "2015-02-12T12:06:59+00:00",
-                                        'end': "2015-02-12T13:06:59+00:00"
-                                },
 
-                                success: function (json){
-                                    console.log("Success");
-                                    alert('Successfully called');
 
-                                },
-
-                                error: function (xhr, errmsg, err) {
-                                    alert('fail called');
-                                    console.log(xhr.status + ": " + xhr.responseText);
-
-                                }
-
-                            }
-                    );
-                }
-
-                var eventData ={};
 
                 $(document).ready(function(){
                         $('#calendar').fullCalendar({
@@ -63,29 +48,14 @@
                                 right: 'agendaDay, agendaWeek, month'
                             },
                             defaultView: 'agendaWeek',
-                            editable: true,
+                            editable: false,
                             allDaySlot: false,
                             selectable: true,
 
                             select: function(start, end) {
-{#                                var title = prompt('Event Title:');#}
-{#                                var eventData;#}
-{#                                if (title) {#}
-{#                                    eventData = {#}
-{#                                        'title': title,#}
-{#                                        'start': start,#}
-{#                                        'end': end#}
-{#                                    };#}
-{##}
-{#                                    post(eventData);#}
-{#                                }#}
-
+                                    eventData.start = start.toISOString();
+                                    eventData.end =  end.toISOString();
                                     $('#calendarModal').modal();
-                                    eventData = {
-                                        'title': "",
-                                        'start': start,
-                                        'end': end
-                                    };
 
                             $('#calendar').fullCalendar('unselect');
                             },
@@ -99,9 +69,34 @@
                 $('#modalForm').submit( function(event){
                        event.preventDefault();
                        eventData.title = $('#title').val();
-                         $('#calendarModal').modal();
-                        post(eventData);
-                        $('#calendar').fullCalendar('renderEvent', eventData, true);
+                       eventData.type = $('#type').val();
+                        $.ajax({
+                                    url: "/create_appointment/",
+                                    type: "POST",
+
+                                    data: {
+                                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                                            title: eventData.title,
+                                            start : eventData.start,
+                                            end : eventData.end,
+                                            type : eventData.type
+                                    },
+
+                                    success: function (json){
+                                        console.log("Success");
+
+                                    },
+
+                                    error: function (xhr, errmsg, err) {
+                                        alert('Failed to create event.');
+                                        console.log(xhr.status + ": " + xhr.responseText);
+
+                                    }
+
+                                });
+                            $('#calendarModal').modal('toggle');
+                            eventData.backgroundColor = type_color(eventData.type);
+                            $('#calendar').fullCalendar('renderEvent', eventData, true);
 
                 })
             });
@@ -129,6 +124,13 @@
                                 <div class="form-group">
                                     <label for="title">Title</label>
                                     <input id="title" class="form-control" placeholder="Meeting with...">
+                                    <label for="type">Type</label>
+                                    <Select id="type" class="form-control" placeholder="Meeting with...">
+                                        <option value="client">Client</option>
+                                        <option value="fa">Financial Adviser</option>
+                                        <option value="pot_client">Potential Client</option>
+                                        <option value="holiday">Holidays</option>
+                                    </Select>
 
                                 </div>
                         </div>
