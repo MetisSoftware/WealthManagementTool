@@ -8,7 +8,7 @@
         <div  id="calendar">
             <script type="text/javascript">
 
-                function type_color(type){
+                function get_type_color(type){
                     if (type=="client"){
                         return "#16a085";
                     }else if(type=="fa"){
@@ -19,13 +19,24 @@
                         return "#c0392b";
                     }
                 }
+                function get_type_from_color(color){
+                    if (color=="#16a085"){
+                        return "Client";
+                    }else if(color=="#8e44ad"){
+                        return "Financial Advisor";
+                    }else if(color=="#d35400"){
+                        return "Potential Client";
+                    }else if(color=="#c0392b"){
+                        return "Holiday";
+                    }
+                }
 
                 var event_list =[
                                 {%for event in events%}
                                     {   title : '{{event.title}}',
                                         start : '{{event.startDateTime|date:"c"}}',
                                         end : '{{event.endDateTime|date:"c"}}',
-                                        backgroundColor : type_color('{{ event.type }}')
+                                        backgroundColor : get_type_color('{{ event.type }}')
                                     },
                                 {% endfor %}
                             ];
@@ -35,10 +46,6 @@
                     end:"",
                     backgroundColor:""
                 };
-
-
-
-
 
                 $(document).ready(function(){
                         $('#calendar').fullCalendar({
@@ -58,6 +65,12 @@
                                     $('#calendarModal').modal();
 
                             $('#calendar').fullCalendar('unselect');
+                            },
+                            eventClick: function(event, element) {
+
+                            event_data(event);
+                             $('#calendar').fullCalendar('updateEvent', event);
+
                             },
                             events: event_list
 
@@ -95,7 +108,7 @@
 
                                 });
                             $('#calendarModal').modal('toggle');
-                            eventData.backgroundColor = type_color(eventData.type);
+                            eventData.backgroundColor = get_type_color(eventData.type);
                             $('#calendar').fullCalendar('renderEvent', eventData, true);
 
                 })
@@ -106,8 +119,22 @@
         </form>
 
 
+        </div>
+        <div class="col-md-3 well">
+            <p id="event_title"></p>
+            <script>
+                function event_data(data) {
+                    document.getElementById("event_title").innerHTML=(
+                            "<H1>"+data.title+"</H1>" +
+                            "<p>Start: "+data.start.toString()+"</p>"+
+                            "<p>End: "+data.end.toString()+"</p>"+
+                            "<p>Type: "+get_type_from_color(data.backgroundColor)+"</p>"+
+                            "<button type='button' class='btn btn-danger'>Delete</button>");
+                }
 
-        <div class="col-md-3"></div>
+            </script>
+
+        </div>
 
 
 
