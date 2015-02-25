@@ -63,8 +63,7 @@
                                     eventData.start = start.toISOString();
                                     eventData.end =  end.toISOString();
                                     $('#calendarModal').modal();
-
-                            $('#calendar').fullCalendar('unselect');
+                                    $('#calendar').fullCalendar('unselect');
                             },
                             eventClick: function(event, element) {
 
@@ -121,7 +120,7 @@
 
         </div>
         <div class="col-md-3 well">
-            <p id="event_title"></p>
+            <p id="event_title">Event Details</p>
             <script>
                 function event_data(data) {
                     document.getElementById("event_title").innerHTML=(
