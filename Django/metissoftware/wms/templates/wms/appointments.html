@@ -27,9 +27,11 @@
 
                 function post(eventData){
                     $.ajax({
-                                url: "create_appointment/",
+                                url: "/create_appointment/",
                                 type: "POST",
+
                                 data: {
+                                        csrfmiddlewaretoken: '{{ csrf_token }}',
                                         'title': "test",
                                         'start': "2015-02-12T12:06:59+00:00",
                                         'end': "2015-02-12T13:06:59+00:00"
@@ -76,13 +78,15 @@
 {#                                    };#}
 {##}
 {#                                    post(eventData);#}
+{#                                }#}
 
                                     $('#calendarModal').modal();
-                                        eventData = {
-                                            'title': "",
-                                            'start': start,
-                                            'end': end
-                                        };
+                                    eventData = {
+                                        'title': "",
+                                        'start': start,
+                                        'end': end
+                                    };
+
                             $('#calendar').fullCalendar('unselect');
                             },
                             events: event_list
@@ -91,11 +95,16 @@
 
 
                 });
+            $(document).ready(function() {
+                $('#modalForm').submit( function(event){
+                       event.preventDefault();
+                       eventData.title = $('#title').val();
+                         $('#calendarModal').modal();
+                        post(eventData);
+                        $('#calendar').fullCalendar('renderEvent', eventData, true);
 
-            $('#modalForm').on('submit', function(){
-                   eventData.title = $('#title').val();
-                 $('#calendar').fullCalendar('renderEvent', eventData, true);
-            })
+                })
+            });
 
             </script>
         </div>
@@ -114,7 +123,8 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                     </div>
-                    <form id="modalForm">
+                    <form method="post" id="modalForm">
+                        {% csrf_token %}
                         <div class="modal-body">
                                 <div class="form-group">
                                     <label for="title">Title</label>
