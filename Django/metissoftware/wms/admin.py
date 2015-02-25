@@ -10,7 +10,7 @@ class FACreationForm(forms.ModelForm):
 
     class Meta:
         model = FA
-        fields = ('first_name', 'surname', 'email', 'dob',
+        fields = ('first_name', 'surname', 'email', 'dob', 'image',
                   'ni_number', 'is_superuser', 'is_staff',
                   'is_admin', 'is_active'
                   )
@@ -48,14 +48,14 @@ class FAAdmin(UserAdmin):
     list_display = ('email', 'dob', 'is_superuser', 'is_staff', 'is_active')
     fieldsets = (
         (None, {'fields': ('first_name', 'surname', 'ni_number', 'email',
-                           'is_superuser', 'is_staff', 'is_admin',
+                           'image', 'is_superuser', 'is_staff', 'is_admin',
                            'is_active', 'password')}),
     )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name', 'surname', 'ni_number',
+            'fields': ('first_name', 'surname', 'ni_number', 'image',
                        'email', 'dob', 'is_staff',
                        'is_superuser', 'is_admin', 'password')
         }),
