@@ -52,7 +52,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_authenticated %}
                         <li class="text-center" style="padding-top: 15px;padding-bottom: 15px;">Welcome {{ user.email }}.</li>
-                        <li class="text-center"><a href="/wms/logout">[logout]</a>
+                        <li ><a href="/wms/logout">Logout</a>
                         </li>
                         {% else %}
                         <li class="login" >
@@ -92,7 +92,7 @@
 
         <footer class="footer">
             <div class="container">
-                <p class="text-muted text-">© 2014-2015 Wealth Management Tool by  <a href="http://www.metissoftware.co.uk" target="_blank"> Metis Software </a>.</p>
+                <p class="text-center" style="color:#FFFFFF;">© 2014-2015 Wealth Management Tool by  <a style="color:#dfb511;"href="http://www.metissoftware.co.uk" target="_blank"> Metis Software </a>.</p>
             </div>
         </footer>
     </body>
