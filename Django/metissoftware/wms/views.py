@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import AuthenticationForm
@@ -13,6 +13,7 @@ from wms.models import Client, ClientForm, Share, Event
 from wms import models as m
 from wms import scripts
 import datetime
+import json
 # Create your views here.
 
 
@@ -48,6 +49,7 @@ def create_appointment(request):
         post_text = request.POST
         title = post_text.get("title","")
         start = post_text.get("start","")
+        print(start);
         end = post_text.get("end","")
         type = post_text.get("type","")
         m.Event.objects.create(fa=request.user, startDateTime=start, endDateTime=end, title=title, type=type)
