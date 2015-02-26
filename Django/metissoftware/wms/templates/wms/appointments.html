@@ -1,6 +1,7 @@
 {% extends "wms/base_boot.html" %}
 {% load staticfiles %}
 {% block content %}
+
     <link href="{%static 'wms/css/fullcalendar/fullcalendar.css'%}" rel="stylesheet">
     <script src="{%static 'wms/js/fullcalendar/moment.min.js'%}"></script>
     <script src="{%static 'wms/js/fullcalendar/fullcalendar.js'%}"></script>
@@ -167,7 +168,15 @@
                 </div>
             </div>
         </div>
+<div class="col-md-9 panel panel-default">
+    <!-- Maybe make this javascript... useless InfoSys student is useless.-->
+    <table style="border-width: 0px;">
+        <tr><td style="padding: 10px;"><h3>Add a Meeting</h3></td><td style="padding: 10px;"><h3>Remove a Meeting</h3></td></tr>
+        <tr><td style="padding: 15px;"><p>To add a meeting, click on the time you wish to create a meeting, and drag to change the duration of the meeting.</p></td><td style="padding: 15px;"><p>To delete a meeting, click on the meeting you wish to delete to display details, then click the delete button.</p></td></tr>
+    </table>
+</div>
 
 
     </div>
+</div>
 {% endblock %}
