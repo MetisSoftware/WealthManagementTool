@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 from django.conf import settings
 from django.db import models
@@ -5,10 +6,6 @@ from django.forms import ModelForm, TextInput
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
-
-
-# Create your models here.
-
 
 class FAUserManager(BaseUserManager):
     def create_user(self, email, first_name, surname,
@@ -76,6 +73,15 @@ class FA(AbstractBaseUser, PermissionsMixin):
 
     objects = FAUserManager()
 
+class Event(models.Model):
+    fa = models.ForeignKey(FA)
+    startDateTime = models.DateTimeField()
+    endDateTime = models.DateTimeField()
+    type = models.CharField(max_length=64, default="meeting")
+    title = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.fa.first_name + " " + self.fa.surname + " - " + self.title + " - " + datetime.strftime(self.startDateTime,"%c")
 
 class Client(models.Model):
     first_name = models.CharField(max_length=64)

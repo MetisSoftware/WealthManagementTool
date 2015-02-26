@@ -33,11 +33,25 @@
     </div>
 
     <div class="table-responsive col-md-9 well" id="users">
-        <!--<div class="col-md-2 col-md-offset-10" id="users">-->
+        <div class="col-md-10 ">
             <label class="sr-only">Stock Symbol</label>
             <input id="symbol_input" class="form-control search" type="text" name="symbol" placeholder="Stock Symbol"/>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Buy Stock</button>
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                             <h4 class="modal-title" id="exampleModalLabel">Buy Shares</h4>
+                    </div>
+                        <h1 class="text-center">This is where you can search and buy stocks for the client</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <!--</div>-->
         <table class="table table-hover table-bordered table-condensed" style="background-color: #ffffff">
             <thead>
                 <th>Stock</th>
@@ -49,7 +63,7 @@
             <tbody class="list">
                 {% for share in shares %}
                 <tr>
-                    <td class="stock"><a href="/?symbol={{share.stock}}">{{ share.stock}}</a></td>
+                    <td class="stock"><a href="/wmt/?symbol={{share.stock}}">{{ share.stock}}</a></td>
                     <td class="buy_date">{{ share.buy_date}}</td>
                     <td class="amount">{{ share.amount}}</td>
                     <td class="price">{{ share.price}}</td>

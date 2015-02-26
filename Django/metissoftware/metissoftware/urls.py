@@ -13,4 +13,5 @@ urlpatterns = patterns('wms.views',
     url(r'^login/$', login, {'template_name': 'wms/login.html'}),
     url(r'^logout/$', logout, {'next_page': '/'}),
     url(r'^appointments/', 'appointments', name='appointments'),
+	url(r'^create_appointment/', 'create_appointment', name='create_appointment'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -6,8 +6,10 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
+
 from django.template import RequestContext
-from wms.models import Client, ClientForm, Share
+from wms.models import Client, ClientForm, Share, Event
 from wms import models as m
 from wms import scripts
 import datetime
@@ -19,7 +21,6 @@ def index(request):
     symbol = get_params.get("symbol")
     if symbol is None or symbol == "":
         symbol = "GOOG"
-    print(get_params.get("symbol"))
     if get_params.get("days") is not None:
         days = int(get_params.get("days"))
     else:
@@ -37,8 +38,28 @@ def index(request):
 
 @login_required
 def appointments(request):
-    return render_to_response('wms/appointments.html', context_instance=RequestContext(request))
+    current_user = request.user
+    events = Event.objects.filter(fa__ni_number=current_user.ni_number)
+    return render_to_response('wms/appointments.html',{'events': events}, context_instance=RequestContext(request))
 
+@csrf_protect
+def create_appointment(request):
+    if(request.method == 'POST'):
+        post_text = request.POST
+        title = post_text.get("title","")
+        start = post_text.get("start","")
+        end = post_text.get("end","")
+        type = post_text.get("type","")
+        m.Event.objects.create(fa=request.user, startDateTime=start, endDateTime=end, title=title, type=type)
+        print("pass")
+        data = {"success":"success"};
+        return HttpResponse(
+            json.dumps(data),
+            content_type='application/json',
+
+        )
+    else:
+        return render(request,'wms/appointments.html', context_instance=RequestContext(request) )
 
 @login_required
 def print_clients(request):

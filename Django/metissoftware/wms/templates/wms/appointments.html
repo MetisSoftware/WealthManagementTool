@@ -1,11 +1,175 @@
 {% extends "wms/base_boot.html" %}
-{% block content %}\
-<div class="well col-md-12 col-sm-12">
-<script class="ai1ec-widget-placeholder" data-widget="ai1ec-superwidget" data-action="month">
-	(function(){var d=document,s=d.createElement('script'),
-	i='ai1ec-script-sw';if(d.getElementById(i))return;s.async=1;
-	s.id=i;s.src='http://live-timely-gktjrvpf.time.ly/?ai1ec_super_widget';
-	d.getElementsByTagName('head')[0].appendChild(s);})();
-</script>
+{% load staticfiles %}
+{% block content %}
+
+    <link href="{%static 'wms/css/fullcalendar/fullcalendar.css'%}" rel="stylesheet">
+    <script src="{%static 'wms/js/fullcalendar/moment.min.js'%}"></script>
+    <script src="{%static 'wms/js/fullcalendar/fullcalendar.js'%}"></script>
+    <div class="col-md-9 panel panel-default" >
+        <div  id="calendar">
+            <script type="text/javascript">
+
+                function get_type_color(type){
+                    if (type=="client"){
+                        return "#16a085";
+                    }else if(type=="fa"){
+                        return "#8e44ad";
+                    }else if(type=="pot_client"){
+                        return "#d35400";
+                    }else if(type=="holiday"){
+                        return "#c0392b";
+                    }
+                }
+                function get_type_from_color(color){
+                    if (color=="#16a085"){
+                        return "Client";
+                    }else if(color=="#8e44ad"){
+                        return "Financial Advisor";
+                    }else if(color=="#d35400"){
+                        return "Potential Client";
+                    }else if(color=="#c0392b"){
+                        return "Holiday";
+                    }
+                }
+
+                var event_list =[
+                                {%for event in events%}
+                                    {   title : '{{event.title}}',
+                                        start : '{{event.startDateTime|date:"c"}}',
+                                        end : '{{event.endDateTime|date:"c"}}',
+                                        backgroundColor : get_type_color('{{ event.type }}')
+                                    },
+                                {% endfor %}
+                            ];
+                var eventData ={
+                    title:"",
+                    start:"",
+                    end:"",
+                    backgroundColor:""
+                };
+
+                $(document).ready(function(){
+                        $('#calendar').fullCalendar({
+                            header:{
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'agendaDay, agendaWeek, month'
+                            },
+                            defaultView: 'agendaWeek',
+                            editable: false,
+                            allDaySlot: false,
+                            selectable: true,
+
+                            select: function(start, end) {
+                                    eventData.start = start.toISOString();
+                                    eventData.end =  end.toISOString();
+                                    $('#calendarModal').modal();
+                                    $('#calendar').fullCalendar('unselect');
+                            },
+                            eventClick: function(event, element) {
+
+                            event_data(event);
+                             $('#calendar').fullCalendar('updateEvent', event);
+
+                            },
+                            events: event_list
+
+                        })
+
+
+                });
+            $(document).ready(function() {
+                $('#modalForm').submit( function(event){
+                       event.preventDefault();
+                       eventData.title = $('#title').val();
+                       eventData.type = $('#type').val();
+                        $.ajax({
+                                    url: "/create_appointment/",
+                                    type: "POST",
+
+                                    data: {
+                                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                                            title: eventData.title,
+                                            start : eventData.start,
+                                            end : eventData.end,
+                                            type : eventData.type
+                                    },
+
+                                    success: function (json){
+                                        console.log("Success");
+
+                                    },
+
+                                    error: function (xhr, errmsg, err) {
+                                        alert('Failed to create event.');
+                                        console.log(xhr.status + ": " + xhr.responseText);
+
+                                    }
+
+                                });
+                            $('#calendarModal').modal('toggle');
+                            eventData.backgroundColor = get_type_color(eventData.type);
+                            $('#calendar').fullCalendar('renderEvent', eventData, true);
+
+                })
+            });
+
+            </script>
+        </div>
+        </form>
+
+
+        </div>
+        <div class="col-md-3 well">
+            <p id="event_title">Event Details</p>
+            <script>
+                function event_data(data) {
+                    document.getElementById("event_title").innerHTML=(
+                            "<H1>"+data.title+"</H1>" +
+                            "<p>Start: "+data.start.toString()+"</p>"+
+                            "<p>End: "+data.end.toString()+"</p>"+
+                            "<p>Type: "+get_type_from_color(data.backgroundColor)+"</p>"+
+                            "<button type='button' class='btn btn-danger'>Delete</button>");
+                }
+
+            </script>
+
+        </div>
+
+
+
+        <div id="calendarModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <form method="post" id="modalForm">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input id="title" class="form-control" placeholder="Meeting with...">
+                                    <label for="type">Type</label>
+                                    <Select id="type" class="form-control" placeholder="Meeting with...">
+                                        <option value="client">Client</option>
+                                        <option value="fa">Financial Adviser</option>
+                                        <option value="pot_client">Potential Client</option>
+                                        <option value="holiday">Holidays</option>
+                                    </Select>
+
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                             <input class="btn btn-default" type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 </div>
 {% endblock %}
