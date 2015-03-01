@@ -6564,4 +6564,8 @@ button.close {
     display: none !important;
   }
 }
+
+#tab-container {
+    overflow:hidden;
+}
 /*# sourceMappingURL=bootstrap.css.map */

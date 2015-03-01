@@ -1,86 +1,116 @@
 {% extends "wms/base_boot.html" %}
-
-
-{% block title %}Add Client{% endblock %}
-
+{% load staticfiles %}
 {% block content %}
-<div class="col-md-3" ></div>
-<div class="table-responsive col-md-6 well">
+
+<script src="{%static 'wms/js/tabbedform.js'%}"></script>
+<div class="table-responsive col-md-offset-2 col-md-8 well">
 <form enctype="multipart/form-data" method="post" class="form-horizontal" role="form" action='new_client.html' method='post'>
     {% csrf_token %}
     {{ form.non_field_errors }}
-        <div class="form-group">
-            {{ form.first_name.errors }}
-            <label class="control-label col-sm-6" for="id_first_name">First Name:</label>
+        <div id="tab-container" class="span6 offset1">
+        <ul class="nav nav-tabs" id="myTab">
+              <li class="active"><a href="#name" data-toggle="tab">Name Information</a></li>
+              <li class="disabled"><a href="#contact" data-toggle="tab">Contact Information</a></li>
+              <li class="disabled"><a href="#account" data-toggle="tab">Account Information</a></li>
+              <li class="disabled"><a href="#social" data-toggle="tab">Social Media</a></li>
+            </ul>
+            
+            <div class="tab-content">
+                <div class="tab-pane active" id="name">
+                    <div class="well">
+                        <fieldset>
+                            <legend>Registration Options</legend>
 
-            {{ form.first_name }}
-        </div>
-        <div class="form-group">
-            {{ form.middle_name.errors }}
-            <label class="control-label col-sm-6" for="id_middle_name">Middle Name:</label>
-            {{ form.middle_name }}
-        </div>
-        <div class="form-group">
-            {{ form.surname.errors }}
-            <label class="control-label col-sm-6" for="id_surname">Surname:</label>
-            {{ form.surname }}
-        </div>
-        <div class="form-group">
-            {{ form.email.errors }}
-            <label class="control-label col-sm-6" for="id_email">Email:</label>
-            {{ form.email }}
-        </div>
-        <div class="form-group">
-            {{ form.image.errors }}
-            <label class="control-label col-sm-6" for="id_image">Client Image:</label>
-            {{ form.image }}
-        </div>
-        <div class="form-group">
-            {{ form.mob_phone.errors }}
-            <label class="control-label col-sm-6" for="id_mob_phone">Mobile Phone Number:</label>
-            {{ form.mob_phone }}
-        </div>
-        <div class="form-group">
-            {{ form.home_phone.errors }}
-            <label class="control-label col-sm-6" for="id_home_phone">Home Phone Number:</label>
-            {{ form.home_phone }}
-        </div>
-        <div class="form-group">
-            {{ form.dob.errors }}
-            <label class="control-label col-sm-6" for="id_dob">Date Of Birth:</label>
-            {{ form.dob }}
-        </div>
-        <div class="form-group">
-            {{ form.ni_number.errors }}
-            <label class="control-label col-sm-6" for="ni_number">National Insurance Number:</label>
+                           <div class="form-group">
+                            {{ form.first_name.errors }}
+                            <label class="control-label col-sm-6" for="id_first_name">First Name:</label>
 
-            {{ form.ni_number }}
-        </div>
-        <div class="form-group">
-            {{ form.fa.errors }}
-            <label class="control-label col-sm-6" for="id_fa">Financial Advisor:</label>
-            {{ form.fa }}
-        </div>
-        <div class="form-group">
-            {{ form.cash.errors }}
-            <label class="control-label col-sm-6" for="id_cash">Cash:</label>
-            <{{ form.cash }}
-        </div>
+                            {{ form.first_name }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.middle_name.errors }}
+                                <label class="control-label col-sm-6" for="id_middle_name">Middle Name:</label>
+                                {{ form.middle_name }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.surname.errors }}
+                                <label class="control-label col-sm-6" for="id_surname">Surname:</label>
+                                {{ form.surname }}
+                            </div>
+                        </fieldset>
+                                <button class="btn btn-success" data-activate="#contact">Continue</button>
+                        <span class="help-inline" style="display:none;">Please choose an option</span>
+                    </div><!--/.well -->
+                </div>
+                <div class="tab-pane" id="contact">
+                    <div class="well">
+                        <div class="form-group">
+                            {{ form.email.errors }}
+                            <label class="control-label col-sm-6" for="id_email">Email:</label>
+                            {{ form.email }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.image.errors }}
+                            <label class="control-label col-sm-6" for="id_image">Client Image:</label>
+                            {{ form.image }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.mob_phone.errors }}
+                            <label class="control-label col-sm-6" for="id_mob_phone">Mobile Phone Number:</label>
+                            {{ form.mob_phone }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.home_phone.errors }}
+                            <label class="control-label col-sm-6" for="id_home_phone">Home Phone Number:</label>
+                            {{ form.home_phone }}
+                        </div>
+                         <button class="btn btn-success" data-activate="#account">Continue</button>
+                     </div>
+                </div>
+                <div class="tab-pane" id="account">
+                    <div class="well">
+                    <div class="form-group">
+                        {{ form.dob.errors }}
+                        <label class="control-label col-sm-6" for="id_dob">Date Of Birth:</label>
+                        {{ form.dob }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.ni_number.errors }}
+                        <label class="control-label col-sm-6" for="ni_number">National Insurance Number:</label>
 
-        <div class="form-group">
-            {{ form.twitter_username.errors }}
-            <label class="control-label col-sm-6" for="id_twitter_username">Twitter Username:</label>
-            {{ form.twitter_username }}
-        </div>
+                        {{ form.ni_number }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.fa.errors }}
+                        <label class="control-label col-sm-6" for="id_fa">Financial Advisor:</label>
+                        {{ form.fa }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.cash.errors }}
+                        <label class="control-label col-sm-6" for="id_cash">Cash:</label>
+                        <{{ form.cash }}
+                    </div>
+                    <button class="btn btn-success" data-activate="#social">Continue</button>
+                    </div><!-- .well -->
+                </div>
+                <div class="tab-pane" id="social">
+                    <div class="well">
+                    <div class="form-group">
+                        {{ form.twitter_username.errors }}
+                        <label class="control-label col-sm-6" for="id_twitter_username">Twitter Username:</label>
+                        {{ form.twitter_username }}
+                    </div>
 
-        <div class="form-group">
-            {{ form.twitter_widget_id.errors }}
-            <label class="control-label col-sm-6" for="id_twitter_widget_id">Twitter Widget Id:</label>
-            {{ form.twitter_widget_id }}
-        </div>
-        <div class ="col-sm-3"></div>
-        <div class ="col-sm-6"><input class ="btn btn-success" type="submit"  value="Submit" /></div>
-    </div>
-</form>
+                    <div class="form-group">
+                        {{ form.twitter_widget_id.errors }}
+                        <label class="control-label col-sm-6" for="id_twitter_widget_id">Twitter Widget Id:</label>
+                        {{ form.twitter_widget_id }}
+                    </div>
+                    <button class="btn btn-success" data-activate="#account" type="submit">Submit</button>
+                    </div><!-- .well -->
+                </div>
+    </div><!-- /#tab-container -->
+</div><!-- /.container -->
+
 </div>
 {% endblock %}
