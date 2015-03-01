@@ -1,0 +1,104 @@
+{% extends "wms/base_boot.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<!-- CSS Files -->
+<link href="{%static 'wms/css/uff/jquery-ultimate-fancy-form.css'%}" rel="stylesheet">
+<link href="{%static 'wms/css/uff/animate.css'%}" rel="stylesheet">
+<!-- JS Files -->
+<script src="{%static 'wms/js/uff/jquery-ultimate-fancy-form.min.js'%}"></script>
+
+<div class="table-responsive col-md-offset-2 col-md-8 well">
+<div class="form-container">
+<!--<form enctype="multipart/form-data" method="post" class="form form-horizontal component-uff uff-form-sliding dispatched" onkeypress = "return event.keyCode != 13;"role="form" action='new_client.html' method='post' data-step-method = "sliding">-->
+    <form class="form form-horizontal component-uff uff-form-sliding dispatched" onkeypress = "return event.keyCode != 13;"role="form" data-step-method = "sliding">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class = "sliding-container" stye="margin-left:0px;">
+    <div class ="table-responsive col-md-12 well" data-step="" data-step-number ="0" style = "width:730px;">
+        <div class="clearfix"></div>
+        <div class="form-group">
+            {{ form.first_name.errors }}
+            <label class="control-label col-sm-6" for="id_first_name">First Name:</label>
+
+            {{ form.first_name }}
+        </div>
+        <div class="form-group">
+            {{ form.middle_name.errors }}
+            <label class="control-label col-sm-6" for="id_middle_name">Middle Name:</label>
+            {{ form.middle_name }}
+        </div>
+        <div class="form-group">
+            {{ form.surname.errors }}
+            <label class="control-label col-sm-6" for="id_surname">Surname:</label>
+            {{ form.surname }}
+        </div>
+        <div class="form-group">
+            {{ form.email.errors }}
+            <label class="control-label col-sm-6" for="id_email">Email:</label>
+            {{ form.email }}
+        </div>
+        <div class ="form-group"><a class ="btn btn-success sb-effect-displayed animated" data-step-next=""  /> Next</a></div>
+        <div class="clearfix"></div>
+    </div>
+     <div class ="table-responsive col-md-12 well" data-step="" data-step-number ="1" style = "width:730px;">
+        <div class="clearfix"></div>
+        <div class="form-group">
+            {{ form.image.errors }}
+            <label class="control-label col-sm-6" for="id_image">Client Image:</label>
+            {{ form.image }}
+        </div>
+        <div class="form-group">
+            {{ form.mob_phone.errors }}
+            <label class="control-label col-sm-6" for="id_mob_phone">Mobile Phone Number:</label>
+            {{ form.mob_phone }}
+        </div>
+        <div class="form-group">
+            {{ form.home_phone.errors }}
+            <label class="control-label col-sm-6" for="id_home_phone">Home Phone Number:</label>
+            {{ form.home_phone }}
+        </div>
+        <div class="form-group">
+            {{ form.dob.errors }}
+            <label class="control-label col-sm-6" for="id_dob">Date Of Birth:</label>
+            {{ form.dob }}
+        </div>
+        <div class="form-group">
+            {{ form.ni_number.errors }}
+            <label class="control-label col-sm-6" for="ni_number">National Insurance Number:</label>
+
+            {{ form.ni_number }}
+        </div>
+        <div class="form-group">
+            {{ form.fa.errors }}
+            <label class="control-label col-sm-6" for="id_fa">Financial Advisor:</label>
+            {{ form.fa }}
+        </div>
+        <div class="form-group">
+            {{ form.cash.errors }}
+            <label class="control-label col-sm-6" for="id_cash">Cash:</label>
+            <{{ form.cash }}
+        </div>
+
+        <div class="form-group">
+            {{ form.twitter_username.errors }}
+            <label class="control-label col-sm-6" for="id_twitter_username">Twitter Username:</label>
+            {{ form.twitter_username }}
+        </div>
+
+        <div class="form-group">
+            {{ form.twitter_widget_id.errors }}
+            <label class="control-label col-sm-6" for="id_twitter_widget_id">Twitter Widget Id:</label>
+            {{ form.twitter_widget_id }}
+        </div>
+
+        <div class ="col-sm-3"></div>
+        <div class ="col-sm-6"><input class ="btn btn-success" type="submit"  value="Submit" /></div>
+        <div class="clearfix"></div>
+    </div>  
+    </div>
+    </div>
+</form>
+</div>
+</div>
+{% endblock %}
