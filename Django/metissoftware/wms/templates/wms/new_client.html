@@ -2,73 +2,65 @@
 {% load staticfiles %}
 {% block content %}
 
-<script src="{%static 'wms/js/tabbedform.js'%}"></script>
-<div class="table-responsive col-md-offset-2 col-md-8 well">
-<form enctype="multipart/form-data" method="post" class="form-horizontal" role="form" action='new_client.html' method='post'>
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-        <div id="tab-container" class="span6 offset1">
-        <ul class="nav nav-tabs" id="myTab">
-              <li class="active"><a href="#name" data-toggle="tab">Name Information</a></li>
-              <li class="disabled"><a href="#contact" data-toggle="tab">Contact Information</a></li>
-              <li class="disabled"><a href="#account" data-toggle="tab">Account Information</a></li>
-              <li class="disabled"><a href="#social" data-toggle="tab">Social Media</a></li>
-            </ul>
-            
-            <div class="tab-content">
-                <div class="tab-pane active" id="name">
-                    <div class="well">
-                        <fieldset>
-                            <legend>Registration Options</legend>
+<link href="{%static 'wms/css/formstyle.css'%}" rel="stylesheet">
+<script src="{%static 'wms/js/sliding.form.js'%}"></script>
+<!--<div class="table-responsive col-md-offset-2 col-md-6 well" style="overflow:hidden;">-->
+<div class ="col-md-offset-2">
+    <div id = "wrapper">
+        <div id="steps">
+            <form enctype="multipart/form-data" id="formElem" name="formElem" class="form-horizontal" role="form" action='new_client.html' method='post'>
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="col-md-3">
+                <fieldset class = "step">
+                    <legend>Personal Information</legend>
 
-                           <div class="form-group">
-                            {{ form.first_name.errors }}
-                            <label class="control-label col-sm-6" for="id_first_name">First Name:</label>
+                   <div class="form-group">
+                    {{ form.first_name.errors }}
+                    <label class="control-label col-sm-6" for="id_first_name">First Name:</label>
 
-                            {{ form.first_name }}
-                            </div>
-                            <div class="form-group">
-                                {{ form.middle_name.errors }}
-                                <label class="control-label col-sm-6" for="id_middle_name">Middle Name:</label>
-                                {{ form.middle_name }}
-                            </div>
-                            <div class="form-group">
-                                {{ form.surname.errors }}
-                                <label class="control-label col-sm-6" for="id_surname">Surname:</label>
-                                {{ form.surname }}
-                            </div>
-                        </fieldset>
-                                <button class="btn btn-success" data-activate="#contact">Continue</button>
-                        <span class="help-inline" style="display:none;">Please choose an option</span>
-                    </div><!--/.well -->
+                    {{ form.first_name }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.middle_name.errors }}
+                        <label class="control-label col-sm-6" for="id_middle_name">Middle Name:</label>
+                        {{ form.middle_name }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.surname.errors }}
+                        <label class="control-label col-sm-6" for="id_surname">Surname:</label>
+                        {{ form.surname }}
+                    </div>
+                </fieldset>
                 </div>
-                <div class="tab-pane" id="contact">
-                    <div class="well">
-                        <div class="form-group">
-                            {{ form.email.errors }}
-                            <label class="control-label col-sm-6" for="id_email">Email:</label>
-                            {{ form.email }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.image.errors }}
-                            <label class="control-label col-sm-6" for="id_image">Client Image:</label>
-                            {{ form.image }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.mob_phone.errors }}
-                            <label class="control-label col-sm-6" for="id_mob_phone">Mobile Phone Number:</label>
-                            {{ form.mob_phone }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.home_phone.errors }}
-                            <label class="control-label col-sm-6" for="id_home_phone">Home Phone Number:</label>
-                            {{ form.home_phone }}
-                        </div>
-                         <button class="btn btn-success" data-activate="#account">Continue</button>
-                     </div>
+                <div class ="col-md-3">
+                <fieldset class = "step">
+                    <legend>Contact Information</legend>
+                    <div class="form-group">
+                        {{ form.email.errors }}
+                        <label class="control-label col-sm-6" for="id_email">Email:</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.image.errors }}
+                        <label class="control-label col-sm-6" for="id_image">Client Image:</label>
+                        {{ form.image }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.mob_phone.errors }}
+                        <label class="control-label col-sm-6" for="id_mob_phone">Mobile Phone Number:</label>
+                        {{ form.mob_phone }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.home_phone.errors }}
+                        <label class="control-label col-sm-6" for="id_home_phone">Home Phone Number:</label>
+                        {{ form.home_phone }}
+                    </div>
+                </fieldset>
                 </div>
-                <div class="tab-pane" id="account">
-                    <div class="well">
+                <div class="col-md-3">
+                <fieldset class = "step">
+                        <legend>Account Information</legend>
                     <div class="form-group">
                         {{ form.dob.errors }}
                         <label class="control-label col-sm-6" for="id_dob">Date Of Birth:</label>
@@ -88,13 +80,13 @@
                     <div class="form-group">
                         {{ form.cash.errors }}
                         <label class="control-label col-sm-6" for="id_cash">Cash:</label>
-                        <{{ form.cash }}
+                        {{ form.cash }}
                     </div>
-                    <button class="btn btn-success" data-activate="#social">Continue</button>
-                    </div><!-- .well -->
+                </fieldset>
                 </div>
-                <div class="tab-pane" id="social">
-                    <div class="well">
+                <div class = "col-md-3">
+                <fieldset class = "step">
+                        <legend>Social Media</legend>
                     <div class="form-group">
                         {{ form.twitter_username.errors }}
                         <label class="control-label col-sm-6" for="id_twitter_username">Twitter Username:</label>
@@ -106,11 +98,27 @@
                         <label class="control-label col-sm-6" for="id_twitter_widget_id">Twitter Widget Id:</label>
                         {{ form.twitter_widget_id }}
                     </div>
-                    <button class="btn btn-success" data-activate="#account" type="submit">Submit</button>
-                    </div><!-- .well -->
+                    <button class="btn btn-success" id="registerButton" type="submit">Submit</button>
+                </fieldset>
                 </div>
-    </div><!-- /#tab-container -->
-</div><!-- /.container -->
-
+            </form>
+        </div>
+         <div id="navigation" style="display:none;">
+                    <ul>
+                        <li class="selected">
+                            <a href="#">Personal</a>
+                        </li>
+                        <li>
+                            <a href="#">Contact</a>
+                        </li>
+                        <li>
+                            <a href="#">Account</a>
+                        </li>
+                        <li>
+                            <a href="#">Social Media</a>
+                        </li>
+                    </ul>
+                </div>
+    </div>
 </div>
 {% endblock %}
