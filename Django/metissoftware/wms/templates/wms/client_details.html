@@ -46,10 +46,30 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                              <h4 class="modal-title" id="exampleModalLabel">Buy Shares</h4>
                     </div>
-                        <h1 class="text-center">This is where you can search and buy stocks for the client</h1>
+                    <div class="modal-body">
+                        <div>
+                            <div class="col-md-12">
+                                <form class="form-horizontal" action="" method="get">
+
+                                    <div class="form-group col-md-11">
+                                        <label class="sr-only">Stock Symbol</label>
+                                        <input id="symbol_input" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
+                                    </div>
+
+                                    <div class="form-group col-md-1">
+                                        <button class="btn btn-primary glyphicon glyphicon-search" type="submit" value="Submit" > Search</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div> </div>
+                        </div>
+
                     </div>
+
                 </div>
             </div>
+        </div>
         </div>
 
         <table class="table table-hover table-bordered table-condensed" style="background-color: #ffffff">
@@ -87,6 +107,6 @@
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     {% endif %}
     {% else %}
-<p>No client data</p>
-{% endif %}
+        <p>No client data</p>
+    {% endif %}
 {%  endblock %}

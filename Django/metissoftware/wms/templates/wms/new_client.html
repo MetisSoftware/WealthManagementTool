@@ -6,7 +6,7 @@
 {% block content %}
 <div class="col-md-3" ></div>
 <div class="table-responsive col-md-6 well">
-<form class="form-horizontal" role="form" action='new_client.html' method='post'>
+<form enctype="multipart/form-data" method="post" class="form-horizontal" role="form" action='new_client.html' method='post'>
     {% csrf_token %}
     {{ form.non_field_errors }}
         <div class="form-group">
@@ -29,6 +29,11 @@
             {{ form.email.errors }}
             <label class="control-label col-sm-6" for="id_email">Email:</label>
             {{ form.email }}
+        </div>
+        <div class="form-group">
+            {{ form.image.errors }}
+            <label class="control-label col-sm-6" for="id_image">Client Image:</label>
+            {{ form.image }}
         </div>
         <div class="form-group">
             {{ form.mob_phone.errors }}
