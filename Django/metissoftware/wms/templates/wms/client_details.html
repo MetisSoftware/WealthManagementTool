@@ -38,38 +38,7 @@
             <input id="symbol_input" class="form-control search" type="text" name="symbol" placeholder="Stock Symbol"/>
         </div>
         <div class="col-md-2">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Buy Stock</button>
-            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                             <h4 class="modal-title" id="exampleModalLabel">Buy Shares</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div>
-                            <div class="col-md-12">
-                                <form class="form-horizontal" action="" method="get">
-
-                                    <div class="form-group col-md-11">
-                                        <label class="sr-only">Stock Symbol</label>
-                                        <input id="symbol_input" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
-                                    </div>
-
-                                    <div class="form-group col-md-1">
-                                        <button class="btn btn-primary glyphicon glyphicon-search" type="submit" value="Submit" > Search</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <div> </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#StockModal">Buy Stock</button>
         </div>
 
         <table class="table table-hover table-bordered table-condensed" style="background-color: #ffffff">
@@ -102,6 +71,41 @@
             </script>
         </table>
      </div>
+            <div class="modal fade" tabindex="-1" id="StockModal" >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                             <h4 class="modal-title" id="exampleModalLabel">Buy Shares</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <form class="form-horizontal" action="/queryAPI/" method="get">
+
+                                    <div class="form-group col-md-11">
+                                        <label class="sr-only">Stock Symbol</label>
+                                        <input id="symbol_input" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
+                                    </div>
+
+                                    <div class="form-group col-md-1">
+                                        <button class="btn btn-primary glyphicon glyphicon-search" type="submit" value="Submit" > Search</button>
+                                    </div>
+                                </form>
+                                <script type="text/javascript">
+
+
+                                </script>
+                            </div>
+
+                            <div class="col-md-12"></div>
+                        </div>
+                        <div class="modal-footer">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
     {% if twitter == True %}
         <a class="twitter-timeline" href="https://twitter.com/{{client_details.twitter_username}}" data-widget-id="{{client_details.twitter_widget_id}}">Tweets</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>

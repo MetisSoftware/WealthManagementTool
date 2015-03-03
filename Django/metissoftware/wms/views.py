@@ -36,6 +36,25 @@ def index(request):
 
     #return render_to_response('wms/index.html',{})
 
+def queryAPI(request):
+    if(request.method == 'GET'):
+        get_args = request.GET
+        symbol = get_args.get("symbol")
+        if symbol == None or symbol == "":
+            return;
+        days = get_args.get("days")
+        if days != None:
+            days = int(days)
+        else:
+            days = 5
+    yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
+    yesterday_minus_days = yesterday - datetime.timedelta(days=days)
+    query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
+            "' and startDate = '"+yesterday_minus_days.strftime("%Y-%m-%d")+"' and endDate = '"+\
+            yesterday.strftime("%Y-%m-%d")+"'"
+    stock_result = scripts.query_api(query)
+
+    return HttpResponse(json.dumps(stock_result), content_type='application/json')
 
 @login_required
 def appointments(request):
