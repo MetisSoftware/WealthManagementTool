@@ -84,3 +84,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'wms.FA'
 LOGIN_URL = '/login'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'wms/media')
+MEDIA_URL = '/media/'
