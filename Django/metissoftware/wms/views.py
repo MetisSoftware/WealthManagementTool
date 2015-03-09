@@ -20,9 +20,9 @@ import json
 def index(request):
     get_params = request.GET
     symbol = get_params.get("symbol")
-    if symbol ==None or symbol=="":
+    if symbol is None or symbol=="":
         symbol = "GOOG"
-    if get_params.get("days")!=None:
+    if get_params.get("days") is not None:
         days = int(get_params.get("days"))
     else:
         days = 5
