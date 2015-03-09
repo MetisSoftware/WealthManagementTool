@@ -1,3 +1,5 @@
+import os
+from django.conf import settings
 from datetime import datetime
 from django.db import models
 from django.forms import ModelForm, TextInput
