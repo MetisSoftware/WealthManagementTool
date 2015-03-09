@@ -48,7 +48,7 @@ class FAAdmin(UserAdmin):
     list_display = ('email', 'dob', 'is_superuser', 'is_staff', 'is_active')
     fieldsets = (
         (None, {'fields': ('first_name', 'surname', 'ni_number', 'email',
-                           'is_superuser', 'is_staff', 'is_admin',
+                           'image', 'is_superuser', 'is_staff', 'is_admin',
                            'is_active', 'password')}),
     )
 
