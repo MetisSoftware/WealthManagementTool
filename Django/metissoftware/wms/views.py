@@ -97,7 +97,7 @@ def new_client(request):
         form = ClientForm()
     else:
         # Bind data from reqtest.Post into a ClientForm
-        form = ClientForm(request.POST)
+        form = ClientForm(request.POST, request.FILES)
         # Check if data is valid then redirect user (temporary measure)
         if form.is_valid():
             client = form.save(commit=False)

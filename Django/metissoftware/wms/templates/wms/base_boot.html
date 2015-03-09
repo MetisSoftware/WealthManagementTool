@@ -53,6 +53,9 @@
 				{% if user.is_authenticated %}
 				<li class="text-center" style="padding-top: 15px;padding-bottom: 15px;">Welcome {{ user.email }}.</li>
 				<li ><a href="/logout">Logout</a>
+				{% if user.is_staff %}
+				<li><a href="/admin">Admin</a>
+				{% endif %}
 				</li>
 				{% else %}
 				<li class="login" >
