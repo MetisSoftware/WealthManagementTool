@@ -71,41 +71,224 @@
             </script>
         </table>
      </div>
-            <div class="modal fade" tabindex="-1" id="StockModal" >
-                <div class="modal-dialog">
+            <div class=" modal fade" tabindex="-1" id="StockModal" role="dialog" >
+                <div class="modal-dialog  modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                              <h4 class="modal-title" id="exampleModalLabel">Buy Shares</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="col-md-12">
-                                <form class="form-horizontal" action="/queryAPI/" method="get">
+                            <form id="buySharesForm" class="form-horizontal" action="/query_api/" method="get">
 
-                                    <div class="form-group col-md-11">
-                                        <label class="sr-only">Stock Symbol</label>
-                                        <input id="symbol_input" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
-                                    </div>
+                                <div class="form-group col-md-11">
+                                    <label class="sr-only">Stock Symbol</label>
+                                    <input id="stock_symbol" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
+                                </div>
 
-                                    <div class="form-group col-md-1">
-                                        <button class="btn btn-primary glyphicon glyphicon-search" type="submit" value="Submit" > Search</button>
-                                    </div>
-                                </form>
-                                <script type="text/javascript">
+                                <div class="form-group col-md-1">
+                                    <button class="btn btn-primary glyphicon glyphicon-search" type="submit" value="Submit" > Search</button>
+                                </div>
+                            </form>
 
-
-                                </script>
+                            <h3 id="symbol_title" class="text-center"></h3>
+                            <div>
+                                <canvas id="stock_graph" class="hidden"></canvas>
+                                <div id="lineLegend" class="hidden"></div>
                             </div>
 
-                            <div class="col-md-12"></div>
-                        </div>
-                        <div class="modal-footer">
 
+                            <!--<div id="table_div"class="col-md-12 hidden">
+                                <div class="table-responsive col-md-12 ">
+                                    <h1 class="text-center" style="color: #000000">Results</h1>
+                                    <table class = "table table-hover table-condensed table-bordered" style="background-color: #ffffff">
+                                        <thead>
+                                            <tr id="thead_result">
+
+                                            </tr>
+
+                                        </thead>
+                                        <tbody id="tbody_results">
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>-->
+
+                        </div>
+                        <div id="modal_footer" class="modal-footer ">
+                            <div id="stock_buy" class="hidden">
+                                <form class="form-inline" id="buy_buttonForm">
+                                    <button id="buy_button" class="btn btn-default" type="submit" value="Buy">Buy</button><p id="buy_text"></p>
+                                </form>
+
+                            </div>
                         </div>
 
                     </div>
                 </div>
             </div>
+        <script type="text/javascript">
+        var symbol;
+        var recent_close;
+        function print_results(json) {
+            var result = json.query.results.quote;
+            symbol = result[0]["Symbol"].toUpperCase();
+            recent_close = result[0]["Adj_Close"];
+            $("#symbol_title").html(symbol);
+            $("#table_div").removeClass("hidden");
+            $("#stock_graph").removeClass("hidden");
+            $("#lineLegend").removeClass("hidden");
+            $("#modal_footer").removeClass("hidden");
+            $("#stock_buy").removeClass("hidden");
+
+
+            $("#thead_result").html("");
+            for (key in result[0]){
+                $("#thead_result").append("<th>" + key + "</th>");
+            }
+            for (var quote in result) {
+                $("#tbody_results").append("<tr>");
+                for (var key in result[quote]) {
+                    $("#tbody_results").append("<td>" + result[quote][key] + "</td>");
+                }
+                $("#tbody_results").append("</tr>");
+            }
+
+            make_graph(result);
+            setup_buy()
+        }
+        function setup_buy(){
+            $("#buy_text").html(" "+symbol+" at $"+ recent_close);
+        }
+
+            $(document).ready(function() {
+                $('#buySharesForm').submit( function(event){
+                    event.preventDefault();
+                    var symbol = $("#stock_symbol").val();
+                        $.ajax({
+                            url: "/query_api/",
+                            type: "POST",
+                            data: {
+                                csrfmiddlewaretoken: '{{ csrf_token }}',
+                                symbol: symbol,
+                                days: 5
+                            },
+                            success: function (json){
+                                console.log("Success");
+                                print_results(json);
+
+                            },
+                            error: function (xhr, errmsg, err) {
+                                alert('Failed.');
+                                console.log(xhr.status + ": " + xhr.responseText);
+                            }
+                        });
+                })
+            });
+
+            $(document).ready(function(){
+                $("#buy_buttonForm").submit(function (event){
+                    event.preventDefault();
+                    $.ajax({
+                            url: "/buy_stock/",
+                            type: "POST",
+                            data: {
+                                csrfmiddlewaretoken: '{{ csrf_token }}',
+                                symbol: symbol,
+                                ni: '{{client_details.ni_number}}',
+                                price: recent_close,
+                                amount: 1
+                            },
+                            success: function (json){
+                                console.log("Success");
+                                console.log(json["result"])
+                                if(json["result"] == "success"){
+                                    alert("Stocks bought")
+                                }else if(json["result"] == "insufficient funds"){
+                                    alert('Insufficient funds');
+                                }
+                            },
+                            error: function (xhr, errmsg, err) {
+                                alert('Failed.');
+                                console.log(xhr.status + ": " + xhr.responseText);
+                            }
+                        });
+                })
+            })
+        </script>
+
+    <script>
+
+    function make_graph(result) {
+        var dates = [];
+        var open = [];
+        var close = [];
+        var high = [];
+        var low = [];
+
+        for (var key in result){
+            console.log(key);
+            dates[dates.length] = result[key]["Date"];
+            open[open.length] = result[key]["Open"] ;
+            close[close.length] = result[key]["Close"] ;
+            high[high.length] = result[key]["High"] ;
+            low[low.length] = result[key]["Low"] ;
+        }
+
+        var stock_graph = document.getElementById('stock_graph').getContext('2d');
+        var stockData = {
+            labels: dates,
+            datasets: [
+                {
+                    label: "Open",
+                    fillColor: "rgba(223,181,17,0)",
+                    strokeColor: "#DFB511",
+                    pointColor: "#DFB511",
+                    pointStrokeColor: "#34495e",
+                    data: open
+                },
+                {
+                    label: "Close",
+                    fillColor: "rgba(0,107,195,0)",
+                    strokeColor: "#006BC3",
+                    pointColor: "#006BC3",
+                    pointStrokeColor: "#34495e",
+                    data: close
+                },
+                {
+                    label: "High",
+                    fillColor: "rgba(9,192,9,0)",
+                    strokeColor: "#09C009",
+                    pointColor: "#09C009",
+                    pointStrokeColor: "#34495e",
+                    data: high
+                },
+                {
+                    label: "Low",
+                    fillColor: "rgba(218,7,7,0)",
+                    strokeColor: "#DA0707",
+                    pointColor: "#DA0707",
+                    pointStrokeColor: "#34495e",
+                    data: low
+                }
+
+            ]
+        }
+        var opts = {scaleFontColor: "#000000",
+            scaleLineColor: "#000000",
+            scaleGridLineColor: "#000000",
+            scaleShowLabels: true,
+            bezierCurve: false,
+            scaleShowVerticalLines: false,
+            responsive: true
+        }
+
+        new Chart(stock_graph).Line(stockData, opts);
+        legend(document.getElementById("lineLegend"), stockData);
+    }
+    </script>
     {% if twitter == True %}
         <a class="twitter-timeline" href="https://twitter.com/{{client_details.twitter_username}}" data-widget-id="{{client_details.twitter_widget_id}}">Tweets</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>

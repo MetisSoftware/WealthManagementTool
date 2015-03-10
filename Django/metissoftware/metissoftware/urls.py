@@ -15,4 +15,6 @@ urlpatterns = patterns('wms.views',
     url(r'^logout/$', logout, {'next_page': '/'}),
     url(r'^appointments/', 'appointments', name='appointments'),
     url(r'^create_appointment/', 'create_appointment', name='create_appointment'),
+    url(r'^query_api/', 'queryAPI', name='queryAPI'),
+    url(r'^buy_stock/', 'buyStock', name='buyStock'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

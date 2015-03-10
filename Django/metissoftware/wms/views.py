@@ -9,10 +9,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 from django.template import RequestContext
-from wms.models import Client, ClientForm, Share, Event
+from wms.models import Client, ClientForm, Share, Event, Stock
 from wms import models as m
 from wms import scripts
 import datetime
+import decimal
 import json
 # Create your views here.
 
@@ -37,24 +38,44 @@ def index(request):
     #return render_to_response('wms/index.html',{})
 
 def queryAPI(request):
-    if(request.method == 'GET'):
-        get_args = request.GET
+    if(request.method == 'POST'):
+        get_args = request.POST
         symbol = get_args.get("symbol")
         if symbol == None or symbol == "":
             return;
         days = get_args.get("days")
         if days != None:
-            days = int(days)
+            days = int(days);
         else:
             days = 5
-            yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
-            yesterday_minus_days = yesterday - datetime.timedelta(days=days)
-            query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
+        yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
+        yesterday_minus_days = yesterday - datetime.timedelta(days=days)
+        query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
                 "' and startDate = '"+yesterday_minus_days.strftime("%Y-%m-%d")+"' and endDate = '"+\
                 yesterday.strftime("%Y-%m-%d")+"'"
-            stock_result = scripts.query_api(query)
+        stock_result = scripts.query_api(query)
 
     return HttpResponse(json.dumps(stock_result), content_type='application/json')
+
+def buyStock(request):
+    if(request.method == 'POST'):
+        get_args = request.POST
+        symbol = get_args.get("symbol").upper()
+        ni = get_args.get("ni")
+        price = float(get_args.get("price"))
+        amount = int(get_args.get("amount"))
+        if symbol == None or symbol == "":
+            return;
+        client = Client.objects.filter(ni_number = ni)[0]
+        requestTotal = amount*price
+        clientTotal = client.cash
+        if(clientTotal>=requestTotal):
+            client.cash-=decimal.Decimal(requestTotal)
+            client.save()
+            Share.objects.create(owner = client, buy_date = "1990-01-01",amount = amount,price = price , stock =Stock.objects.filter(symbol=symbol)[0] )
+            return HttpResponse(json.dumps({"result": "success"}), content_type='application/json')
+
+    return HttpResponse(json.dumps({"result":"fail"}), content_type='application/json')
 
 @login_required
 def appointments(request):
