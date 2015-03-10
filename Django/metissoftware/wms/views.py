@@ -22,17 +22,17 @@ def index(request):
     symbol = get_params.get("symbol")
     if symbol is None or symbol=="":
         symbol = "GOOG"
-    if get_params.get("days") is not None:
-        days = int(get_params.get("days"))
-    else:
-        days = 5
-    yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
-    yesterdayminus5 = yesterday - datetime.timedelta(days=days)
-    query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
-            "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
-            yesterday.strftime("%Y-%m-%d")+"'"
-    stock_result = scripts.query_api(query)
-    return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']}, context_instance=RequestContext(request))
+        if get_params.get("days") is not None:
+            days = int(get_params.get("days"))
+        else:
+            days = 5
+            yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
+            yesterdayminus5 = yesterday - datetime.timedelta(days=days)
+            query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
+                "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
+                yesterday.strftime("%Y-%m-%d")+"'"
+            stock_result = scripts.query_api(query)
+            return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']}, context_instance=RequestContext(request))
 
     #return render_to_response('wms/index.html',{})
 
@@ -47,12 +47,12 @@ def queryAPI(request):
             days = int(days)
         else:
             days = 5
-    yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
-    yesterday_minus_days = yesterday - datetime.timedelta(days=days)
-    query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
-            "' and startDate = '"+yesterday_minus_days.strftime("%Y-%m-%d")+"' and endDate = '"+\
-            yesterday.strftime("%Y-%m-%d")+"'"
-    stock_result = scripts.query_api(query)
+            yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
+            yesterday_minus_days = yesterday - datetime.timedelta(days=days)
+            query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
+                "' and startDate = '"+yesterday_minus_days.strftime("%Y-%m-%d")+"' and endDate = '"+\
+                yesterday.strftime("%Y-%m-%d")+"'"
+            stock_result = scripts.query_api(query)
 
     return HttpResponse(json.dumps(stock_result), content_type='application/json')
 
@@ -117,7 +117,7 @@ def delete_client(request):
     else:
         client = Client.objects.get(ni_number=get_params.get('client'))
         client.delete()
-        return HttpResponse()
+        return HttpResponseRedirect('/clients/')
 
 
 @login_required
@@ -134,8 +134,8 @@ def client_details(request):
                 twitter = False
             else:
                 twitter = True
-            return render_to_response('wms/client_details.html',
-                                      {'client_details': client,'shares': shares,'twitter':twitter}, context_instance=RequestContext(request))
+                return render_to_response('wms/client_details.html',
+                                          {'client_details': client,'shares': shares,'twitter':twitter}, context_instance=RequestContext(request))
         except ObjectDoesNotExist:
             return render_to_response('wms/client_details.html',{}, context_instance=RequestContext)
 
