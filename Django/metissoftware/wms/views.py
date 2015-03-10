@@ -110,9 +110,20 @@ def new_client(request):
     })
 
 @login_required
+def delete_client(request):
+    get_params = request.GET
+    if(get_params.get('client') is None):
+        return HttpResponseRedirect('/clients/')
+    else:
+        client = Client.objects.get(ni_number=get_params.get('client'))
+        client.delete()
+        return HttpResponse()
+
+
+@login_required
 def client_details(request):
     get_params = request.GET
-    if(get_params.get('client')==None):
+    if(get_params.get('client') is None):
         return HttpResponseRedirect('/clients/')
     else:
         try:
