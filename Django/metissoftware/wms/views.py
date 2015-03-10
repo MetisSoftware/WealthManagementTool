@@ -134,8 +134,8 @@ def client_details(request):
                 twitter = False
             else:
                 twitter = True
-                return render_to_response('wms/client_details.html',
-                                          {'client_details': client,'shares': shares,'twitter':twitter}, context_instance=RequestContext(request))
+            return render_to_response('wms/client_details.html',
+                                         {'client_details': client,'shares': shares,'twitter':twitter}, context_instance=RequestContext(request))
         except ObjectDoesNotExist:
             return render_to_response('wms/client_details.html',{}, context_instance=RequestContext)
 
