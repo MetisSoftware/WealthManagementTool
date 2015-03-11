@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 from django.template import RequestContext
-from wms.models import Client, ClientForm, Share, Event, Stock
+from wms.models import Client, ClientForm, Share, Event, Stock, Market
 from wms import models as m
 from wms import scripts
 import datetime
@@ -72,7 +72,18 @@ def buyStock(request):
         if(clientTotal>=requestTotal):
             client.cash-=decimal.Decimal(requestTotal)
             client.save()
-            Share.objects.create(owner = client, buy_date = "1990-01-01",amount = amount,price = price , stock =Stock.objects.filter(symbol=symbol)[0] )
+            stock = Stock.objects.filter(symbol=symbol)
+            if not stock:
+                query = "select * from yahoo.finance.quote where symbol = '"+symbol+"'"
+                stock_result = scripts.query_api(query)
+                stock_result = stock_result['query']['results']['quote']
+                market = Market.objects.filter(name = stock_result['StockExchange'])
+                if not market:
+                    Market.objects.create(name = stock_result['StockExchange'], full_name="")
+                    market = Market.objects.filter(name = stock_result['StockExchange'])
+                Stock.objects.create(symbol=stock_result['Symbol'], company=stock_result['Name'], market=market[0])
+            stock = Stock.objects.filter(symbol=symbol)
+            Share.objects.create(owner = client, buy_date = "1990-01-01",amount = amount,price = price , stock = stock[0] )
             return HttpResponse(json.dumps({"result": "success"}), content_type='application/json')
 
     return HttpResponse(json.dumps({"result":"fail"}), content_type='application/json')

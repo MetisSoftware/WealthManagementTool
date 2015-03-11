@@ -91,7 +91,9 @@
                                 </div>
                             </form>
 
+
                             <h3 id="symbol_title" class="text-center"></h3>
+                            <div id="stock_not_found" class="alert alert-danger hidden">Unable to find stock! Please check you have entered a valid stock symbol.</div>
                             <div>
                                 <canvas id="stock_graph" class="hidden"></canvas>
                                 <div id="lineLegend" class="hidden"></div>
@@ -120,6 +122,7 @@
                         <div id="modal_footer" class="modal-footer ">
                             <div id="stock_buy" class="hidden">
                                 <form class="form-inline" id="buy_buttonForm">
+                                    <input id="buy_quantity" class="form-control" placeholder="Quantity">
                                     <button id="buy_button" class="btn btn-default" type="submit" value="Buy">Buy</button><p id="buy_text"></p>
                                 </form>
 
@@ -132,11 +135,15 @@
         <script type="text/javascript">
         var symbol;
         var recent_close;
+        var quantity;
         function print_results(json) {
             var result = json.query.results.quote;
             symbol = result[0]["Symbol"].toUpperCase();
             recent_close = result[0]["Adj_Close"];
             $("#symbol_title").html(symbol);
+
+            $("#stock_not_found").addClass("hidden");
+
             $("#table_div").removeClass("hidden");
             $("#stock_graph").removeClass("hidden");
             $("#lineLegend").removeClass("hidden");
@@ -177,8 +184,13 @@
                             },
                             success: function (json){
                                 console.log("Success");
-                                print_results(json);
+                                console.log(json.query.count);
+                                if(json.query.count== 0){
 
+                                    $("#stock_not_found").removeClass("hidden");
+                                }else {
+                                    print_results(json);
+                                }
                             },
                             error: function (xhr, errmsg, err) {
                                 alert('Failed.');
@@ -191,6 +203,10 @@
             $(document).ready(function(){
                 $("#buy_buttonForm").submit(function (event){
                     event.preventDefault();
+                    quantity = $("#buy_quantity").val();
+                    if(quantity==""){
+                        quantity=1;
+                    }
                     $.ajax({
                             url: "/buy_stock/",
                             type: "POST",
@@ -199,7 +215,7 @@
                                 symbol: symbol,
                                 ni: '{{client_details.ni_number}}',
                                 price: recent_close,
-                                amount: 1
+                                amount: quantity
                             },
                             success: function (json){
                                 console.log("Success");
