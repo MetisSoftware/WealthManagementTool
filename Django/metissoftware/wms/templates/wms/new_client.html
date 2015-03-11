@@ -16,89 +16,105 @@
                     <legend>Personal Information</legend>
 
                    <div class="form-group">
+                    
+                    <label class="control-label col-sm-6 col-xs-6" for="id_first_name">First Name<font color="Red">*</font>:</label>
                     {{ form.first_name.errors }}
-                    <label class="control-label col-sm-6 col-xs-6" for="id_first_name">First Name:</label>
-
                     {{ form.first_name }}
                     </div>
                     <div class="form-group">
+                        
+                        <label class="control-label col-sm-6 col-xs-6" for="id_middle_name">Middle Name(s)<font color="Red">*</font>:</label>
                         {{ form.middle_name.errors }}
-                        <label class="control-label col-sm-6 col-xs-6" for="id_middle_name">Middle Name:</label>
                         {{ form.middle_name }}
                     </div>
                     <div class="form-group">
+                       
+                        <label class="control-label col-sm-6 col-xs-6" for="id_surname">Last Name<font color="Red">*</font>:</label>
                         {{ form.surname.errors }}
-                        <label class="control-label col-sm-6 col-xs-6" for="id_surname">Surname:</label>
                         {{ form.surname }}
                     </div>
-                </fieldset>
+                    
+                            <font color="Red">*Required</font>
+                        
+</fieldset>
                 </div>
                 <div class ="col-md-3 col-sm-3 col-xs-3">
                 <fieldset class = "step">
                     <legend>Contact Information</legend>
                     <div class="form-group">
+                        
+                        <label class="control-label col-sm-6 col-xs-6" for="id_email">Email<font color="Red">*</font>:</label>
                         {{ form.email.errors }}
-                        <label class="control-label col-sm-6 col-xs-6" for="id_email">Email:</label>
                         {{ form.email }}
                     </div>
                     <div class="form-group">
-                        {{ form.image.errors }}
+                        
                         <label class="control-label col-sm-6 col-xs-6" for="id_image">Client Image:</label>
+                        {{ form.image.errors }}
                         {{ form.image }}
                     </div>
                     <div class="form-group">
-                        {{ form.mob_phone.errors }}
+                        
                         <label class="control-label col-sm-6 col-xs-6" for="id_mob_phone">Mobile Phone Number:</label>
+                        {{ form.mob_phone.errors }}
                         {{ form.mob_phone }}
                     </div>
                     <div class="form-group">
-                        {{ form.home_phone.errors }}
+                       
                         <label class="control-label col-sm-6 col-xs-6" for="id_home_phone">Home Phone Number:</label>
+                        {{ form.home_phone.errors }}
                         {{ form.home_phone }}
                     </div>
+                    <font color="Red">*Required</font>
                 </fieldset>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
                 <fieldset class = "step">
                         <legend>Account Information</legend>
                     <div class="form-group">
+                        <label class="control-label col-sm-6 col-xs-6" for="id_dob">Date Of Birth<font color="Red">*</font>:</label>
                         {{ form.dob.errors }}
-                        <label class="control-label col-sm-6 col-xs-6" for="id_dob">Date Of Birth:</label>
                         {{ form.dob }}
                     </div>
                     <div class="form-group">
+                        
+                        <label class="control-label col-sm-6 col-xs-6" for="ni_number">National Insurance Number<font color="Red">*</font>:</label>
                         {{ form.ni_number.errors }}
-                        <label class="control-label col-sm-6 col-xs-6" for="ni_number">National Insurance Number:</label>
-
                         {{ form.ni_number }}
                     </div>
                     <div class="form-group">
+                        
+                        <label class="control-label col-sm-6 col-xs-6" for="id_fa">Financial Advisor<font color="Red">*</font>:</label>
                         {{ form.fa.errors }}
-                        <label class="control-label col-sm-6 col-xs-6" for="id_fa">Financial Advisor:</label>
                         {{ form.fa }}
                     </div>
                     <div class="form-group">
+                        
+                        <label class="control-label col-sm-6 col-xs-6" for="id_cash">Cash<font color="Red">*</font>:</label>
                         {{ form.cash.errors }}
-                        <label class="control-label col-sm-6 col-xs-6" for="id_cash">Cash:</label>
                         {{ form.cash }}
                     </div>
+                    <font color="Red">*Required</font>
                 </fieldset>
                 </div>
                 <div class = "col-md-3 col-sm-3 col-xs-3">
                 <fieldset class = "step">
                         <legend>Social Media</legend>
                     <div class="form-group">
-                        {{ form.twitter_username.errors }}
+                        
                         <label class="control-label col-sm-6 col-xs-6" for="id_twitter_username">Twitter Username:</label>
+                        {{ form.twitter_username.errors }}
                         {{ form.twitter_username }}
                     </div>
 
                     <div class="form-group">
-                        {{ form.twitter_widget_id.errors }}
+                        
                         <label class="control-label col-sm-6 col-xs-6" for="id_twitter_widget_id">Twitter Widget Id:</label>
+                        {{ form.twitter_widget_id.errors }}
                         {{ form.twitter_widget_id }}
                     </div>
                     <button class="btn btn-success" id="registerButton" type="submit">Submit</button>
+                    <font color="Red">*Required</font>
                 </fieldset>
                 </div>
             </form>
