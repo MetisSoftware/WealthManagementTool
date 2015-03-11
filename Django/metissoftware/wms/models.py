@@ -2,8 +2,10 @@ import os
 from django.conf import settings
 from datetime import datetime
 from django.db import models
+from django import forms
 from django.forms import ModelForm, TextInput
 from django.core.validators import RegexValidator
+from bootstrap3_datetime.widgets import DateTimePicker
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 
@@ -154,8 +156,11 @@ class ClientForm(ModelForm):
                   'twitter_username', 'twitter_widget_id']
         widgets = {
             'cash': TextInput(
-                attrs={'placeholder': '0.00', 'cols': '1', 'rows': '1'}
-            ),
+                attrs={'placeholder': '0.00', 'cols': '1', 'rows': '1'} ),
+            'dob': DateTimePicker(
+                options={"format": "YYYY-MM-DD",
+                         "viewMode": "years",
+                         "pickSeconds": False})
         }
 
     def __str__(self):
