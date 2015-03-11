@@ -64,6 +64,7 @@ def buyStock(request):
         ni = get_args.get("ni")
         price = float(get_args.get("price"))
         amount = int(get_args.get("amount"))
+        date = get_args.get("date")
         if symbol == None or symbol == "":
             return;
         client = Client.objects.filter(ni_number = ni)[0]
@@ -83,7 +84,7 @@ def buyStock(request):
                     market = Market.objects.filter(name = stock_result['StockExchange'])
                 Stock.objects.create(symbol=stock_result['Symbol'], company=stock_result['Name'], market=market[0])
             stock = Stock.objects.filter(symbol=symbol)
-            Share.objects.create(owner = client, buy_date = "1990-01-01",amount = amount,price = price , stock = stock[0] )
+            Share.objects.create(owner = client, buy_date = date, amount = amount, price = price , stock = stock[0] )
             return HttpResponse(json.dumps({"result": "success"}), content_type='application/json')
 
     return HttpResponse(json.dumps({"result":"fail"}), content_type='application/json')

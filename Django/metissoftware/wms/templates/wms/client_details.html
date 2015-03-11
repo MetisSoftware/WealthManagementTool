@@ -122,7 +122,8 @@
                         <div id="modal_footer" class="modal-footer ">
                             <div id="stock_buy" class="hidden">
                                 <form class="form-inline" id="buy_buttonForm">
-                                    <input id="buy_quantity" class="form-control" placeholder="Quantity">
+                                    <label>Quantity: </label>
+                                    <input id="buy_quantity" class="form-control" placeholder="1" style="width: 10px">
                                     <button id="buy_button" class="btn btn-default" type="submit" value="Buy">Buy</button><p id="buy_text"></p>
                                 </form>
 
@@ -135,11 +136,14 @@
         <script type="text/javascript">
         var symbol;
         var recent_close;
+        var recent_date;
         var quantity;
+
         function print_results(json) {
             var result = json.query.results.quote;
             symbol = result[0]["Symbol"].toUpperCase();
             recent_close = result[0]["Adj_Close"];
+            recent_date = result[0]["Date"];
             $("#symbol_title").html(symbol);
 
             $("#stock_not_found").addClass("hidden");
@@ -215,7 +219,8 @@
                                 symbol: symbol,
                                 ni: '{{client_details.ni_number}}',
                                 price: recent_close,
-                                amount: quantity
+                                amount: quantity,
+                                date: recent_date
                             },
                             success: function (json){
                                 console.log("Success");
