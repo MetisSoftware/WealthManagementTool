@@ -95,6 +95,41 @@ def buyStock(request):
 
     return HttpResponse(json.dumps({"result":"fail"}), content_type='application/json')
 
+def deposit_cash(request):
+    if(request.method == 'POST'):
+        get_args = request.POST
+        ni = get_args.get("ni")
+        amount = get_args.get("amount")
+        client = Client.objects.filter(ni_number=ni)
+        if amount == "":
+            return HttpResponse(json.dumps({"result":"amount_error"}), content_type='application/json')
+        if not client:
+            return HttpResponse(json.dumps({"result":"Client not found"}), content_type='application/json')
+        client = client[0]
+        cash = client.cash + decimal.Decimal(amount)
+        client.cash = cash
+        client.save()
+        return HttpResponse(json.dumps({"result": "success","new_amount":str(cash)}), content_type='application/json')
+
+def withdraw_cash(request):
+    if(request.method == 'POST'):
+        get_args = request.POST
+        ni = get_args.get("ni")
+        amount = get_args.get("amount")
+        client = Client.objects.filter(ni_number=ni)
+        if amount == "":
+            return HttpResponse(json.dumps({"result":"amount_error"}), content_type='application/json')
+        if not client:
+            return HttpResponse(json.dumps({"result":"Client not found"}), content_type='application/json')
+        client = client[0]
+        amount = decimal.Decimal(amount)
+        if client.cash < amount:
+            return HttpResponse(json.dumps({"result":"Insufficient funds"}), content_type='application/json')
+        cash = client.cash - amount
+        client.cash = cash
+        client.save()
+        return HttpResponse(json.dumps({"result": "success","new_amount":str(cash)}), content_type='application/json')
+
 @login_required
 def appointments(request):
     current_user = request.user
@@ -123,7 +158,6 @@ def create_appointment(request):
 @login_required
 def print_clients(request):
     current_user = request.user
-
     client_list = Client.objects.filter(fa__ni_number=current_user.ni_number)
     print(client_list)
     return render_to_response('wms/clients.html', {'client_list': client_list}, context_instance=RequestContext(request))

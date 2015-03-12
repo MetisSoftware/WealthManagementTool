@@ -17,4 +17,7 @@ urlpatterns = patterns('wms.views',
     url(r'^create_appointment/', 'create_appointment', name='create_appointment'),
     url(r'^query_api/', 'queryAPI', name='queryAPI'),
     url(r'^buy_stock/', 'buyStock', name='buyStock'),
+    url(r'^withdraw_cash/', 'withdraw_cash', name='withdraw_cash'),
+    url(r'^deposit_cash/', 'deposit_cash', name='deposit_cash'),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

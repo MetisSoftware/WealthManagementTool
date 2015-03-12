@@ -34,14 +34,21 @@
         </ul>
     </div>
 
-    <div class="table-responsive col-md-9 well" id="users">
-        <div class="col-md-10 ">
-            <label class="sr-only">Stock Symbol</label>
-            <input id="symbol_input" class="form-control search" type="text" name="symbol" placeholder="Stock Symbol"/>
+    <div class="table-responsive col-md-9 well container-fluid" id="users">
+        <div class="row">
+            <div class="btn-group col-md-offset-4">
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#StockModal">Buy Stock</button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#DepositModal">Deposit Cash</button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#WithdrawModal">Withdraw Cash</button>
+             </div>
         </div>
-        <div class="col-md-2">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#StockModal">Buy Stock</button>
+        <div class="row">
+            <div>
+                <label class="sr-only">Stock Symbol</label>
+                <input id="symbol_input" class="form-control search" type="text" name="symbol" placeholder="Stock Symbol"/>
+            </div>
         </div>
+
 
         <table class="table table-hover table-bordered table-condensed" style="background-color: #ffffff">
             <thead>
@@ -50,6 +57,7 @@
                 <th>Amount</th>
                 <th>Price($)</th>
                 <th>Total($)</th>
+                <th>Sell</th>
             </thead>
             <tbody id="clients_stock_tbody" class="list">
                 {% for share in shares %}
@@ -59,6 +67,7 @@
                     <td class="amount">{{ share.amount}}</td>
                     <td class="price">{{ share.price}}</td>
                     <td class="total"><script>document.write(({{share.price}}*{{share.amount}}).toFixed(2));</script></td>
+                    <td class="sell"><button class="btn btn-default">Sell</button> </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -69,69 +78,204 @@
                 var userList = new List('users',options);
             </script>
         </table>
-     </div>
-            <div class=" modal fade" tabindex="-1" id="StockModal" role="dialog" >
-                <div class="modal-dialog  modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                             <h4 class="modal-title" id="exampleModalLabel">Buy Shares</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form id="buySharesForm" class="form-horizontal" action="/query_api/" method="get">
+    </div>
 
-                                <div class="form-group col-md-11">
-                                    <label class="sr-only">Stock Symbol</label>
-                                    <input id="stock_symbol" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
-                                </div>
+    <!--Buy stock modal-->
+    <div class=" modal fade" tabindex="-1" id="StockModal" role="dialog" >
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                     <h4 class="modal-title" id="exampleModalLabel">Buy Shares</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form id="buySharesForm" class="form-inline" action="/query_api/" method="get">
+                            <div class="form-group">
+                                <label class="sr-only">Stock Symbol</label>
+                                <input id="stock_symbol" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
+                                <button class="btn btn-primary form-control glyphicon glyphicon-search" type="submit" value="Submit" > Search</button>
+                            </div>
 
-                                <div class="form-group col-md-1">
-                                    <button class="btn btn-primary glyphicon glyphicon-search" type="submit" value="Submit" > Search</button>
-                                </div>
-                            </form>
+                            <div class="form-group">
+
+                            </div>
+
+                        </form>
 
 
-                            <h3 id="symbol_title" class="text-center"></h3>
-                            <div id="stock_not_found" class="alert alert-danger hidden">Unable to find stock! Please check you have entered a valid stock symbol.</div>
-                            <div>
-                                <canvas id="stock_graph" class="hidden"></canvas>
+                        <h3 id="symbol_title" class="text-center"></h3>
+                        <div id="stock_not_found" class="alert alert-danger hidden">Unable to find stock! Please check you have entered a valid stock symbol.</div>
+                        <div class="row">
+                            <div class="col-md-11">
+                                   <canvas id="stock_graph" class="hidden"></canvas>
+                            </div>
+                            <div class="col-md-1">
                                 <div id="lineLegend" class="hidden"></div>
                             </div>
 
 
-                            <!--<div id="table_div"class="col-md-12 hidden">
-                                <div class="table-responsive col-md-12 ">
-                                    <h1 class="text-center" style="color: #000000">Results</h1>
-                                    <table class = "table table-hover table-condensed table-bordered" style="background-color: #ffffff">
-                                        <thead>
-                                            <tr id="thead_result">
-
-                                            </tr>
-
-                                        </thead>
-                                        <tbody id="tbody_results">
-
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                            </div>-->
-
-                        </div>
-                        <div id="modal_footer" class="modal-footer ">
-                            <div id="stock_buy" class="hidden">
-                                <form class="form-inline" id="buy_buttonForm">
-                                    <label>Quantity: </label>
-                                    <input id="buy_quantity" class="form-control" placeholder="1" style="width: 100px">
-                                    <button id="buy_button" class="btn btn-default" type="submit" value="Buy">Buy</button><p id="buy_text"></p>
-                                </form>
-
-                            </div>
                         </div>
 
                     </div>
                 </div>
+                <div id="modal_footer" class="modal-footer">
+                    <div id="stock_buy" class="hidden">
+                        <form class="form-inline" id="buy_buttonForm">
+                            <div class="form-group">
+                                <p id="buy_text"></p>
+                                <label for="buy_quantity">Quantity: </label>
+                                <input id="buy_quantity" class="form-control" placeholder="1" style="width: 100px">
+                                <button id="buy_button" class="btn btn-default form-control" type="submit" value="Buy">Buy</button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
+    <!--Deposit Cash-->
+    <div class=" modal fade" tabindex="-1" id="DepositModal" role="dialog" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                     <h4 class="modal-title" id="exampleModalLabel">Deposit Cash</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form id="depositForm" class="form-inline" action="/deposit/" method="get">
+                            <div class="form-group">
+                                <label class="sr-only">Stock Symbol</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">$</div>
+                                    <input id="deposit_amount" class="form-control" type="text" placeholder="Amount"/>
+                                </div>
+                                <button class="btn btn-primary form-control" type="submit" value="Submit" >Submit</button>
+                            </div>
+
+                            <div class="form-group">
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+     $(document).ready(function() {
+                $('#depositForm').submit( function(event){
+                    event.preventDefault();
+                    var amount = $("#deposit_amount").val();
+                        $.ajax({
+                            url: "/deposit_cash/",
+                            type: "POST",
+                            data: {
+                                csrfmiddlewaretoken: '{{ csrf_token }}',
+                                amount: amount,
+                                ni: '{{ client_details.ni_number }}'
+                            },
+                            success: function (json){
+                                if(json["result"] == "success"){
+                                    alert("Cash deposited");
+                                    $("#client_cash_available").html("Cash available: $"+json["new_amount"]);
+                                    $("#DepositModal").modal("toggle");
+                                }else if(json["result"] == "Insufficient funds"){
+                                    alert('Insufficient funds');
+
+                                }else if(json["result"] == "Client not found"){
+                                    alert("client not found")
+                                }else if(json["result"]=="amount_error"){
+                                    alert("Please enter an amount")
+                                }else{
+                                    alert('Error, please seek the system administrator')
+                                }
+                            },
+                            error: function (xhr, errmsg, err) {
+                                alert('Failed.');
+                                console.log(xhr.status + ": " + xhr.responseText);
+                            }
+                        });
+                })
+            });
+    </script>
+
+    <!-- Withdraw Cash moadl-->
+    <div class=" modal fade" tabindex="-1" id="WithdrawModal" role="dialog" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                     <h4 class="modal-title" id="exampleModalLabel">Withdraw Cash</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form id="withdrawForm" class="form-inline" action="/withdraw_cash/" method="get">
+                            <div class="form-group">
+                                <!--TODO update available cash filed-->
+                                <div id="client_cash_available">Cash available: ${{ client_details.cash }}</div>
+                                <label class="sr-only">Stock Symbol</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">$</div>
+                                    <input id="withdraw_amount" class="form-control" type="text" placeholder="Amount"/>
+                                </div>
+                                <button class="btn btn-primary form-control" type="submit" value="Submit" >Submit</button>
+                            </div>
+
+                            <div class="form-group">
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <script>
+     $(document).ready(function() {
+                $('#withdrawForm').submit( function(event){
+                    event.preventDefault();
+                    var amount = $("#withdraw_amount").val();
+                        $.ajax({
+                            url: "/withdraw_cash/",
+                            type: "POST",
+                            data: {
+                                csrfmiddlewaretoken: '{{ csrf_token }}',
+                                amount: amount,
+                                ni: '{{ client_details.ni_number }}'
+                            },
+                            success: function (json){
+                                if(json["result"] == "success"){
+                                    alert("Cash withdrawn");
+                                    $("#client_cash_available").html("Cash available: $"+json["new_amount"]);
+                                    $("#WithdrawModal").modal("toggle");
+                                }else if(json["result"] == "Insufficient funds"){
+                                    alert('Insufficient funds');
+
+                                }else if(json["result"] == "Client not found") {
+                                    alert("client not found")
+
+                                }else if(json["result"]=="amount_error"){
+                                    alert("Please enter an amount")
+                                }else{
+                                    alert('Error, please seek the system administrator')
+                                }
+                            },
+                            error: function (xhr, errmsg, err) {
+                                alert('Failed.');
+                                console.log(xhr.status + ": " + xhr.responseText);
+                            }
+                        });
+                })
+            });
+    </script>
+
+
+
         <script type="text/javascript">
         var symbol;
         var recent_close;
@@ -226,8 +370,6 @@
                             type: "POST",
                             data: data,
                             success: function (json){
-                                console.log("Success");
-                                console.log(json["result"])
                                 if(json["result"] == "success"){
                                     alert("Stocks bought")
                                     update_stock_table(data);
@@ -315,7 +457,7 @@
                 }
 
             ]
-        }
+        };
         var opts = {scaleFontColor: "#000000",
             scaleLineColor: "#000000",
             scaleGridLineColor: "#000000",
@@ -323,7 +465,7 @@
             bezierCurve: false,
             scaleShowVerticalLines: false,
             responsive: true
-        }
+        };
 
         new Chart(stock_graph).Line(stockData, opts);
         legend(document.getElementById("lineLegend"), stockData);
