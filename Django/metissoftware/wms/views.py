@@ -95,6 +95,16 @@ def buyStock(request):
 
     return HttpResponse(json.dumps({"result":"fail"}), content_type='application/json')
 
+def sell_stock(request):
+    if request.method == "POST":
+        get_args = request.POST
+        symbol = get_args.get("symbol").upper();
+        ni = get_args.get("ni")
+        price = float(get_args.get("price"))
+        amount = get_args.get("amount")
+
+    return HttpResponse(json.dumps({"result":"fail"}), content_type='application/json')
+
 def deposit_cash(request):
     if(request.method == 'POST'):
         get_args = request.POST
