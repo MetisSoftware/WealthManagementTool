@@ -426,13 +426,10 @@
     function update_stock_table(data){
         var d = moment(data['date']);
 
-        $("#clients_stock_tbody").append("<tr>"+
-                    "<td class='stock'><a href='/wmt/?symbol=data['symbol']'>"+data['symbol']+"</a></td>"+
-                    "<td class='buy_date'>"+ d.format("LL")+"</td>"+
-                    "<td class='amount'>"+data['amount']+"</td>"+
-                    "<td class='price'>"+data['price']+"</td>"+
-                    "<td class='total'>"+(data['price'] * data['amount']).toFixed(2)+"</td>"+
-                "</tr>")
+        var stock_a = "<a href='/?symbol="+data['symbol']+"'>"+data['symbol']+"</a>";
+        console.log(stock_a);
+        userList.add({stock:stock_a, buy_date:d.format("LL"), amount:data['amount'], price: data['price'], total: (data['price'] * data['amount']).toFixed(2) });
+
     }
 
     function make_graph(result) {
