@@ -85,7 +85,7 @@ class Event(models.Model):
 
 class Client(models.Model):
     first_name = models.CharField(max_length=64)
-    middle_name = models.CharField(max_length=64, null=True)
+    middle_name = models.CharField(max_length=64, blank=True)
     surname = models.CharField(max_length=64)
     image = models.ImageField(upload_to='client_images', default='/media/person-placeholder.png')
     dob = models.DateField(default="1990-01-01")
@@ -95,7 +95,6 @@ class Client(models.Model):
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',
         message="Not a valid phone number. Up to 9 digits allowed.")
-    middle_name = models.CharField(max_length=64, null=True)
     home_phone = models.CharField(
         max_length=11, validators=[phone_regex], blank=True
     )
