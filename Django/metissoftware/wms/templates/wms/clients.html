@@ -2,6 +2,8 @@
 {% extends "wms/base_boot.html" %}
 {% load staticfiles %}
 {% block content %}
+<script src="{% static "wms/js/bootbox.js" %}" type="text/javascript" ></script>
+
     <div class="panel panel-default col-md-12 col-sm-12 ">
         <div class="panel-body col-md-12">
             <a class="btn btn-success" href="/new_client.html" role="button">Add Client</a>
@@ -19,7 +21,7 @@
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
 			<a href="/client_details/?client={{client.ni_number}}"><img src="{{ client.image.url }}" class="img-responsive img-thumbnail" style="max-width: 200px"></a>
-			<a href="/delete_client/?client={{client.ni_number}}" role="button"><img src="{% static "wms/images/delete_cross.png" %}"/>
+                <a href="#" onclick='deleteClient("{{client.ni_number}}");'><img src="{% static "wms/images/delete_cross.png" %}"></a>
                     <div class="caption">
                         <h3 class="name"><a href="/client_details/?client={{client.ni_number}}">{{client.first_name}} {{client.surname}}</a></h3>
                         <p>
@@ -52,6 +54,14 @@
         };
         var userList = new List('users',options);
     </script>
+     <script type="text/javascript">
+        function deleteClient(ni_number){
+            bootbox.confirm("Are you sure you want to delete this client?", function(result) {
+            if(result)
+                window.location.href = "/delete_client/?client="+ni_number;
+        });
+        };
+    </script> 
     {% else %}
     <p>No client data</p>
     {% endif %}
