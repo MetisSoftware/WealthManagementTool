@@ -10,38 +10,40 @@
         <p class="lead">{{client_details.first_name}} {{client_details.middle_name}} {{client_details.surname}}</p>
         <ul class="list-unstyled">
             <li>
-                <strong>Email:</strong> {{ client_details.email}}
+                <span class="glyphicon glyphicon-envelope"> </span> <strong>Email:</strong> {{ client_details.email}}
             </li>
             <li>
-                <strong>Phone:</strong>
+                <span class="glyphicon glyphicon-earphone"></span> <strong>Phone:</strong>
                 <ul class="">
                     <li>
-                        <strong>Mobile:</strong> {{ client_details.mob_phone}}
+                        <span class="glyphicon glyphicon-phone"></span> <strong>Mobile:</strong> {{ client_details.mob_phone}}
                     </li>
                     <li>
-                        <strong>Home:</strong> {{ client_details.home_phone}}
+                        <span class="glyphicon glyphicon-phone-alt"></span> <strong>Home:</strong> {{ client_details.home_phone}}
                     </li>
                 </ul>
             </li>
             <li>
-                <strong>NI:</strong> {{client_details.ni_number}}
+                <span class="glyphicon glyphicon-user"></span> <strong>NI:</strong> {{client_details.ni_number}}
             </li>
             <li>
-                <strong>Dob:</strong> {{client_details.dob}}
+                <span class="glyphicon glyphicon-gift"></span> <strong>Dob:</strong> {{client_details.dob}}
             </li>
             <li>
-                <strong>Financial Advisor:</strong> {{client_details.fa}}
+                <span class="glyphicon glyphicon-flag"></span> <strong>Financial Advisor:</strong> {{client_details.fa}}
             </li>
         </ul>
     </div>
-    <div class = "table-responsive col-md-9">
-    <div class="table-responsive col-md-12 well container-fluid" id="users">
+    <div class = "col-md-9">
+    <div class="col-md-12 well container-fluid" id="users" >
         <div class="row">
-            <div class="btn-group col-md-offset-4" style="margin-bottom:1%;">
+            <div class="col-md-3">Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></div>
+            <div class="btn-group col-md-6" style="margin-bottom:1%;">
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#StockModal">Buy Stock</button>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#DepositModal">Deposit Cash</button>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#WithdrawModal">Withdraw Cash</button>
              </div>
+            <div class="col-md-3">Portfolio worth: $<span class="portfolio_worth"></span> </div>
         </div>
         <div class="row">
             <div>
@@ -49,36 +51,54 @@
                 <input id="symbol_input" class="form-control search" type="text" name="symbol" placeholder="Stock Symbol"style="margin-bottom:1%;"/>
             </div>
         </div>
+    <script>
+        var portfolio_worth =0;
+    </script>
+        <div class="row table-responsive" style="height: 70%">
+            <table class="table table-hover table-bordered table-condensed col-md-12" style="background-color: #ffffff; ">
+                <thead>
+                    <th class="sort" data-sort="stock" id="stock_th">Stock <span class="glyphicon glyphicon-triangle-top"></span></th>
+                    <th class="sort" data-sort="buy_date">Date bought <span></span></th>
+                    <th class="sort" data-sort="amount">Amount <span></span></th>
+                    <th class="sort" data-sort="price">Price($) <span></span></th>
+                    <th class="sort" data-sort="total">Total($) <span></span></th>
+                    <th>Sell</th>
+                </thead>
+                <tbody id="clients_stock_tbody" class="list" style="overflow-y: scroll;height: 50%">
+                    {% for share in shares %}
+                    <tr>
+                        <td class="stock"><a href="/?symbol={{share.stock}}">{{ share.stock}}</a></td>
+                        <td class="buy_date">{{ share.buy_date}}</td>
+                        <td class="amount">{{ share.amount}}</td>
+                        <td class="price">{{ share.price}}</td>
+                        <script>
+                            var t = ({{share.price}} * {{share.amount}});
+                            portfolio_worth = (portfolio_worth + parseFloat(t));
 
+                        </script>
+                        <td class="total"><script>document.write(({{share.price}}*{{share.amount}}).toFixed(2));</script></td>
+                        <td class="sell"><button class="btn btn-default btn-xs">Sell</button> </td>
+                    </tr>
+                    {% endfor %}
+                    <script>
+                        $(".portfolio_worth").html(portfolio_worth.toFixed(2));
+                    </script>
+                </tbody>
 
-        <table class="table table-hover table-bordered table-condensed" style="background-color: #ffffff">
-            <thead>
-                <th>Stock</th>
-                <th>Date bought</th>
-                <th>Amount</th>
-                <th>Price($)</th>
-                <th>Total($)</th>
-                <th>Sell</th>
-            </thead>
-            <tbody id="clients_stock_tbody" class="list">
-                {% for share in shares %}
-                <tr>
-                    <td class="stock"><a href="/wmt/?symbol={{share.stock}}">{{ share.stock}}</a></td>
-                    <td class="buy_date">{{ share.buy_date}}</td>
-                    <td class="amount">{{ share.amount}}</td>
-                    <td class="price">{{ share.price}}</td>
-                    <td class="total"><script>document.write(({{share.price}}*{{share.amount}}).toFixed(2));</script></td>
-                    <td class="sell"><button class="btn btn-default">Sell</button> </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            <script type="text/javascript">
-                var options ={
-                    valueNames: ['stock', 'buy_date', 'amount', 'price', 'total']
-                };
-                var userList = new List('users',options);
-            </script>
-        </table>
+            </table>
+        </div>
+        <script type="text/javascript">
+            var options ={
+                valueNames: ['stock', 'buy_date', 'amount', 'price', 'total']
+            };
+            var userList = new List('users',options);
+            userList.sort("stock", { order: "asc"});
+            $("th.sort").click(function(event){
+                $("th.sort").children("span").removeClass("glyphicon glyphicon-triangle-top glyphicon-triangle-bottom");
+                $("th.sort.asc").children("span").addClass("glyphicon glyphicon-triangle-top");
+                $("th.sort.desc").children("span").addClass("glyphicon glyphicon-triangle-bottom");
+            });
+        </script>
     </div>
     </div>
 
@@ -95,8 +115,8 @@
                         <form id="buySharesForm" class="form-inline" action="/query_api/" method="get">
                             <div class="form-group">
                                 <label class="sr-only">Stock Symbol</label>
-                                <input id="stock_symbol" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
-                                <button class="btn btn-primary form-control glyphicon glyphicon-search" type="submit" value="Submit" > Search</button>
+                                <input id="stock_symbol" class="form-control" type="text" name="symbol" placeholder="Stock Symbol" />
+                                <button id="search_stock_submit" class="btn btn-primary form-control glyphicon glyphicon-search" type="submit" value="Submit" data-loading-text=" Searching..." > Search</button>
                             </div>
 
                             <div class="form-group">
@@ -149,12 +169,13 @@
                     <div class="container-fluid">
                         <form id="depositForm" class="form-inline" action="/deposit/" method="get">
                             <div class="form-group">
-                                <label class="sr-only">Stock Symbol</label>
+                                <div >Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></div>
                                 <div class="input-group">
+
                                     <div class="input-group-addon">$</div>
                                     <input id="deposit_amount" class="form-control" type="text" placeholder="Amount"/>
                                 </div>
-                                <button class="btn btn-primary form-control" type="submit" value="Submit" >Submit</button>
+                                <button class="btn btn-default form-control" type="submit" value="Submit" >Deposit</button>
                             </div>
 
                             <div class="form-group">
@@ -183,7 +204,7 @@
                             success: function (json){
                                 if(json["result"] == "success"){
                                     bootbox.alert("Cash deposited");
-                                    $("#client_cash_available").html("Cash available: $"+json["new_amount"]);
+                                    $(".client_cash_available").html(json["new_amount"]);
                                     $("#DepositModal").modal("toggle");
                                 }else if(json["result"] == "Insufficient funds"){
                                     bootbox.alert('Insufficient funds');
@@ -218,7 +239,7 @@
                         <form id="withdrawForm" class="form-inline" action="/withdraw_cash/" method="get">
                             <div class="form-group">
                                 <!--TODO update available cash filed-->
-                                <div id="client_cash_available">Cash available: ${{ client_details.cash }}</div>
+                                <div >Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></div>
                                 <label class="sr-only">Stock Symbol</label>
                                 <div class="input-group">
                                     <div class="input-group-addon">$</div>
@@ -253,7 +274,7 @@
                             success: function (json){
                                 if(json["result"] == "success"){
                                     bootbox.alert("Cash withdrawn");
-                                    $("#client_cash_available").html("Cash available: $"+json["new_amount"]);
+                                    $(".client_cash_available").html(json["new_amount"]);
                                     $("#WithdrawModal").modal("toggle");
                                 }else if(json["result"] == "Insufficient funds"){
                                     bootbox.alert('Insufficient funds');
@@ -293,6 +314,7 @@
 
             $("#stock_not_found").addClass("hidden");
 
+             $("#symbol_title").removeClass("hidden");
             $("#table_div").removeClass("hidden");
             $("#stock_graph").removeClass("hidden");
             $("#lineLegend").removeClass("hidden");
@@ -322,6 +344,7 @@
             $(document).ready(function() {
                 $('#buySharesForm').submit( function(event){
                     event.preventDefault();
+                    $("#search_stock_submit").button('loading');
                     var symbol = $("#stock_symbol").val();
                         $.ajax({
                             url: "/query_api/",
@@ -332,16 +355,24 @@
                                 days: 5
                             },
                             success: function (json){
+                                $("#search_stock_submit").button('reset');
                                 console.log("Success");
                                 console.log(json.query.count);
                                 if(json.query.count== 0){
-
                                     $("#stock_not_found").removeClass("hidden");
+                                    $("#table_div").removeClass("hidden");
+                                    $("#stock_graph").addClass("hidden");
+                                    $("#lineLegend").addClass("hidden");
+                                    $("#modal_footer").addClass("hidden");
+                                    $("#stock_buy").addClass("hidden");
+                                    $("#symbol_title").addClass("hidden");
                                 }else {
+
                                     print_results(json);
                                 }
                             },
                             error: function (xhr, errmsg, err) {
+                                $("#search_stock_submit").button('reset');
                                 bootbox.alert('Failed.');
                                 console.log(xhr.status + ": " + xhr.responseText);
                             }
@@ -364,9 +395,6 @@
                                 amount: quantity,
                                 date: recent_date
                             }
-                    if(quantity==""){
-                        quantity=1;
-                    }
                     $.ajax({
                             url: "/buy_stock/",
                             type: "POST",
@@ -374,7 +402,10 @@
                             success: function (json){
                                 if(json["result"] == "success"){
                                     bootbox.alert("Stocks bought")
+
                                     update_stock_table(data);
+                                    portfolio_worth += (recent_close * quantity);
+                                    $(".portfolio_worth").html(portfolio_worth.toFixed(2));
                                     $("#StockModal").modal("toggle");
                                 }else if(json["result"] == "Insufficient funds"){
                                     bootbox.alert('Insufficient funds');
@@ -396,13 +427,10 @@
     function update_stock_table(data){
         var d = moment(data['date']);
 
-        $("#clients_stock_tbody").append("<tr>"+
-                    "<td class='stock'><a href='/wmt/?symbol=data['symbol']'>"+data['symbol']+"</a></td>"+
-                    "<td class='buy_date'>"+ d.format("LL")+"</td>"+
-                    "<td class='amount'>"+data['amount']+"</td>"+
-                    "<td class='price'>"+data['price']+"</td>"+
-                    "<td class='total'>"+(data['price'] * data['amount']).toFixed(2)+"</td>"+
-                "</tr>")
+        var stock_a = "<a href='/?symbol="+data['symbol']+"'>"+data['symbol']+"</a>";
+        console.log(stock_a);
+        userList.add({stock:stock_a, buy_date:d.format("LL"), amount:data['amount'], price: data['price'], total: (data['price'] * data['amount']).toFixed(2) });
+
     }
 
     function make_graph(result) {
