@@ -51,7 +51,7 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				{% if user.is_authenticated %}
-				<li class="text-center" style="padding-top: 15px;padding-bottom: 15px;"><img src="{{ user.image.url }}" class="img-responsive img-thumbnail" style="max-width: 20px"/>Welcome  {{ user.first_name }} {{ user.surname }}</li>
+				<li class="text-center" style="padding-top: 15px;padding-bottom: 15px;"><img src="{{ user.image.url }}" class="img-responsive img-thumbnail" style="max-width: 20px; margin-right:5px;"/>Welcome  {{ user.first_name }} {{ user.surname }}</li>
 				<li ><a href="/logout">Logout</a>
 				{% if user.is_staff %}
 				<li><a href="/admin">Admin</a>
