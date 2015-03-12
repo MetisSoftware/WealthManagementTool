@@ -27,13 +27,13 @@ def index(request):
         days = int(get_params.get("days"))
     else:
         days = 7
-        yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
-        yesterdayminus5 = yesterday - datetime.timedelta(days=days)
-        query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
+    yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
+    yesterdayminus5 = yesterday - datetime.timedelta(days=days)
+    query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
             "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
-            yesterday.strftime("%Y-%m-%d")+"'"
-        stock_result = scripts.query_api(query)
-        return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']}, context_instance=RequestContext(request))
+    yesterday.strftime("%Y-%m-%d")+"'"
+    stock_result = scripts.query_api(query)
+    return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']}, context_instance=RequestContext(request))
 
     #return render_to_response('wms/index.html',{})
 
