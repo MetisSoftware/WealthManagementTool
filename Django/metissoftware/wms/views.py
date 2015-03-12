@@ -23,17 +23,17 @@ def index(request):
     symbol = get_params.get("symbol")
     if symbol is None or symbol=="":
         symbol = "GOOG"
-        if get_params.get("days") is not None:
-            days = int(get_params.get("days"))
-        else:
-            days = 5
-            yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
-            yesterdayminus5 = yesterday - datetime.timedelta(days=days)
-            query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
-                "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
-                yesterday.strftime("%Y-%m-%d")+"'"
-            stock_result = scripts.query_api(query)
-            return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']}, context_instance=RequestContext(request))
+    if get_params.get("days") is not None:
+        days = int(get_params.get("days"))
+    else:
+        days = 5
+        yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
+        yesterdayminus5 = yesterday - datetime.timedelta(days=days)
+        query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
+            "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
+            yesterday.strftime("%Y-%m-%d")+"'"
+        stock_result = scripts.query_api(query)
+        return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']}, context_instance=RequestContext(request))
 
     #return render_to_response('wms/index.html',{})
 
@@ -63,7 +63,11 @@ def buyStock(request):
         symbol = get_args.get("symbol").upper()
         ni = get_args.get("ni")
         price = float(get_args.get("price"))
-        amount = int(get_args.get("amount"))
+        amount = get_args.get("amount")
+        if get_args.get("amount")== None or get_args.get("amount") == "":
+            amount = 1
+        else:
+            amount = int(get_args.get("amount"))
         date = get_args.get("date")
         if symbol == None or symbol == "":
             return;
@@ -86,6 +90,8 @@ def buyStock(request):
             stock = Stock.objects.filter(symbol=symbol)
             Share.objects.create(owner = client, buy_date = date, amount = amount, price = price , stock = stock[0] )
             return HttpResponse(json.dumps({"result": "success"}), content_type='application/json')
+        else:
+            return HttpResponse(json.dumps({"result":"Insufficient funds"}), content_type='application/json')
 
     return HttpResponse(json.dumps({"result":"fail"}), content_type='application/json')
 

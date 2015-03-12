@@ -1,6 +1,8 @@
 {% extends "wms/base_boot.html" %}
 {% load staticfiles %}
+
 {% block content %}
+<script src="{% static "wms/js/fullcalendar/moment.min.js" %}" type="text/javascript" ></script>
 {% if client_details %}
     <div class="table-responsive col-md-3 well">
         <img class="img-responsive img-thumbnail" src="{% static 'wms/images/person-placeholder.png'  %}" alt="Person Placeholder">
@@ -49,17 +51,14 @@
                 <th>Price($)</th>
                 <th>Total($)</th>
             </thead>
-            <tbody class="list">
+            <tbody id="clients_stock_tbody" class="list">
                 {% for share in shares %}
                 <tr>
                     <td class="stock"><a href="/wmt/?symbol={{share.stock}}">{{ share.stock}}</a></td>
                     <td class="buy_date">{{ share.buy_date}}</td>
                     <td class="amount">{{ share.amount}}</td>
                     <td class="price">{{ share.price}}</td>
-
-                    <td class="total"><script>document.write({{share.price}} * {{share.amount}})</script></td>
-
-
+                    <td class="total"><script>document.write(({{share.price}}*{{share.amount}}).toFixed(2));</script></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -123,7 +122,7 @@
                             <div id="stock_buy" class="hidden">
                                 <form class="form-inline" id="buy_buttonForm">
                                     <label>Quantity: </label>
-                                    <input id="buy_quantity" class="form-control" placeholder="1" style="width: 10px">
+                                    <input id="buy_quantity" class="form-control" placeholder="1" style="width: 100px">
                                     <button id="buy_button" class="btn btn-default" type="submit" value="Buy">Buy</button><p id="buy_text"></p>
                                 </form>
 
@@ -208,27 +207,35 @@
                 $("#buy_buttonForm").submit(function (event){
                     event.preventDefault();
                     quantity = $("#buy_quantity").val();
-                    if(quantity==""){
-                        quantity=1;
+                    if (quantity == ""){
+                        quantity = 1;
                     }
-                    $.ajax({
-                            url: "/buy_stock/",
-                            type: "POST",
-                            data: {
+                    var data = {
                                 csrfmiddlewaretoken: '{{ csrf_token }}',
                                 symbol: symbol,
                                 ni: '{{client_details.ni_number}}',
                                 price: recent_close,
                                 amount: quantity,
                                 date: recent_date
-                            },
+                            }
+                    if(quantity==""){
+                        quantity=1;
+                    }
+                    $.ajax({
+                            url: "/buy_stock/",
+                            type: "POST",
+                            data: data,
                             success: function (json){
                                 console.log("Success");
                                 console.log(json["result"])
                                 if(json["result"] == "success"){
                                     alert("Stocks bought")
-                                }else if(json["result"] == "insufficient funds"){
+                                    update_stock_table(data);
+                                    $("#StockModal").modal("toggle");
+                                }else if(json["result"] == "Insufficient funds"){
                                     alert('Insufficient funds');
+                                }else{
+                                    alert('Error, please seek the system administrator')
                                 }
                             },
                             error: function (xhr, errmsg, err) {
@@ -241,6 +248,18 @@
         </script>
 
     <script>
+
+    function update_stock_table(data){
+        var d = moment(data['date']);
+
+        $("#clients_stock_tbody").append("<tr>"+
+                    "<td class='stock'><a href='/wmt/?symbol=data['symbol']'>"+data['symbol']+"</a></td>"+
+                    "<td class='buy_date'>"+ d.format("LL")+"</td>"+
+                    "<td class='amount'>"+data['amount']+"</td>"+
+                    "<td class='price'>"+data['price']+"</td>"+
+                    "<td class='total'>"+(data['price'] * data['amount']).toFixed(2)+"</td>"+
+                "</tr>")
+    }
 
     function make_graph(result) {
         var dates = [];
