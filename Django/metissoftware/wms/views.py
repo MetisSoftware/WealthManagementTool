@@ -26,7 +26,7 @@ def index(request):
     if get_params.get("days") is not None:
         days = int(get_params.get("days"))
     else:
-        days = 5
+        days = 7
         yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
         yesterdayminus5 = yesterday - datetime.timedelta(days=days)
         query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
