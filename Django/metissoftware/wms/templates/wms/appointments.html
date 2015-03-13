@@ -100,20 +100,25 @@
 
                                     success: function (json){
                                         console.log("Success");
-
-
+                                        if(json["result"]=="success"){
+                                            eventData.id=json["id"];
+                                        }
+                                        eventData.backgroundColor = get_type_color(eventData.type);
+                                        console.log(eventData);
+                                        $('#calendar').fullCalendar('renderEvent', eventData, true);
+                                        $('#calendarModal').modal('toggle');
                                     },
 
                                     error: function (xhr, errmsg, err) {
                                         alert('Failed to create event.');
                                         console.log(xhr.status + ": " + xhr.responseText);
+                                        $('#calendarModal').modal('toggle');
 
                                     }
 
                                 });
-                            $('#calendarModal').modal('toggle');
-                            eventData.backgroundColor = get_type_color(eventData.type);
-                            $('#calendar').fullCalendar('renderEvent', eventData, true);
+
+
 
                 })
             });

@@ -155,8 +155,8 @@ def create_appointment(request):
         end = post_text.get("end","")
         type = post_text.get("type","")
         m.Event.objects.create(fa=request.user, startDateTime=start, endDateTime=end, title=title, type=type)
-        print("pass")
-        data = {"success":"success"};
+        event = Event.objects.filter(fa=request.user, startDateTime=start, endDateTime=end, title=title, type=type)[0]
+        data = {"result":"success","id":event.id}
         return HttpResponse(
             json.dumps(data),
             content_type='application/json',
