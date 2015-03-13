@@ -166,6 +166,16 @@ def create_appointment(request):
         return render(request,'wms/appointments.html', context_instance=RequestContext(request) )
 
 @login_required
+def delete_appointment(request):
+    get_params = request.GET
+    if(get_params.get('appointment') is None):
+        return HttpResponseRedirect('/appointments/')
+    else:
+        appointment = m.Event.objects.get(id=get_params.get('appointment'))
+        appointment.delete()
+        return HttpResponseRedirect('/appointments/')
+
+@login_required
 def print_clients(request):
     current_user = request.user
     client_list = Client.objects.filter(fa__ni_number=current_user.ni_number)
