@@ -1,8 +1,6 @@
-import os
-from django.conf import settings
 from datetime import datetime
+from django.core.urlresolvers import reverse
 from django.db import models
-from django import forms
 from django.forms import ModelForm, TextInput
 from django.core.validators import RegexValidator
 from bootstrap3_datetime.widgets import DateTimePicker
@@ -49,6 +47,7 @@ class FAUserManager(BaseUserManager):
 class FA(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=64, unique=True)
     first_name = models.CharField(max_length=64, default="**DEFAULT**")
+    middle_name = models.CharField(max_length=64, blank=True)
     surname = models.CharField(max_length=64, default="**DEFAULT**")
     image = models.ImageField(upload_to='fa_images', default='/media/person-placeholder.png')
     dob = models.DateField(default="1990-01-01")
@@ -85,6 +84,7 @@ class Event(models.Model):
     def __str__(self):
         return self.fa.first_name + " " + self.fa.surname + " - " + self.title + " - " + datetime.strftime(self.startDateTime,"%c")
 
+
 class Client(models.Model):
     first_name = models.CharField(max_length=64)
     middle_name = models.CharField(max_length=64, blank=True)
@@ -115,8 +115,12 @@ class Client(models.Model):
                                              regex='[\d]{18}',
                                              message="Not a valid Twitter widget id. must be 18 digits"
                                          )])
+
     def __str__(self):
         return self.surname + " - " + self.ni_number
+
+    def get_absolute_url(self):
+        return reverse('edit_client', kwargs={'pk': self.pk})
 
 
 class Market(models.Model):
@@ -151,9 +155,7 @@ class Share(models.Model):
 class ClientForm(ModelForm):
     class Meta:
         model = Client
-        fields = ['first_name', 'middle_name', 'surname', 'email', 'image',
-                  'mob_phone', 'home_phone', 'dob', 'ni_number', 'fa', 'cash',
-                  'twitter_username', 'twitter_widget_id']
+        fields = '__all__'
         widgets = {
             'cash': TextInput(
                 attrs={'placeholder': '0.00', 'cols': '1', 'rows': '1'} ),

@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, UpdateView
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.views.decorators.csrf import csrf_protect
+from django.core.mail import send_mail
+from django.core.urlresolvers import reverse_lazy
 
 from django.template import RequestContext
 from wms.models import Client, ClientForm, Share, Event, Stock, Market
@@ -21,7 +23,7 @@ import json
 def index(request):
     get_params = request.GET
     symbol = get_params.get("symbol")
-    if symbol is None or symbol=="":
+    if symbol is None or symbol is None:
         symbol = "GOOG"
     if get_params.get("days") is not None:
         days = int(get_params.get("days"))
@@ -36,6 +38,7 @@ def index(request):
     return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']}, context_instance=RequestContext(request))
 
     #return render_to_response('wms/index.html',{})
+
 
 def queryAPI(request):
     if(request.method == 'POST'):
@@ -121,13 +124,14 @@ def deposit_cash(request):
         client.save()
         return HttpResponse(json.dumps({"result": "success","new_amount":str(cash)}), content_type='application/json')
 
+
 def withdraw_cash(request):
     if(request.method == 'POST'):
         get_args = request.POST
         ni = get_args.get("ni")
         amount = get_args.get("amount")
         client = Client.objects.filter(ni_number=ni)
-        if amount == "":
+        if amount is None:
             return HttpResponse(json.dumps({"result":"amount_error"}), content_type='application/json')
         if not client:
             return HttpResponse(json.dumps({"result":"Client not found"}), content_type='application/json')
@@ -202,6 +206,7 @@ def new_client(request):
         'form': form,
     })
 
+
 @login_required
 def delete_client(request):
     get_params = request.GET
@@ -231,6 +236,13 @@ def client_details(request):
                                          {'client_details': client,'shares': shares,'twitter':twitter}, context_instance=RequestContext(request))
         except ObjectDoesNotExist:
             return render_to_response('wms/client_details.html',{}, context_instance=RequestContext)
+
+
+class EditClient(UpdateView):
+    model = Client
+    fields = '__all__'
+    template_name = 'wms/client_update.html'
+    success_url = reverse_lazy('print_clients')
 
 
 class LoginView(FormView):

@@ -32,6 +32,9 @@
             <li>
                 <span class="glyphicon glyphicon-flag"></span> <strong>Financial Advisor:</strong> {{client_details.fa}}
             </li>
+	    <li>
+	    <a href="{% url "edit_client" client_details.ni_number %}">Edit Client </a>
+	    </li>
         </ul>
     </div>
     <div class = "col-md-9">
