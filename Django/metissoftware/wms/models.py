@@ -74,6 +74,7 @@ class FA(AbstractBaseUser, PermissionsMixin):
 
     objects = FAUserManager()
 
+
 class Event(models.Model):
     fa = models.ForeignKey(FA)
     startDateTime = models.DateTimeField()
@@ -142,10 +143,11 @@ class Stock(models.Model):
 
 class Share(models.Model):
     owner = models.ForeignKey(Client)
-    buy_date = models.DateField(default="1990-01-01")
+    date = models.DateField(default="1990-01-01")
     amount = models.IntegerField()
     price = models.DecimalField(max_digits=20, decimal_places=2)
     stock = models.ForeignKey(Stock)
+    buy = models.BooleanField(default=True)
 
     def __str__(self):
         return self.owner.surname + " \

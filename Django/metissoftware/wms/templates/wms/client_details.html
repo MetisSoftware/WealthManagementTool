@@ -10,6 +10,9 @@
         <p class="lead">{{client_details.first_name}} {{client_details.middle_name}} {{client_details.surname}}</p>
         <ul class="list-unstyled">
             <li>
+	            <span class="glyphicon glyphicon-pencil"></span> <strong><a href="{% url "edit_client" client_details.ni_number %}">Edit Client </a></strong>
+	        </li>
+            <li>
                 <span class="glyphicon glyphicon-envelope"> </span> <strong>Email:</strong> {{ client_details.email}}
             </li>
             <li>
@@ -24,17 +27,19 @@
                 </ul>
             </li>
             <li>
-                <span class="glyphicon glyphicon-user"></span> <strong>NI:</strong> {{client_details.ni_number}}
+                <span class="glyphicon glyphicon-user"></span> <strong data-toggle="tooltip" data-placement="right" title="National Insurance Number">NI:</strong> {{client_details.ni_number}}
             </li>
             <li>
-                <span class="glyphicon glyphicon-gift"></span> <strong>Dob:</strong> {{client_details.dob}}
+                <span class="glyphicon glyphicon-gift"></span> <strong data-toggle="tooltip" data-placement="right" title="Date of Birth"">Dob:</strong> {{client_details.dob}}
             </li>
             <li>
-                <span class="glyphicon glyphicon-flag"></span> <strong>Financial Advisor:</strong> {{client_details.fa}}
+                <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Financial Adviser">FA:</strong> {{client_details.fa}}
             </li>
-	    <li>
-	    <a href="{% url "edit_client" client_details.ni_number %}">Edit Client </a>
-	    </li>
+            <script>
+                $(function () {
+                  $('[data-toggle="tooltip"]').tooltip()
+                })
+            </script>
         </ul>
     </div>
     <div class = "col-md-9">
@@ -60,8 +65,9 @@
         <div class="row table-responsive" style="height: 70%">
             <table class="table table-hover table-bordered table-condensed col-md-12" style="background-color: #ffffff; ">
                 <thead>
+                    <th>Purchase </th>
                     <th class="sort" data-sort="stock" id="stock_th">Stock <span class="glyphicon glyphicon-triangle-top"></span></th>
-                    <th class="sort" data-sort="buy_date">Date bought <span></span></th>
+                    <th class="sort" data-sort="date">Date bought <span></span></th>
                     <th class="sort" data-sort="amount">Amount <span></span></th>
                     <th class="sort" data-sort="price">Price($) <span></span></th>
                     <th class="sort" data-sort="total">Total($) <span></span></th>
@@ -70,8 +76,9 @@
                 <tbody id="clients_stock_tbody" class="list" style="overflow-y: scroll;height: 50%">
                     {% for share in shares %}
                     <tr>
+                        <td>{{ share.buy }}</td>
                         <td class="stock"><a href="/?symbol={{share.stock}}">{{ share.stock}}</a></td>
-                        <td class="buy_date">{{ share.buy_date}}</td>
+                        <td class="date">{{ share.date}}</td>
                         <td class="amount">{{ share.amount}}</td>
                         <td class="price">{{ share.price}}</td>
                         <script>
@@ -80,19 +87,30 @@
 
                         </script>
                         <td class="total"><script>document.write(({{share.price}}*{{share.amount}}).toFixed(2));</script></td>
-                        <td class="sell"><button class="btn btn-default btn-xs">Sell</button> </td>
+                        <td class="sell"><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#SellStockModal" data-symbol="{{ share.stock }}">Sell</button> </td>
+
                     </tr>
                     {% endfor %}
                     <script>
                         $(".portfolio_worth").html(portfolio_worth.toFixed(2));
+
+                        $("button[data-target='#SellStockModal']").click(function(event){
+                            console.log("found");
+                            var sell_symbol =$(this).attr("data-symbol");
+                            $("#sell_stock_symbol").val(sell_symbol);
+                            $("#sellSharesForm").submit();
+
+                        })
                     </script>
+
                 </tbody>
 
             </table>
+
         </div>
         <script type="text/javascript">
             var options ={
-                valueNames: ['stock', 'buy_date', 'amount', 'price', 'total']
+                valueNames: ['stock', 'date', 'amount', 'price', 'total']
             };
             var userList = new List('users',options);
             userList.sort("stock", { order: "asc"});
@@ -121,11 +139,6 @@
                                 <input id="stock_symbol" class="form-control" type="text" name="symbol" placeholder="Stock Symbol" />
                                 <button id="search_stock_submit" class="btn btn-primary form-control glyphicon glyphicon-search" type="submit" value="Submit" data-loading-text=" Searching..." > Search</button>
                             </div>
-
-                            <div class="form-group">
-
-                            </div>
-
                         </form>
 
 
@@ -160,6 +173,55 @@
             </div>
         </div>
     </div>
+
+    <!--Sell stock modal-->
+    <div class=" modal fade" tabindex="-1" id="SellStockModal" role="dialog" >
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                     <h4 class="modal-title" id="SellModalLabel">Sell Shares</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form id="sellSharesForm" class="form-inline" action="/query_api/" method="get">
+                            <div class="form-group">
+                                <label class="sr-only">Stock Symbol</label>
+                                <input id="sell_stock_symbol" class="form-control hidden" type="text" name="symbol" placeholder="Stock Symbol" />
+                                <button id="sell_search_stock_submit" class="btn btn-primary form-control glyphicon glyphicon-search hidden" type="submit" value="Submit" data-loading-text=" Searching..." > Search</button>
+                            </div>
+                        </form>
+
+
+                        <h3 id="sell_symbol_title" class="text-center"></h3>
+                        <div id="sell_stock_not_found" class="alert alert-danger hidden">Unable to find stock! Please check you have entered a valid stock symbol.</div>
+                        <div class="row">
+                            <div class="col-md-11">
+                                   <canvas id="sell_stock_graph" class="hidden"></canvas>
+                            </div>
+                            <div class="col-md-1">
+                                <div id="sell_lineLegend" class="hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sell_modal_footer" class="modal-footer">
+                    <div id="stock_sell" class="hidden">
+                        <form class="form-inline" id="sell_buttonForm">
+                            <div class="form-group">
+                                <p id="sell_text"></p>
+                                <label for="sell_quantity">Quantity: </label>
+                                <input id="sell_quantity" class="form-control" placeholder="1" style="width: 100px">
+                                <button id="sell_button" class="btn btn-default form-control" type="submit" value="Sell">Sell</button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--Deposit Cash-->
     <div class=" modal fade" tabindex="-1" id="DepositModal" role="dialog" >
         <div class="modal-dialog">
@@ -229,7 +291,7 @@
             });
     </script>
 
-    <!-- Withdraw Cash moadl-->
+    <!-- Withdraw Cash modal-->
     <div class=" modal fade" tabindex="-1" id="WithdrawModal" role="dialog" >
         <div class="modal-dialog">
             <div class="modal-content">
@@ -241,7 +303,6 @@
                     <div class="container-fluid">
                         <form id="withdrawForm" class="form-inline" action="/withdraw_cash/" method="get">
                             <div class="form-group">
-                                <!--TODO update available cash filed-->
                                 <div >Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></div>
                                 <label class="sr-only">Stock Symbol</label>
                                 <div class="input-group">
@@ -300,130 +361,253 @@
             });
     </script>
 
+    <script type="text/javascript">
+    var symbol;
+    var recent_close;
+    var recent_date;
+    var quantity;
+    var shares_owned;
+
+    function print_results(json) {
+        var result = json.query.results.quote;
+        symbol = result[0]["Symbol"].toUpperCase();
+        recent_close = result[0]["Adj_Close"];
+        recent_date = result[0]["Date"];
+        shares_owned = json["shares_owned"]
+        $("#symbol_title").html(symbol);
+
+        $("#stock_not_found").addClass("hidden");
+
+         $("#symbol_title").removeClass("hidden");
+        $("#table_div").removeClass("hidden");
+        $("#stock_graph").removeClass("hidden");
+        $("#lineLegend").removeClass("hidden");
+        $("#modal_footer").removeClass("hidden");
+        $("#stock_buy").removeClass("hidden");
 
 
-        <script type="text/javascript">
-        var symbol;
-        var recent_close;
-        var recent_date;
-        var quantity;
+{#            $("#thead_result").html("");#}
+{#            for (key in result[0]){#}
+{#                $("#thead_result").append("<th>" + key + "</th>");#}
+{#            }#}
+{#            for (var quote in result) {#}
+{#                $("#tbody_results").append("<tr>");#}
+{#                for (var key in result[quote]) {#}
+{#                    $("#tbody_results").append("<td>" + result[quote][key] + "</td>");#}
+{#                }#}
+{#                $("#tbody_results").append("</tr>");#}
+{#            }#}
 
-        function print_results(json) {
-            var result = json.query.results.quote;
-            symbol = result[0]["Symbol"].toUpperCase();
-            recent_close = result[0]["Adj_Close"];
-            recent_date = result[0]["Date"];
-            $("#symbol_title").html(symbol);
+        make_graph(result);
+        setup_buy()
+    }
+    function setup_buy(){
+        $("#buy_text").html(" "+symbol+" shares owned: "+shares_owned+"<br>"+symbol+" at $"+ recent_close);
+    }
+    function setup_sell(){
+        $("#buy_text").html(" "+symbol+" shares owned: "+shares_owned+"<br>"+symbol+" at $"+ recent_close);
+    }
 
-            $("#stock_not_found").addClass("hidden");
+     function print_sell_results(json) {
+         var result = json.query.results.quote;
+         symbol = result[0]["Symbol"].toUpperCase();
+         recent_close = result[0]["Adj_Close"];
+         recent_date = result[0]["Date"];
+         shares_owned = json["shares_owned"]
+         $("#sell_symbol_title").html(symbol);
 
-             $("#symbol_title").removeClass("hidden");
-            $("#table_div").removeClass("hidden");
-            $("#stock_graph").removeClass("hidden");
-            $("#lineLegend").removeClass("hidden");
-            $("#modal_footer").removeClass("hidden");
-            $("#stock_buy").removeClass("hidden");
+         $("#sell_stock_not_found").addClass("hidden");
+
+         $("#sell_symbol_title").removeClass("hidden");
+         $("#table_div").removeClass("hidden");
+         $("#sell_stock_graph").removeClass("hidden");
+         $("#sell_lineLegend").removeClass("hidden");
+         $("#sell_modal_footer").removeClass("hidden");
+         $("#stock_sell").removeClass("hidden");
 
 
-            $("#thead_result").html("");
-            for (key in result[0]){
-                $("#thead_result").append("<th>" + key + "</th>");
-            }
-            for (var quote in result) {
-                $("#tbody_results").append("<tr>");
-                for (var key in result[quote]) {
-                    $("#tbody_results").append("<td>" + result[quote][key] + "</td>");
-                }
-                $("#tbody_results").append("</tr>");
-            }
+{#             $("#thead_result").html("");#}
+{#             for (key in result[0]) {#}
+{#                 $("#thead_result").append("<th>" + key + "</th>");#}
+{#             }#}
+{#             for (var quote in result) {#}
+{#                 $("#tbody_results").append("<tr>");#}
+{#                 for (var key in result[quote]) {#}
+{#                     $("#tbody_results").append("<td>" + result[quote][key] + "</td>");#}
+{#                 }#}
+{#                 $("#tbody_results").append("</tr>");#}
+{#             }#}
 
-            make_graph(result);
-            setup_buy()
-        }
-        function setup_buy(){
-            $("#buy_text").html(" "+symbol+" at $"+ recent_close);
-        }
+         make_graph(result);
+     }
 
-            $(document).ready(function() {
-                $('#buySharesForm').submit( function(event){
-                    event.preventDefault();
-                    $("#search_stock_submit").button('loading');
-                    var symbol = $("#stock_symbol").val();
-                        $.ajax({
-                            url: "/query_api/",
-                            type: "POST",
-                            data: {
-                                csrfmiddlewaretoken: '{{ csrf_token }}',
-                                symbol: symbol,
-                                days: 5
-                            },
-                            success: function (json){
-                                $("#search_stock_submit").button('reset');
-                                console.log("Success");
-                                console.log(json.query.count);
-                                if(json.query.count== 0){
-                                    $("#stock_not_found").removeClass("hidden");
-                                    $("#table_div").removeClass("hidden");
-                                    $("#stock_graph").addClass("hidden");
-                                    $("#lineLegend").addClass("hidden");
-                                    $("#modal_footer").addClass("hidden");
-                                    $("#stock_buy").addClass("hidden");
-                                    $("#symbol_title").addClass("hidden");
-                                }else {
+    $(document).ready(function() {
+        $('#buySharesForm').submit( function(event){
+            event.preventDefault();
+            $("#search_stock_submit").button('loading');
+            var symbol = $("#stock_symbol").val();
+                $.ajax({
+                    url: "/query_api/",
+                    type: "POST",
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        symbol: symbol,
+                        days: 5,
+                        ni: '{{ client_details.ni_number }}'
+                    },
+                    success: function (json){
+                        $("#search_stock_submit").button('reset');
+                        if(json.query.count== 0){
+                            $("#stock_not_found").removeClass("hidden");
+                            $("#table_div").removeClass("hidden");
+                            $("#stock_graph").addClass("hidden");
+                            $("#lineLegend").addClass("hidden");
+                            $("#modal_footer").addClass("hidden");
+                            $("#stock_buy").addClass("hidden");
+                            $("#symbol_title").addClass("hidden");
+                        }else {
 
-                                    print_results(json);
-                                }
-                            },
-                            error: function (xhr, errmsg, err) {
-                                $("#search_stock_submit").button('reset');
-                                bootbox.alert('Failed.');
-                                console.log(xhr.status + ": " + xhr.responseText);
-                            }
-                        });
-                })
-            });
-
-            $(document).ready(function(){
-                $("#buy_buttonForm").submit(function (event){
-                    event.preventDefault();
-                    quantity = $("#buy_quantity").val();
-                    if (quantity == ""){
-                        quantity = 1;
+                            print_results(json);
+                        }
+                    },
+                    error: function (xhr, errmsg, err) {
+                        $("#search_stock_submit").button('reset');
+                        bootbox.alert('Failed.');
+                        console.log(xhr.status + ": " + xhr.responseText);
                     }
-                    var data = {
-                                csrfmiddlewaretoken: '{{ csrf_token }}',
-                                symbol: symbol,
-                                ni: '{{client_details.ni_number}}',
-                                price: recent_close,
-                                amount: quantity,
-                                date: recent_date
-                            }
-                    $.ajax({
-                            url: "/buy_stock/",
-                            type: "POST",
-                            data: data,
-                            success: function (json){
-                                if(json["result"] == "success"){
-                                    bootbox.alert("Stocks bought")
+                });
+        })
+    });
 
-                                    update_stock_table(data);
-                                    portfolio_worth += (recent_close * quantity);
-                                    $(".portfolio_worth").html(portfolio_worth.toFixed(2));
-                                    $("#StockModal").modal("toggle");
-                                }else if(json["result"] == "Insufficient funds"){
-                                    bootbox.alert('Insufficient funds');
-                                }else{
-                                    bootbox.alert('Error, please seek the system administrator')
-                                }
-                            },
-                            error: function (xhr, errmsg, err) {
-                                bootbox.alert('Failed.');
-                                console.log(xhr.status + ": " + xhr.responseText);
+    $(document).ready(function() {
+            $('#sellSharesForm').submit( function(event){
+                event.preventDefault();
+                $("#sell_search_stock_submit").button('loading');
+                $("#sell_search_stock_submit").removeClass("hidden");
+                var symbol = $("#sell_stock_symbol").val();
+                quantity = $("#buy_quantity").val();
+                if (quantity == ""){
+                    quantity = 1;
+                }
+                    $.ajax({
+                        url: "/query_api/",
+                        type: "POST",
+                        data: {
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            symbol: symbol,
+                            ni: '{{client_details.ni_number}}',
+                            price: recent_close,
+                            amount: quantity
+                        },
+                        success: function (json){
+                            $("#sell_search_stock_submit").button('reset');
+                            $("#sell_search_stock_submit").addClass('hidden');
+
+                            if(json.query.count== 0){
+                                $("#sell_stock_not_found").removeClass("hidden");
+                                $("#table_div").removeClass("hidden");
+                                $("#sell_stock_graph").addClass("hidden");
+                                $("#sell_lineLegend").addClass("hidden");
+                                $("#sell_modal_footer").addClass("hidden");
+                                $("#stock_sell").addClass("hidden");
+                                $("#sell_symbol_title").addClass("hidden");
+                            }else {
+                                $(".client_cash_available").html(json["new_amount"]);
+                                print_sell_results(json);
+
                             }
-                        });
-                })
+                        },
+                        error: function (xhr, errmsg, err) {
+                            $("#search_stock_submit").button('reset');
+                            bootbox.alert('Failed.');
+                            console.log(xhr.status + ": " + xhr.responseText);
+                        }
+                    });
             })
-        </script>
+        });
+
+    $(document).ready(function(){
+        $("#buy_buttonForm").submit(function (event){
+            event.preventDefault();
+            quantity = $("#buy_quantity").val();
+            if (quantity == ""){
+                quantity = 1;
+            }
+            var data = {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        symbol: symbol,
+                        ni: '{{client_details.ni_number}}',
+                        price: recent_close,
+                        amount: quantity,
+                        date: recent_date
+                    }
+            $.ajax({
+                    url: "/buy_stock/",
+                    type: "POST",
+                    data: data,
+                    success: function (json){
+                        if(json["result"] == "success"){
+                            bootbox.alert("Stocks bought")
+
+                            update_stock_table(data);
+                            portfolio_worth += (recent_close * quantity);
+                            $(".portfolio_worth").html(portfolio_worth.toFixed(2));
+                            $("#StockModal").modal("toggle");
+                        }else if(json["result"] == "Insufficient funds"){
+                            bootbox.alert('Insufficient funds');
+                        }else{
+                            bootbox.alert('Error, please seek the system administrator')
+                        }
+                    },
+                    error: function (xhr, errmsg, err) {
+                        bootbox.alert('Failed.');
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
+                });
+        })
+    })
+
+    $(document).ready(function(){
+        $("#sell_buttonForm").submit(function (event){
+            event.preventDefault();
+            quantity = $("#sell_quantity").val();
+            if (quantity == ""){
+                quantity = 1;
+            }
+            var data = {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        symbol: symbol,
+                        ni: '{{client_details.ni_number}}',
+                        price: recent_close,
+                        amount: quantity,
+                        date: recent_date
+                    };
+            $.ajax({
+                    url: "/sell_stock/",
+                    type: "POST",
+                    data: data,
+                    success: function (json){
+                        if(json["result"] == "success"){
+                            bootbox.alert("Stocks bought")
+
+                            update_stock_table(data);
+                            cash += (recent_close * quantity);
+                            $(".portfolio_worth").html(portfolio_worth.toFixed(2));
+                            $("#StockModal").modal("toggle");
+                        }else if(json["result"] == "Insufficient funds"){
+                            bootbox.alert('Insufficient funds');
+                        }else{
+                            bootbox.alert('Error, please seek the system administrator')
+                        }
+                    },
+                    error: function (xhr, errmsg, err) {
+                        bootbox.alert('Failed.');
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
+                });
+        })
+    })
+    </script>
 
     <script>
 
@@ -432,7 +616,7 @@
 
         var stock_a = "<a href='/?symbol="+data['symbol']+"'>"+data['symbol']+"</a>";
         console.log(stock_a);
-        userList.add({stock:stock_a, buy_date:d.format("LL"), amount:data['amount'], price: data['price'], total: (data['price'] * data['amount']).toFixed(2) });
+        userList.add({stock:stock_a, date:d.format("LL"), amount:data['amount'], price: data['price'], total: (data['price'] * data['amount']).toFixed(2) });
 
     }
 
@@ -452,7 +636,7 @@
             low[low.length] = result[key]["Low"] ;
         }
 
-        var stock_graph = document.getElementById('stock_graph').getContext('2d');
+        var stock_graph = document.getElementById('sell_stock_graph').getContext('2d');
         var stockData = {
             labels: dates,
             datasets: [
@@ -501,7 +685,7 @@
         };
 
         new Chart(stock_graph).Line(stockData, opts);
-        legend(document.getElementById("lineLegend"), stockData);
+        legend(document.getElementById("sell_lineLegend"), stockData);
     }
     </script>
     {% if twitter == True %}

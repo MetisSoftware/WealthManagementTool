@@ -43,7 +43,8 @@ def index(request):
 def queryAPI(request):
     if(request.method == 'POST'):
         get_args = request.POST
-        symbol = get_args.get("symbol")
+        ni = get_args.get("ni")
+        symbol = get_args.get("symbol").upper()
         if symbol == None or symbol == "":
             return;
         days = get_args.get("days")
@@ -58,6 +59,17 @@ def queryAPI(request):
                 yesterday.strftime("%Y-%m-%d")+"'"
         stock_result = scripts.query_api(query)
 
+        stock = Stock.objects.filter(symbol=symbol)
+        print(stock)
+        if not stock:
+            stock_result["shares_owned"] = 0
+            return HttpResponse(json.dumps(stock_result), content_type='application/json')
+        else:
+            shares = Share.objects.filter(owner=ni, stock=stock[0])
+            total = 0
+            for share in shares:
+                total+= share.amount
+            stock_result["shares_owned"] = total
     return HttpResponse(json.dumps(stock_result), content_type='application/json')
 
 def buyStock(request):
@@ -91,7 +103,7 @@ def buyStock(request):
                     market = Market.objects.filter(name = stock_result['StockExchange'])
                 Stock.objects.create(symbol=stock_result['Symbol'], company=stock_result['Name'], market=market[0])
             stock = Stock.objects.filter(symbol=symbol)
-            Share.objects.create(owner = client, buy_date = date, amount = amount, price = price , stock = stock[0] )
+            Share.objects.create(owner = client, date = date, amount = amount, price = price , stock = stock[0], buy=True )
             return HttpResponse(json.dumps({"result": "success"}), content_type='application/json')
         else:
             return HttpResponse(json.dumps({"result":"Insufficient funds"}), content_type='application/json')
@@ -101,12 +113,32 @@ def buyStock(request):
 def sell_stock(request):
     if request.method == "POST":
         get_args = request.POST
-        symbol = get_args.get("symbol").upper();
+        symbol = get_args.get("symbol").upper()
         ni = get_args.get("ni")
-        price = float(get_args.get("price"))
-        amount = get_args.get("amount")
 
-    return HttpResponse(json.dumps({"result":"fail"}), content_type='application/json')
+        price = float(get_args.get("price"))
+        if get_args.get("amount")== None or get_args.get("amount") == "":
+            amount = 1
+        else:
+            amount = int(get_args.get("amount"))
+        client = Client.objects.filter(ni_number = ni)[0]
+        stock = Stock.objects.filter(symbol= symbol)
+        shares = Share.objects.filter(owner=client, stock = stock)
+
+        ownedAmount = 0;
+        for share in shares:
+            print(shares)
+            ownedAmount += int(share.amount)
+        if ownedAmount < amount:
+            return HttpResponse(json.dumps({"result": "Not enough stock owned"}), content_type='application/json')
+        else:
+            total = amount * price
+            client.cash -= decimal.Decimal(total)
+
+            Share.amount.create(owner= client, date="2015-03-13", amount=amount, price=price, stock=stock, buy=False )
+            return HttpResponse(json.dumps({"result": "success", "new_amount": str(client.cash)}), content_type='application/json')
+
+    return HttpResponse(json.dumps({"result": "fail"}), content_type='application/json')
 
 def deposit_cash(request):
     if(request.method == 'POST'):
