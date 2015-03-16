@@ -24,6 +24,8 @@ nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
 img{max-width:100%;}
 /*end reset*/
 
+
+
 /* Colors 
 #dfb511: base orange color
 #E9CB58: lighter orange
@@ -161,7 +163,7 @@ img{max-width:100%;}
 	font-weight:500;
 	margin:5px 15px;
  }
-}
+
 /********** Login *************/
 /*-------LOGIN STARTS HERE -------*/
 #loginContainer {
@@ -797,4 +799,5 @@ input.add_client:hover{
     .customer_desc span.testimonial-arrow{
       left:7em;
     }
+}
 }

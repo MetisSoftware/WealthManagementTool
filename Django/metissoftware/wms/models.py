@@ -150,8 +150,7 @@ class Share(models.Model):
     buy = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.owner.surname + " \
-               " + self.owner.ni_number + " - " + self.stock.symbol
+        return ""+str(self.buy)+ " - "+self.owner.surname +" - " + self.owner.ni_number + " - " + self.stock.symbol
 
 
 class ClientForm(ModelForm):

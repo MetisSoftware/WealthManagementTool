@@ -46,7 +46,7 @@ def queryAPI(request):
         ni = get_args.get("ni")
         symbol = get_args.get("symbol").upper()
         if symbol == None or symbol == "":
-            return;
+            return HttpResponse(json.dumps({"result":"No Symbol"}), content_type='application/json');
         days = get_args.get("days")
         if days != None:
             days = int(days);
@@ -58,19 +58,26 @@ def queryAPI(request):
                 "' and startDate = '"+yesterday_minus_days.strftime("%Y-%m-%d")+"' and endDate = '"+\
                 yesterday.strftime("%Y-%m-%d")+"'"
         stock_result = scripts.query_api(query)
+        if(stock_result["query"]["results"])==None:
+            return HttpResponse(json.dumps({"result":"Stock not found"}), content_type='application/json');
 
         stock = Stock.objects.filter(symbol=symbol)
-        print(stock)
         if not stock:
             stock_result["shares_owned"] = 0
+            stock_result["result"] = "success"
             return HttpResponse(json.dumps(stock_result), content_type='application/json')
         else:
             shares = Share.objects.filter(owner=ni, stock=stock[0])
             total = 0
             for share in shares:
-                total+= share.amount
+                if share.buy == True:
+                    total+= share.amount
             stock_result["shares_owned"] = total
-    return HttpResponse(json.dumps(stock_result), content_type='application/json')
+            stock_result["result"] = "success"
+            return HttpResponse(json.dumps(stock_result), content_type='application/json')
+
+    return HttpResponse(json.dumps({"result":"fail"}), content_type='application/json')
+
 
 def buyStock(request):
     if(request.method == 'POST'):
@@ -110,35 +117,39 @@ def buyStock(request):
 
     return HttpResponse(json.dumps({"result":"fail"}), content_type='application/json')
 
+
 def sell_stock(request):
     if request.method == "POST":
         get_args = request.POST
         symbol = get_args.get("symbol").upper()
         ni = get_args.get("ni")
-
         price = float(get_args.get("price"))
         if get_args.get("amount")== None or get_args.get("amount") == "":
             amount = 1
         else:
             amount = int(get_args.get("amount"))
         client = Client.objects.filter(ni_number = ni)[0]
-        stock = Stock.objects.filter(symbol= symbol)
+        stock = Stock.objects.filter(symbol= symbol)[0]
+        if not stock:
+            return HttpResponse(json.dumps({"result":"No such stock"}), content_type='application/json')
         shares = Share.objects.filter(owner=client, stock = stock)
-
-        ownedAmount = 0;
+        if not shares:
+            return HttpResponse(json.dumps({"result":"No shares"}), content_type='application/json')
+        ownedAmount = 0
         for share in shares:
-            print(shares)
-            ownedAmount += int(share.amount)
+            if share.buy ==True:
+                ownedAmount += int(share.amount)
         if ownedAmount < amount:
             return HttpResponse(json.dumps({"result": "Not enough stock owned"}), content_type='application/json')
         else:
             total = amount * price
-            client.cash -= decimal.Decimal(total)
+            client.cash += decimal.Decimal(total)
 
-            Share.amount.create(owner= client, date="2015-03-13", amount=amount, price=price, stock=stock, buy=False )
+            Share.objects.create(owner= client, date="2015-03-13", price=price, stock=stock, buy=False, amount= amount )
             return HttpResponse(json.dumps({"result": "success", "new_amount": str(client.cash)}), content_type='application/json')
 
     return HttpResponse(json.dumps({"result": "fail"}), content_type='application/json')
+
 
 def deposit_cash(request):
     if(request.method == 'POST'):
@@ -259,13 +270,29 @@ def client_details(request):
         try:
             client = Client.objects.get(ni_number=get_params.get('client'))
             shares = Share.objects.filter(owner=get_params.get('client'))
-            print(client.twitter_username)
+            sorted_Shares = {}
+            owned_shares = {}
+            for share in shares:
+                if sorted_Shares.get(share.stock.symbol) is None:
+                     sorted_Shares[share.stock.symbol]=[share]
+                     if share.buy == True:
+                        owned_shares[share.stock.symbol] = share.amount
+                     else:
+                         owned_shares[share.stock.symbol] = -share.amount
+                else:
+                    sorted_Shares[share.stock.symbol]=sorted_Shares[share.stock.symbol]+[share]
+                    if share.buy == True:
+                        owned_shares[share.stock.symbol] += share.amount
+                    else:
+                        owned_shares[share.stock.symbol] -= share.amount
+
+
             if client.twitter_username=="":
                 twitter = False
             else:
                 twitter = True
             return render_to_response('wms/client_details.html',
-                                         {'client_details': client,'shares': shares,'twitter':twitter}, context_instance=RequestContext(request))
+                                         {'client_details': client,'shares': sorted_Shares,'owned_shares':owned_shares,'twitter':twitter}, context_instance=RequestContext(request))
         except ObjectDoesNotExist:
             return render_to_response('wms/client_details.html',{}, context_instance=RequestContext)
 
