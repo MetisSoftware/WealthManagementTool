@@ -1,5 +1,6 @@
 {% extends "wms/base_boot.html" %}
 {% load staticfiles %}
+{% load custom_filters %}
 
 {% block content %}
 <script src="{% static "wms/js/fullcalendar/moment.min.js" %}" type="text/javascript" ></script>
@@ -66,15 +67,14 @@
                     <th>Stock owned</th>
                     <th></th>
                 </thead>
-                <tbody id="clients_stock_tbody" >
+                <tbody id="clients_stock_tbody">
                         {% for key,stock in shares.items %}
                         <script>
                             var target = ("{{ key }}div").replace(".","");
                         </script>
                         <tr >
                             <td class="sort"  data-toggle="collapse" data-target="#{{ key }}div" class="accordion-toggle">{{ key }}</td>
-                            <!--TODO Owned shares django template langauge dict lookup-->
-                            <td data-toggle="collapse" data-target="#{{ key }}div" class="accordion-toggle">{{ owned_shares }}</td>
+                            <td data-toggle="collapse" data-target="#{{ key }}div" class="accordion-toggle">{{ owned_shares|get_item:key }}</td>
                             <td ><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#SellStockModal" data-symbol="{{ key }}">Sell</button> </td>
                         </tr>
                             <tr class="hiddenRow">
