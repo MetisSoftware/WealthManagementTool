@@ -73,7 +73,8 @@
                         </script>
                         <tr >
                             <td class="sort"  data-toggle="collapse" data-target="#{{ key }}div" class="accordion-toggle">{{ key }}</td>
-                            <td data-toggle="collapse" data-target="#{{ key }}div" class="accordion-toggle">{{ owned_shares.FB }}</td>
+                            <!--TODO Owned shares django template langauge dict lookup-->
+                            <td data-toggle="collapse" data-target="#{{ key }}div" class="accordion-toggle">{{ owned_shares }}</td>
                             <td ><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#SellStockModal" data-symbol="{{ key }}">Sell</button> </td>
                         </tr>
                             <tr class="hiddenRow">
