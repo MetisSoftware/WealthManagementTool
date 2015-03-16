@@ -127,6 +127,12 @@ $(document).ready(function(){
                         bootbox.alert("Stocks bought");
                         append_stock_table(data);
                         portfolio_worth += (recent_close * quantity);
+                        var sym = data["symbol"].replace(".","");
+                        var count = parseInt(parseInt($("#"+sym+"td").html())+data["amount"]);
+                        $("#"+sym+"td").html(count);
+                        if (count >0){
+                            $("button[data-symbol='"+data['symbol']+"']").removeAttr("disabled")
+                        }
                         $(".portfolio_worth").html(portfolio_worth.toFixed(2));
                         $("#StockModal").modal("toggle");
                     }else if(json["result"] == "Insufficient funds"){
@@ -172,6 +178,12 @@ $("#sell_buttonForm").submit(function (event){
                     $(".client_cash_available").html(cash);
                     portfolio_worth -= (recent_close * quantity);
                     $(".portfolio_worth").html(portfolio_worth.toFixed(2));
+                    var sym = data["symbol"].replace(".","");
+                    var count = parseInt($("#"+sym+"td").html())-data["amount"];
+                    $("#"+sym+"td").html(count);
+                    if (count ==0){
+                        $("button[data-symbol='"+data['symbol']+"']").attr("disabled","disabled")
+                    }
                     $("#SellStockModal").modal("toggle");
                 } else if (json["result"] == "Insufficient funds") {
                     bootbox.alert('Insufficient funds');
@@ -385,22 +397,31 @@ function setup_buysell_text(){
         $(".buysell_text").html(" "+symbol+" shares owned: "+shares_owned+"<br>1 "+symbol+" share at $"+ recent_close);
     }
 
-//append shares tablea
+//append shares table
 function append_stock_table(data){
         var d = moment(data['date']);
-
+        var purchase;
+        if(data["buy"]=='True'){
+            purchase="<span class='glyphicon glyphicon-chevron-up'></span>Bought";
+        }else{
+            purchase="<span class='glyphicon glyphicon-chevron-down'></span>Sold";
+        }
         var stock_a = "<a href='/?symbol="+data['symbol']+"'>"+data['symbol']+"</a>";
-        var stock_sell = "<button class='btn btn-default btn-xs' data-toggle='modal' data-target='#SellStockModal' data-symbol="+data["symbol"]+">Sell</button>"
-
+        var stock_sell = "<button class='btn btn-default btn-xs' data-toggle='modal' data-target='#SellStockModal' data-symbol="+data["symbol"]+">Sell</button>";
+        data['symbol'] = data['symbol'].replace(".","");
         if (userList[data['symbol']]== undefined) {
             var t = (data['price'] * data["amount"]);
             var s = '<tr >' +
-                '<td class="sort"  data-toggle="collapse" data-target="#' + data['symbol'] + 'div" class="accordion-toggle">' + data['symbol'] + '</td>' +
-                '<td ><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#SellStockModal" data-symbol="' + data['symbol'] + '">Sell</button> </td>' +
+                '<td class="sort"  data-toggle="collapse" data-target="#' + data['symbol'] + 'div" class="accordion-toggle"><a href="/?symbol='+data['symbol']+'">' + data['symbol'] + '</td>' +
+                '<td class="accordion-toggle" data-toggle="collapse" data-target="#'+data["symbol"]+'div" >'+data["amount"]+'</td>' +
+                '<script>'+
+                '$("td[data-target=\'#'+data["symbol"]+'div\']").attr("data-target", "#'+data["symbol"]+'")'+
+                '</script>'+
+                '<td ><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#SellStockModal" data-symbol="'+data["symbol"]+'">Sell</button> </td>'+
                 '</tr>' +
                 '<tr class="hiddenRow">' +
-                '<td colspan="2" class="hiddenRow" >' +
-                '<div class="accordian-body collapse" id="' + data['symbol'] + 'div">' +
+                '<td colspan="3" class="hiddenRow" >' +
+                '<div class="accordian-body collapse" id="'+data["symbol"]+'">' +
                 '<table class="table table-condensed table-bordered" style="margin-bottom: 0px">' +
                 '<thead>' +
                 '<th class="sort" data-sort="buy">Purchase <span ></span></th>' +
@@ -412,9 +433,11 @@ function append_stock_table(data){
                 '</thead>' +
                 '<tbody class="list">' +
                    '<tr>'+
-                        '<td class="buy">'+data["buy"]+'</td>'+
+                        '<td class="buy '+data["symbol"]+'">'+purchase+
+
+                        '</td>'+
                         '<td class="stock"><a href="/?symbol='+data["symbol"]+'">'+data["symbol"]+'</a></td>'+
-                        '<td class="date">'+d.format("LL")+'</td>'+
+                        '<td class="date">'+d.format("YYYY-MM-DD")+'</td>'+
                         '<td class="amount">'+data["amount"]+'</td>'+
                         '<td class="price">'+data["price"]+'</td>'+
                         '<script>'+
@@ -428,23 +451,29 @@ function append_stock_table(data){
                 '$(".portfolio_worth").html(portfolio_worth.toFixed(2));' +
                 //Table sorting and searching setup
                 'var options ={valueNames: ["buy", "stock", "date", "amount", "price", "total"]};' +
-                'userList["' + data["symbol"] + '"] = new List("'+data["symbol"]+'div",options);' +
+                'userList["' + data["symbol"] + '"] = new List("'+data["symbol"]+'",options);' +
                 'userList["' + data["symbol"] + '"].sort("date", { order: "asc"});' +
                 '$("th.sort").click(function(event){' +
                 '$("th.sort").children("span").removeClass("glyphicon glyphicon-triangle-top glyphicon-triangle-bottom");' +
                 '$("th.sort.asc").children("span").addClass("glyphicon glyphicon-triangle-top");' +
                 '$("th.sort.desc").children("span").addClass("glyphicon glyphicon-triangle-bottom");' +
                 ' });' +
-                '</script></div></td></tr>'
+                '</script></div></td></tr>';
 
             $("#clients_stock_tbody").append(s);
             sell_button_listener();
-            return;
+        }else {
+            if (data['buy'] == 'True') {
+                var s = "<span class='glyphicon glyphicon-chevron-up'></span>Bought"
+            } else {
+                var s = "<span class='glyphicon glyphicon-chevron-down'></span>Sold"
+            }
+            userList[data['symbol']].add({buy: s, stock: stock_a, date: d.format("YYYY-MM-DD"), amount: data['amount'], price: data['price'], total: (data['price'] * data['amount']).toFixed(2)});
+            //userList[data['symbol']].sort("stock", { order: "asc"});
+            sell_button_listener();
         }
-        userList[data['symbol']].add({buy:data['buy'], stock:stock_a, date:d.format("LL"), amount:data['amount'], price: data['price'], total: (data['price'] * data['amount']).toFixed(2)});
-        //userList[data['symbol']].sort("stock", { order: "asc"});
-        sell_button_listener();
 }
+
 function sell_button_listener(){
     $("button[data-target='#SellStockModal']").one('click',function(event){
         var sell_symbol =$(this).attr("data-symbol");

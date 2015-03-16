@@ -72,6 +72,8 @@ def queryAPI(request):
             for share in shares:
                 if share.buy == True:
                     total+= share.amount
+                else:
+                    total-= share.amount
             stock_result["shares_owned"] = total
             stock_result["result"] = "success"
             return HttpResponse(json.dumps(stock_result), content_type='application/json')

@@ -36,7 +36,7 @@
                 <span class="glyphicon glyphicon-user"></span> <strong data-toggle="tooltip" data-placement="right" title="National Insurance Number">NI:</strong> {{client_details.ni_number}}
             </li>
             <li>
-                <span class="glyphicon glyphicon-gift"></span> <strong data-toggle="tooltip" data-placement="right" title="Date of Birth"">Dob:</strong> {{client_details.dob}}
+                <span class="glyphicon glyphicon-gift"></span> <strong data-toggle="tooltip" data-placement="right" title="Date of Birth">Dob:</strong> {{client_details.dob}}
             </li>
             <li>
                 <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Financial Adviser">FA:</strong> {{client_details.fa}}
@@ -70,41 +70,66 @@
                 <tbody id="clients_stock_tbody">
                         {% for key,stock in shares.items %}
                         <script>
-                            var target = ("{{ key }}div").replace(".","");
+                            var target = ("{{ key }}").replace(".","");
                         </script>
                         <tr >
-                            <td class="sort"  data-toggle="collapse" data-target="#{{ key }}div" class="accordion-toggle">{{ key }}</td>
-                            <td data-toggle="collapse" data-target="#{{ key }}div" class="accordion-toggle">{{ owned_shares|get_item:key }}</td>
+                            <td class="sort accordion-toggle"  data-toggle="collapse" data-target="#{{ key }}div" class=""><a href="/?symbol={{key}}">{{ key }}</a></td>
+                            <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}td" >{{ owned_shares|get_item:key }}</td>
+                            <script>
+                                $("td[data-target='#{{ key }}td']").attr("id", target+"td")
+                                $("td[data-target='#{{ key }}div']").attr("data-target", "#"+target+"div")
+
+                            </script>
                             <td ><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#SellStockModal" data-symbol="{{ key }}">Sell</button> </td>
+                            <script>
+                                if('{{ owned_shares|get_item:key }}'==0){
+                                    $("button[data-symbol='{{ key }}']").attr("disabled","disabled")
+                                }
+                            </script>
                         </tr>
                             <tr class="hiddenRow">
                             <td colspan="3" class="hiddenRow">
                                 <div class="accordian-body collapse" id="{{ key }}div">
+                                <script>
+                                    $("div[id='{{ key }}div']").attr("id", target+"div")
+                                </script>
                                     <table class="table table-condensed table-bordered" style="margin-bottom: 0px">
                                         <thead>
-                                            <th class="sort" data-sort="buy">Purchase <span ></span></th>
-                                            <th class="sort" data-sort="stock" id="stock_th">Stock <span></span></th>
-                                            <th class="sort" data-sort="date">Date<span class="glyphicon glyphicon-triangle-top"></span></th>
-                                            <th class="sort" data-sort="amount">Amount <span></span></th>
-                                            <th class="sort" data-sort="price">Price($) <span></span></th>
-                                            <th class="sort" data-sort="total">Total($) <span></span></th>
-
+                                            <tr>
+                                                <th class="sort" data-sort="buy">Transaction <span ></span></th>
+                                                <th class="sort" data-sort="stock" id="stock_th">Stock <span></span></th>
+                                                <th class="sort" data-sort="date">Date<span class="glyphicon glyphicon-triangle-top"></span></th>
+                                                <th class="sort" data-sort="amount">Amount <span></span></th>
+                                                <th class="sort" data-sort="price">Price($) <span></span></th>
+                                                <th class="sort" data-sort="total">Total($) <span></span></th>
+                                            </tr>
                                         </thead>
                                         <tbody class="list">
                                             {% for share in stock %}
-                                                            <tr>
-                                                                <td class="buy">{{ share.buy }}</td>
-                                                                <td class="stock"><a href="/?symbol={{share.stock}}">{{ share.stock}}</a></td>
-                                                                <td class="date">{{ share.date|date:"c"}}</td>
-                                                                <td class="amount">{{ share.amount}}</td>
-                                                                <td class="price">{{ share.price}}</td>
-                                                                <script>
-                                                                    var t = ({{share.price}} * {{share.amount}});
-                                                                    portfolio_worth = (portfolio_worth + parseFloat(t));
-                                                                </script>
-                                                                <td class="total"><script>document.write(t);</script></td>
+                                                <tr>
+                                                    <td class="buy writeHere">
+                                                        <script>
+                                                        if('{{ share.buy }}'=="True"){
+                                                            $(".writeHere").html("<span class='glyphicon glyphicon-chevron-up'></span>Bought")
+                                                        }else{
+                                                            $(".writeHere").html("<span class='glyphicon glyphicon-chevron-down'></span>Sold")
+                                                        }
+                                                        $(".writeHere").removeClass("writeHere");
+                                                        </script>
+                                                    </td>
+                                                    <td class="stock"><a href="/?symbol={{share.stock}}">{{ share.stock}}</a></td>
+                                                    <td class="date">{{ share.date|date:"c"}}</td>
+                                                    <td class="amount">{{ share.amount}}</td>
+                                                    <td class="price">{{ share.price}}</td>
+                                                    <td class="total writeHeretotal">
+                                                        <script>
+                                                            var t = ({{share.price}} * {{share.amount}});
+                                                        portfolio_worth = (portfolio_worth + parseFloat(t));
+                                                            $(".writeHeretotal").html(t);
+                                                            $(".writeHeretotal").removeClass(".writeHere");
 
-                                                            </tr>
+                                                        </script></td>
+                                                </tr>
                                             {% endfor %}
                                         </tbody>
                                     </table>
@@ -114,13 +139,16 @@
                                     var options ={
                                             valueNames: ['buy', 'stock', 'date', 'amount', 'price', 'total']
                                         };
-                                    userList['{{ key }}'] = new List("{{ key }}div",options);
-                                    userList['{{ key }}'].sort("date", { order: "asc"});
-                                        $("th.sort").click(function(event){
-                                                $("th.sort").children("span").removeClass("glyphicon glyphicon-triangle-top glyphicon-triangle-bottom");
-                                                $("th.sort.asc").children("span").addClass("glyphicon glyphicon-triangle-top");
-                                                $("th.sort.desc").children("span").addClass("glyphicon glyphicon-triangle-bottom");
-                                            });
+                                    var symbol = "{{ key }}".replace(".","");
+                                    userList[symbol] = new List((symbol+"div"),options);
+                                    //userList[symbol].sort("date", { order: "asc"});
+
+
+                                    $("th.sort").click(function(event){
+                                            $("th.sort").children("span").removeClass("glyphicon glyphicon-triangle-top glyphicon-triangle-bottom");
+                                            $("th.sort.asc").children("span").addClass("glyphicon glyphicon-triangle-top");
+                                            $("th.sort.desc").children("span").addClass("glyphicon glyphicon-triangle-bottom");
+                                        });
 
                                 </script>
                                 </div>
