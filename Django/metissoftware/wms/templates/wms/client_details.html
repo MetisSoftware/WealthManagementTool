@@ -11,7 +11,7 @@
     var csrf = '{{ csrf_token }}';
     var ni = '{{client_details.ni_number}}';
     </script>
-    <div class="col-md-3 well">
+    <div class="col-md-3 ">
 	    <img class="img-responsive img-thumbnail" src="{{ client_details.image.url }}" alt="Person Placeholder">
         <p class="lead">{{client_details.first_name}} {{client_details.middle_name}} {{client_details.surname}}</p>
         <ul class="list-unstyled">
@@ -44,7 +44,7 @@
         </ul>
     </div>
     <div class = "col-md-9">
-    <div class="col-md-12 well container-fluid" id="users" >
+    <div class="col-md-12  container-fluid" id="users" >
         <div class="row">
             <div class="col-md-3">Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></div>
             <div class="btn-group col-md-6" style="margin-bottom:1%;">

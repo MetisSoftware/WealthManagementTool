@@ -3,14 +3,14 @@
 {% load staticfiles %}
 {% block content %}
 <script src="{% static "wms/js/bootbox.js" %}" type="text/javascript" ></script>
-    <div class="panel panel-default col-md-12 col-sm-12 ">
-        <div class="panel-body col-md-12">
+    <div class="col-md-12 col-sm-12 ">
+        <div class="col-md-12" style="margin-bottom:1%;">
             <a class="btn btn-success" href="/new_client.html" role="button">Add Client</a>
             <!--<a class = "btn btn-danger" href="#RemoveClient" role="button">Remove Client</a>-->
 	    <button id="rmvclient" type="button" class="btn btn-danger">Remove Client</button>
         </div>
     </div>
-    <div class="well col-md-12 col-sm-12">
+    <div class=" col-md-12 col-sm-12">
     {% if client_list %}
     <div id="users">
         <input class="search form-control " placeholder="Search clients" style = "margin-bottom:1%;">
