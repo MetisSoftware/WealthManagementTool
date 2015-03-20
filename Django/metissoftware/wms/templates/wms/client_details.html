@@ -64,7 +64,7 @@
             <table class="table  table-bordered table-condensed table-hover col-md-12" style="background-color: #ffffff; margin-bottom: 0; ">
                 <thead>
                     <th>Stock Symbol</th>
-                    <th>Stock Owned</th>
+                    <th>Shares Currently Owned</th>
 {#                    <th>Stock Worth</th>#}
                     <th></th>
                 </thead>
@@ -75,14 +75,20 @@
                             var stock_total=0;
                         </script>
                         <tr >
-                            <td class="sort accordion-toggle"  data-toggle="collapse" data-target="#{{ key }}div" class=""><a href="/?symbol={{key}}">{{ key }}</a></td>
-{#                            <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}td" >{{ owned_shares|get_item:key }}</td>#}
-                            <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}total" id="{{ key }}total" ></td>
-
+                            <td class="sort accordion-toggle"  data-toggle="collapse" data-target="#{{ key }}div" class=""><a id='{{ key }}a' data-toggle="modal" data-target="#StockModal" data-symbol="{{ key }}" ><span class="glyphicon glyphicon-search"></span></a>{{ key }}</td>
+                            <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}td" >{{ owned_shares|get_item:key }}</td>
+{#                            <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}total" id="{{ key }}total" ></td>#}
                             <script>
                                 $("td[data-target='#{{ key }}td']").attr("id", target+"td")
                                 $("td[data-target='#{{ key }}td']").attr("data-target", "#"+target+"div")
                                 $("td[data-target='#{{ key }}div']").attr("data-target", "#"+target+"div")
+                                $("#{{ key }}a").click(function(){
+                                    $("#stock_symbol").attr("value", "{{ key }}");
+                                    $("#search_stock_submit").submit();
+                                })
+                                $("#{{ key }}a").attr("id", target+"a")
+
+
 
                             </script>
                             <td ><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#SellStockModal" data-symbol="{{ key }}">Sell</button> </td>
@@ -189,6 +195,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
+                        <div >Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></div>
                         <form id="buySharesForm" class="form-inline" action="/query_api/" method="get">
                             <div class="form-group">
                                 <label class="sr-only">Stock Symbol</label>
@@ -196,6 +203,7 @@
                                 <button id="search_stock_submit" class="btn btn-primary form-control glyphicon glyphicon-search" type="submit" value="Submit" data-loading-text=" Searching..." > Search</button>
                             </div>
                         </form>
+
 
 
                         <h3 id="symbol_title" class="text-center"></h3>
@@ -239,6 +247,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
+                        <div >Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></div>
+
                         <form id="sellSharesForm" class="form-inline" action="/query_api/" method="get">
                             <div class="form-group">
                                 <label class="sr-only">Stock Symbol</label>

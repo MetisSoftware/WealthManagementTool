@@ -105,6 +105,7 @@ $(document).ready(function() {
 $(document).ready(function(){
     $("#buy_buttonForm").submit(function (event){
         event.preventDefault();
+
         quantity = $("#buy_quantity").val();
         if (quantity == ""){
             quantity = 1;
@@ -211,7 +212,8 @@ $("#sell_buttonForm").submit(function (event){
 //Look up buy stock
 $(document).ready(function() {
         $('#buySharesForm').submit( function(event){
-            event.preventDefault();
+            event.preventDefault()
+
             $("#search_stock_submit").button('loading');
             var symbol = $("#stock_symbol").val();
                 $.ajax({
@@ -483,7 +485,6 @@ function append_stock_table(data){
 function sell_button_listener(){
     $("button[data-target='#SellStockModal']").one('click',function(event){
         var sell_symbol =$(this).attr("data-symbol");
-
         $("#sell_stock_symbol").val(sell_symbol);
         $("#sellSharesForm").submit();
     });
