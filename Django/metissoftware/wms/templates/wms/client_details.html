@@ -87,9 +87,6 @@
                                     $("#search_stock_submit").submit();
                                 })
                                 $("#{{ key }}a").attr("id", target+"a")
-
-
-
                             </script>
                             <td ><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#SellStockModal" data-symbol="{{ key }}">Sell</button> </td>
                             <script>
@@ -209,7 +206,7 @@
                         <h3 id="symbol_title" class="text-center"></h3>
                         <div id="stock_not_found" class="alert alert-danger hidden">Unable to find stock! Please check you have entered a valid stock symbol.</div>
                         <div class="row">
-                            <div class="col-md-11">
+                            <div id="buy_stock_graph_container" class="col-md-11">
                                    <canvas id="buy_stock_graph" class="hidden"></canvas>
                             </div>
                             <div class="col-md-1">
@@ -218,6 +215,18 @@
 
 
                         </div>
+                         <form id="buy_graph_timescale" class="form-inline text-center hidden" action="" method="post">
+                            <div class="btn-group btn-group-xs" role="group">
+                                <input id="symbol_input" class="hidden" name="symbol" value=""/>
+                                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> Timescale
+                                    <br><button type="submit" class="btn btn-default" name="days" value="3">3 days</button>
+                                    <button type="submit" class="btn btn-default active" name="days" value="7">1 week</button>
+                                    <button type="submit" class="btn btn-default" name="days" value="30">1 month</button>
+                                    <button type="submit" class="btn btn-default" name="days" value="90">3 months</button>
+                                    <button type="submit" class="btn btn-default" name="days" value="180">6 months</button>
+                                    <button type="submit" class="btn btn-default" name="days" value="365">1 year</button>
+                            </div>
+                        </form>
 
                     </div>
                 </div>
@@ -261,13 +270,26 @@
                         <h3 id="sell_symbol_title" class="text-center"></h3>
                         <div id="sell_stock_not_found" class="alert alert-danger hidden">Unable to find stock! Please check you have entered a valid stock symbol.</div>
                         <div class="row">
-                            <div class="col-md-11">
+                            <div id="sell_stock_graph_container" class="col-md-11">
                                    <canvas id="sell_stock_graph" class="hidden"></canvas>
                             </div>
                             <div class="col-md-1">
                                 <div id="sell_lineLegend" class="hidden"></div>
                             </div>
                         </div>
+                        <form id="sell_graph_timescale" class="form-inline text-center hidden" action="" method="post">
+                            <div class="btn-group btn-group-xs" role="group">
+                                <input id="symbol_input" class="hidden" name="symbol" value=""/>
+                                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> Timescale
+                                    <br><button type="submit" class="btn btn-default" name="days" value="3">3 days</button>
+                                    <button type="submit" class="btn btn-default active" name="days" value="7">1 week</button>
+                                    <button type="submit" class="btn btn-default" name="days" value="30">1 month</button>
+                                    <button type="submit" class="btn btn-default" name="days" value="90">3 months</button>
+                                    <button type="submit" class="btn btn-default" name="days" value="180">6 months</button>
+                                    <button type="submit" class="btn btn-default" name="days" value="365">1 year</button>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
                 <div id="sell_modal_footer" class="modal-footer">

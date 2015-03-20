@@ -212,9 +212,21 @@ $("#sell_buttonForm").submit(function (event){
 //Look up buy stock
 $(document).ready(function() {
         $('#buySharesForm').submit( function(event){
-            event.preventDefault()
+            event.preventDefault();
+            do_buy_lookup(7);
+        });
+        $("#buy_graph_timescale").submit(function(event){
+            event.preventDefault();
+            $("#buy_graph_timescale > div > button.active").removeClass("active");
+            $(this).find("button[type=submit]:focus").addClass("active");
+            do_buy_lookup($(this).find("button[type=submit]:focus").attr("value"));
 
-            $("#search_stock_submit").button('loading');
+        })
+    });
+
+function do_buy_lookup(num){
+    $("#search_stock_submit").button('loading');
+            days = parseInt(num);
             var symbol = $("#stock_symbol").val();
                 $.ajax({
                     url: "/query_api/",
@@ -222,7 +234,7 @@ $(document).ready(function() {
                     data: {
                         csrfmiddlewaretoken: csrf,
                         symbol: symbol,
-                        days: 5,
+                        days: days,
                         ni: ni
                     },
                     success: function (json){
@@ -234,6 +246,7 @@ $(document).ready(function() {
                             $("#modal_footer").addClass("hidden");
                             $("#stock_buy").addClass("hidden");
                             $("#symbol_title").addClass("hidden");
+                            $("#buy_graph_timescale").addClass("hidden")
                         }else if (json.result == "success"){
                             print_results(json);
                         }else{
@@ -246,8 +259,7 @@ $(document).ready(function() {
                         console.log(xhr.status + ": " + xhr.responseText);
                     }
                 });
-        })
-    });
+}
 
 //Print buy stock results
 function print_results(json) {
@@ -259,7 +271,8 @@ function print_results(json) {
         $("#symbol_title").html(symbol);
 
         $("#stock_not_found").addClass("hidden");
-
+        $("#buy_graph_timescale").removeClass("hidden");
+        $("#symbol_input").attr("value",symbol);
         $("#symbol_title").removeClass("hidden");
         $("#table_div").removeClass("hidden");
         $("#buy_stock_graph").removeClass("hidden");
@@ -277,15 +290,29 @@ $(document).ready(function() {
             event.preventDefault();
             $("#sell_search_stock_submit").button('loading');
             $("#sell_search_stock_submit").removeClass("hidden");
-            var sym = $("#sell_stock_symbol").val();
+            do_sell_lookup(7);
 
+        });
+        $("#sell_graph_timescale").submit(function(event){
+            event.preventDefault();
+            $("#sell_graph_timescale > div > button.active").removeClass("active");
+            $(this).find("button[type=submit]:focus").addClass("active");
+            do_sell_lookup($(this).find("button[type=submit]:focus").attr("value"));
+
+        })
+    });
+
+function do_sell_lookup(d){
+                var days = parseInt(d);
+                var sym = $("#sell_stock_symbol").val();
                 $.ajax({
                     url: "/query_api/",
                     type: "POST",
                     data: {
                         csrfmiddlewaretoken: csrf,
                         symbol: sym,
-                        ni: ni
+                        ni: ni,
+                        days: days
                     },
                     success: function (json) {
                         $("#sell_search_stock_submit").button('reset');
@@ -310,8 +337,7 @@ $(document).ready(function() {
                         console.log(xhr.status + ": " + xhr.responseText);
                     }
                 });
-        })
-    });
+}
 
 //Print sell stock results
 function print_sell_results(json) {
@@ -323,6 +349,7 @@ function print_sell_results(json) {
          $("#sell_symbol_title").html(symbol);
          $("#sell_stock_not_found").addClass("hidden");
          $("#sell_symbol_title").removeClass("hidden");
+         $("#sell_graph_timescale").removeClass("hidden");
          $("#table_div").removeClass("hidden");
          $("#sell_stock_graph").removeClass("hidden");
          $("#sell_lineLegend").removeClass("hidden");
@@ -347,7 +374,8 @@ function make_graph(result, graph_str, legend_str) {
             high[high.length] = result[key]["High"] ;
             low[low.length] = result[key]["Low"] ;
         }
-
+        $('#'+graph_str).remove(); // this is my <canvas> element
+        $('#'+graph_str+'_container').append('<canvas id="'+graph_str+'"><canvas>');
         var stock_graph = document.getElementById(graph_str).getContext('2d');
         var stockData = {
             labels: dates,
@@ -393,7 +421,9 @@ function make_graph(result, graph_str, legend_str) {
             scaleShowLabels: true,
             bezierCurve: false,
             scaleShowVerticalLines: true,
-            responsive: true
+            responsive: true,
+            animation: false,
+            pointDot : false
         };
 
         new Chart(stock_graph).Line(stockData, opts);
