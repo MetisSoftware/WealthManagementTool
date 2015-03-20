@@ -14,9 +14,7 @@
             <div class="col-md-4" >
             </div>
             <div class="col-md-4">
-                <span id="stock_name" class="text-uppercase" style="font-size: 150%">
-                    Goog
-                </span>
+                <span id="stock_name" class="text-uppercase" style="font-size: 150%">Goog</span>
             </div>
             <div class="col-md-4">
             </div>
@@ -47,7 +45,7 @@
                     <input id="symbol_i" class="hidden" name="symbol" value="{{ symbol }}"/>
                     <span class="glyphicon glyphicon-time" aria-hidden="true"></span> Timescale
                     <br><button type="submit" class="btn btn-default" name="days" value="3">3 days</button>
-                    <button type="submit" class="btn btn-default" name="days" value="7">1 week</button>
+                    <button type="submit" class="btn btn-default active" name="days" value="7">1 week</button>
                     <button type="submit" class="btn btn-default" name="days" value="30">1 month</button>
                     <button type="submit" class="btn btn-default" name="days" value="90">3 months</button>
                     <button type="submit" class="btn btn-default" name="days" value="180">6 months</button>
@@ -62,14 +60,17 @@
         $('#buy_stock_index').submit( function(event){
             event.preventDefault();
             var symbol_input = $("#symbol_input").val();
+            $("#buy_graph_timescale_index > div > button.active").removeClass("active");
+            $("button[type=submit][value='7']").addClass("active");
             buy_lookup(7,symbol_input);
         });
         $("#buy_graph_timescale_index").submit(function(event){
             event.preventDefault();
-            var symbol_input = $("#symbol_input").val();
-            buy_lookup($(this).find("button[type=submit]:focus").attr("value"),symbol_input);
-            $("#buy_graph_timescale > div > button.active").removeClass("active");
+            var symbol_input = $("#stock_name").html();
+
+            $("#buy_graph_timescale_index > div > button.active").removeClass("active");
             $(this).find("button[type=submit]:focus").addClass("active");
+            buy_lookup($(this).find("button[type=submit]:focus").attr("value"),symbol_input);
 
         })
     });
