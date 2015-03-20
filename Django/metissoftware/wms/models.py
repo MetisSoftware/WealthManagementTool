@@ -126,10 +126,11 @@ class Client(models.Model):
 
 class MeetingNotes(models.Model):
     client = models.ForeignKey(Client, default=None)
+    event = models.OneToOneField(Event, null=True)
     note = models.TextField()
 
     def __str__(self):
-        return self.note
+        return self.note + " - " + self.client.first_name
 
 
 class Market(models.Model):
