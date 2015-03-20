@@ -17,6 +17,7 @@
         <ul class="list-unstyled">
             <li>
 	            <span class="glyphicon glyphicon-pencil"></span> <strong><a href="{% url "edit_client" client_details.ni_number %}">Edit Client </a></strong>
+	            <span class="glyphicon glyphicon-pencil"></span> <strong><a href="{% url "create_note" client_details.ni_number %}">Create Note </a></strong>
 	        </li>
             <li>
                 <span class="glyphicon glyphicon-envelope"> </span> <strong>Email:</strong> {{ client_details.email}}
@@ -40,6 +41,13 @@
             </li>
             <li>
                 <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Financial Adviser">FA:</strong> {{client_details.fa}}
+            </li>
+            <li>
+
+                <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Notes">Notes:</strong> 
+	    {% for n in notes %}
+	    {{n}}<hr>
+		{% endfor %}
             </li>
         </ul>
     </div>

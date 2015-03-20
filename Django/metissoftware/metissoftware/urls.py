@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from wms.views import EditClient
+from wms.views import EditClient, CreateNote
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
 from django.conf import settings
@@ -13,6 +13,7 @@ urlpatterns = patterns('wms.views',
     url(r'^clients/', 'print_clients', name='print_clients'),
     url(r'^client_details/', 'client_details', name='client_details'),
     url(r'^edit_client/(?P<pk>\w{9})$', EditClient.as_view(), name='edit_client'),
+    url(r'^create_note/(?P<pk>\w{9})$', CreateNote.as_view(), name='create_note'),
     url(r'^login/$', login, {'template_name': 'wms/login.html'}),
     url(r'^logout/$', logout, {'next_page': '/'}),
     url(r'^appointments/', 'appointments', name='appointments'),

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.views.generic.edit import FormView, UpdateView
+from django.views.generic.edit import FormView, UpdateView, CreateView
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -11,7 +11,7 @@ from django.core.mail import send_mail
 from django.core.urlresolvers import reverse_lazy
 
 from django.template import RequestContext
-from wms.models import Client, ClientForm, Share, Event, Stock, Market
+from wms.models import Client, ClientForm, Share, Event, Stock, Market, MeetingNotes
 from wms import models as m
 from wms import scripts
 import datetime
@@ -280,6 +280,7 @@ def client_details(request):
         try:
             client = Client.objects.get(ni_number=get_params.get('client'))
             shares = Share.objects.filter(owner=get_params.get('client'))
+            Notes = MeetingNotes.objects.filter(client=get_params.get('client'))
             sorted_Shares = {}
             owned_shares = {}
             for share in shares:
@@ -302,7 +303,7 @@ def client_details(request):
             else:
                 twitter = True
             return render_to_response('wms/client_details.html',
-                                         {'client_details': client,'shares': sorted_Shares,'owned_shares':owned_shares,'twitter':twitter}, context_instance=RequestContext(request))
+                                      {'client_details': client,'shares': sorted_Shares,'owned_shares':owned_shares,'twitter':twitter,'notes':Notes}, context_instance=RequestContext(request))
         except ObjectDoesNotExist:
             return render_to_response('wms/client_details.html',{}, context_instance=RequestContext)
 
@@ -311,6 +312,13 @@ class EditClient(UpdateView):
     model = Client
     fields = '__all__'
     template_name = 'wms/client_update.html'
+    success_url = reverse_lazy('print_clients')
+
+
+class CreateNote(CreateView):
+    model = MeetingNotes
+    fields = '__all__'
+    template_name = 'wms/create_note.html'
     success_url = reverse_lazy('print_clients')
 
 
