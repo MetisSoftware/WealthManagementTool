@@ -44,7 +44,7 @@ def queryAPI(request):
     if(request.method == 'POST'):
         get_args = request.POST
         ni = get_args.get("ni")
-        symbol = get_args.get("symbol").upper()
+        symbol = get_args.get("symbol")
         if symbol == None or symbol == "":
             return HttpResponse(json.dumps({"result":"No Symbol"}), content_type='application/json');
         days = get_args.get("days")

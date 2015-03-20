@@ -1,78 +1,124 @@
 {% extends "wms/base_boot.html" %}
 {% load staticfiles %}
 {% block content %}
-{% if stock_json %}
+    <script src="{% static "wms/js/client_details.js" %}" type="text/javascript" ></script>
+    <script src="{% static "wms/js/bootbox.js" %}" type="text/javascript" ></script>
+    <script>
+    var csrf = '{{ csrf_token }}';
+    var ni = '{{client_details.ni_number}}';
+    var symbol = 'GOOG'
+    </script>
     <div id="stock_info" class="col-md-12">
     <div class="col-md-3" ></div>
         <div class="col-md-6 text-center" style="padding-top: 10">
             <div class="col-md-4" >
-                <p class="stockTitle "  >Buy at: {{ stock_json.0.Close }}</p>
             </div>
             <div class="col-md-4">
-                <p class="text-uppercase" style="font-size: 150%">
-                    <script>document.write("{{ symbol }}".toUpperCase());</script>
-                <p>
+                <span id="stock_name" class="text-uppercase" style="font-size: 150%">
+                    Goog
+                </span>
             </div>
             <div class="col-md-4">
-                <p id="stockGrowth" class="stockTitle bottom-align-text">
-                   <script>
-                        var change = ({{stock_json.0.Close}} - {{stock_json.1.Close}}).toFixed(2);
-                        var growth = ((change/ {{stock_json.1.Close}})*100).toFixed(2);
-
-                        if (growth > 0){
-                            document.getElementById("stockGrowth").style.color = "green";
-                            document.write('&#x25B2;');
-
-                        }else if(growth < 0){
-                            document.getElementById("stockGrowth").style.color = "red";
-                            document.write('&#x25BC;');
-                        }else{
-                            document.getElementById("stockGrowth").style.color = "white";
-                            document.write('&#9654;');
-                        }
-                        document.write(Math.abs(change) +" ("+growth+"%)");
-
-                    </script>
-                </p>
             </div>
 
         </div>
         <div class="col-md-3" style="padding-top: 5">
-                <form class="form-inline "action="" method="get">
+                <form id="buy_stock_index"class="form-inline "action="" method="post">
                     <div class="col-md-10">
                         <label class="sr-only">Stock Symbol</label>
                         <input id="symbol_input" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
                     </div>
                     <div class="col-md-2">
-                        <button class="btn btn-default " type="submit" value="Submit" >Go</button>
+                        <button id="search_stock_submit" class="btn btn-default " type="submit" value="Submit" >Go</button>
                     </div>
 
 
                 </form>
         </div>
-        <div class="col-md-11">
-            <canvas id="stock_graph" ></canvas>
+        <div id="buy_stock_graph_container" class="col-md-11">
+            <canvas id="buy_stock_graph" ></canvas>
         </div>
         <div class="col-md-1">
-            <div class = "col-md-12">
             <div id="lineLegend" ></div>
         </div>
+        <div class="col-md-12 text-center">
+            <form id="buy_graph_timescale_index" class="form-inline" method="post">
+                <div class="btn-group btn-group-xs" role="group">
+                    <input id="symbol_i" class="hidden" name="symbol" value="{{ symbol }}"/>
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> Timescale
+                    <br><button type="submit" class="btn btn-default" name="days" value="3">3 days</button>
+                    <button type="submit" class="btn btn-default" name="days" value="7">1 week</button>
+                    <button type="submit" class="btn btn-default" name="days" value="30">1 month</button>
+                    <button type="submit" class="btn btn-default" name="days" value="90">3 months</button>
+                    <button type="submit" class="btn btn-default" name="days" value="180">6 months</button>
+                    <button type="submit" class="btn btn-default" name="days" value="365">1 year</button>
+                </div>
+            </form>
+            <hr>
         </div>
-	<div class="col-md-12 text-center">	
-		<form class="form-inline "action="" method="get">
-			<div class="btn-group btn-group-xs" role="group">
-				<input id="symbol_input" class="hidden" name="symbol" value="{{ symbol }}"/>
-				<span class="glyphicon glyphicon-time" aria-hidden="true"></span> Timescale
-				<br><button type="submit" class="btn btn-default" name="days" value="3">3 days</button>
-				<button type="submit" class="btn btn-default" name="days" value="7">1 week</button>
-				<button type="submit" class="btn btn-default" name="days" value="30">1 month</button>
-				<button type="submit" class="btn btn-default" name="days" value="90">3 months</button>
-				<button type="submit" class="btn btn-default" name="days" value="180">6 months</button>
-				<button type="submit" class="btn btn-default" name="days" value="365">1 year</button>
-			</div>
-		</form>
-        <hr>
-	</div>
+
+    <script>
+    $(document).ready(function() {
+        $('#buy_stock_index').submit( function(event){
+            event.preventDefault();
+            var symbol_input = $("#symbol_input").val();
+            buy_lookup(7,symbol_input);
+        });
+        $("#buy_graph_timescale_index").submit(function(event){
+            event.preventDefault();
+            var symbol_input = $("#symbol_input").val();
+            buy_lookup($(this).find("button[type=submit]:focus").attr("value"),symbol_input);
+            $("#buy_graph_timescale > div > button.active").removeClass("active");
+            $(this).find("button[type=submit]:focus").addClass("active");
+
+        })
+    });
+    function buy_lookup(num,sym){
+            console.log("ping")
+            $("#search_stock_submit").button('loading');
+            num_days = parseInt(num);
+            symbol = sym;
+            $.ajax({
+                url: "/query_api/",
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    days: num_days,
+                    ni: '{{client_details.ni_number}}',
+                    symbol: sym
+                },
+                success: function (json){
+                    result = json.result;
+                    $("#search_stock_submit").button('reset');
+                    if (json.result == "Stock not found"){
+                        $("#stock_not_found").removeClass("hidden");
+                        $("#stock_graph").addClass("hidden");
+                        $("#lineLegend").addClass("hidden");
+                        $("#modal_footer").addClass("hidden");
+                        $("#stock_buy").addClass("hidden");
+                        $("#symbol_title").addClass("hidden");
+                        $("#buy_graph_timescale").addClass("hidden")
+                    }else if (json.result == "success"){
+                        recent_close = result[result.length-1]["Adj_Close"];
+                        recent_date = result[result.length-1]["Date"];
+                        shares_owned = json["shares_owned"];
+                        $("#stock_name").html(symbol);
+                        var result = json.query.results.quote;
+                        make_graph(result,"buy_stock_graph","lineLegend");
+                    }else{
+                         bootbox.alert('Error, please seek the system administrator')
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+                    $("#search_stock_submit").button('reset');
+                    bootbox.alert('Failed.');
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+    }
+
+    </script>
+
     </div>
     <div class="table-responsive col-md-12">
         <h1 class="text-center" style="color: #000000">Results</h1>
@@ -113,7 +159,7 @@
 		low[low.length] = "{{ result.Low }}";
     {% endfor %}
 
-    var stock_graph = document.getElementById('stock_graph').getContext('2d');
+    var stock_graph = document.getElementById('buy_stock_graph').getContext('2d');
     var stockData = {
 	labels : dates,
 	datasets : [
@@ -167,6 +213,4 @@
     legend(document.getElementById("lineLegend"),stockData);
 </script>
 
-
-{% endif %}
 {%  endblock %}
