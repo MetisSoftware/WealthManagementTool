@@ -46,13 +46,13 @@
     <div class = "col-md-9">
     <div class="col-md-12  container-fluid" id="users" >
         <div class="row">
-            <div class="col-md-3">Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></div>
+            <h1 class="col-md-3">Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></h1>
             <div class="btn-group col-md-6" style="margin-bottom:1%;">
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#StockModal">Buy Stock</button>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#DepositModal">Deposit Cash</button>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#WithdrawModal">Withdraw Cash</button>
              </div>
-            <div class="col-md-3">Portfolio worth: $<span class="portfolio_worth"></span> </div>
+            <h1 class="col-md-3">Portfolio worth: $<span class="portfolio_worth"></span> </h1>
         </div>
         <div class=" hidden row">
             <div>
@@ -61,11 +61,11 @@
             </div>
         </div>
         <div class="row table-responsive" style="height: 70%">
-            <table class="table  table-bordered table-condensed col-md-12" style="background-color: #ffffff; margin-bottom: 0; ">
+            <table class="table  table-bordered table-condensed table-hover col-md-12" style="background-color: #ffffff; margin-bottom: 0; ">
                 <thead>
                     <th>Stock Symbol</th>
                     <th>Stock Owned</th>
-                    <th>Stock Worth</th>
+{#                    <th>Stock Worth</th>#}
                     <th></th>
                 </thead>
                 <tbody id="clients_stock_tbody">
@@ -76,7 +76,7 @@
                         </script>
                         <tr >
                             <td class="sort accordion-toggle"  data-toggle="collapse" data-target="#{{ key }}div" class=""><a href="/?symbol={{key}}">{{ key }}</a></td>
-                            <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}td" >{{ owned_shares|get_item:key }}</td>
+{#                            <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}td" >{{ owned_shares|get_item:key }}</td>#}
                             <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}total" id="{{ key }}total" ></td>
 
                             <script>
@@ -93,7 +93,7 @@
                             </script>
                         </tr>
                             <tr class="hiddenRow">
-                            <td colspan="4" class="hiddenRow">
+                            <td colspan="3" class="hiddenRow">
                                 <div class="accordian-body collapse" id="{{ key }}div">
                                 <script>
                                     $("div[id='{{ key }}div']").attr("id", target+"div")
@@ -111,7 +111,7 @@
                                         </thead>
                                         <tbody class="list">
                                             {% for share in stock %}
-                                                <tr>
+                                                <tr >
                                                     <td class="buy writeHere">
                                                         <script>
                                                         if('{{ share.buy }}'=="True"){

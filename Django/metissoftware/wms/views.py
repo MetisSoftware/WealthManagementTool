@@ -113,7 +113,14 @@ def buyStock(request):
                 Stock.objects.create(symbol=stock_result['Symbol'], company=stock_result['Name'], market=market[0])
             stock = Stock.objects.filter(symbol=symbol)
             Share.objects.create(owner = client, date = date, amount = amount, price = price , stock = stock[0], buy=True )
-            return HttpResponse(json.dumps({"result": "success"}), content_type='application/json')
+            stocks = Share.objects.filter(stock=stock[0], owner = client);
+            amount = 0
+            for s in stocks:
+                if s.buy:
+                    amount+= s.amount
+                else:
+                    amount-= s.amount
+            return HttpResponse(json.dumps({"result": "success", "stock_amount":amount, "new_amount": str(client.cash)}), content_type='application/json')
         else:
             return HttpResponse(json.dumps({"result":"Insufficient funds"}), content_type='application/json')
 
@@ -139,16 +146,17 @@ def sell_stock(request):
             return HttpResponse(json.dumps({"result":"No shares"}), content_type='application/json')
         ownedAmount = 0
         for share in shares:
-            if share.buy ==True:
+            if share.buy == True:
                 ownedAmount += int(share.amount)
+            else:
+                ownedAmount -= int(share.amount)
         if ownedAmount < amount:
             return HttpResponse(json.dumps({"result": "Not enough stock owned"}), content_type='application/json')
         else:
             total = amount * price
             client.cash += decimal.Decimal(total)
-
-            Share.objects.create(owner= client, date="2015-03-13", price=price, stock=stock, buy=False, amount= amount )
-            return HttpResponse(json.dumps({"result": "success", "new_amount": str(client.cash)}), content_type='application/json')
+            Share.objects.create(owner=client, date="2015-03-13", price=price, stock=stock, buy=False, amount=amount)
+            return HttpResponse(json.dumps({"result": "success", "new_amount": str(client.cash), "stock_amount":ownedAmount}), content_type='application/json')
 
     return HttpResponse(json.dumps({"result": "fail"}), content_type='application/json')
 

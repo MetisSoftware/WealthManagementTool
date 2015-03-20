@@ -131,12 +131,11 @@ $(document).ready(function(){
                         var count = parseInt(parseInt($("#"+sym+"td").html())+data["amount"]);
                         $("#"+sym+"td").html(count);
                         if (count >0){
-                            $("button[data-symbol='"+data['symbol']+"']").removeAttr("disabled")
+                            $("button[data-symbol='"+sym+"']").removeAttr("disabled")
                         }
+                        portfolio_worth = parseFloat(portfolio_worth);
                         $(".portfolio_worth").html(portfolio_worth.toFixed(2));
-                        var total = ($("#"+symbol+"total").html).replace("$","");
-                        total = parseInt(total)+(recent_close * quantity);
-                        $("#"+symbol+"total").html("$"+total);
+                        $("#"+sym+"td").html(json["stock_amount"]);
                         $("#StockModal").modal("toggle");
                     }else if(json["result"] == "Insufficient funds"){
                         bootbox.alert('Insufficient funds');
@@ -177,16 +176,19 @@ $("#sell_buttonForm").submit(function (event){
                 if (json["result"] == "success") {
                     bootbox.alert("Stocks Sold");
                     append_stock_table(data);
-                    cash= json["new_amount"];
+                    cash= parseFloat(json["new_amount"]).toFixed(2);
                     $(".client_cash_available").html(cash);
                     portfolio_worth -= (recent_close * quantity);
                     $(".portfolio_worth").html(portfolio_worth.toFixed(2));
                     var sym = data["symbol"].replace(".","");
-                    var count = parseInt($("#"+sym+"td").html())-data["amount"];
+                    var count = parseInt(json["stock_amount"])-data["amount"];
                     $("#"+sym+"td").html(count);
                     if (count ==0){
                         $("button[data-symbol='"+data['symbol']+"']").attr("disabled","disabled")
                     }
+                    portfolio_worth = parseFloat(portfolio_worth);
+                    $("#"+sym+"td").html(json["stock_amount"]);
+                    $(".portfolio_worth").html(portfolio_worth.toFixed(2));
                     $("#SellStockModal").modal("toggle");
                 } else if (json["result"] == "Insufficient funds") {
                     bootbox.alert('Insufficient funds');
@@ -248,9 +250,9 @@ $(document).ready(function() {
 //Print buy stock results
 function print_results(json) {
         var result = json.query.results.quote;
-        symbol = result[0]["Symbol"].toUpperCase();
-        recent_close = result[0]["Adj_Close"];
-        recent_date = result[0]["Date"];
+        symbol = result[result.length-1]["Symbol"].toUpperCase();
+        recent_close = result[result.length-1]["Adj_Close"];
+        recent_date = result[result.length-1]["Date"];
         shares_owned = json["shares_owned"]
         $("#symbol_title").html(symbol);
 
@@ -273,16 +275,15 @@ $(document).ready(function() {
             event.preventDefault();
             $("#sell_search_stock_submit").button('loading');
             $("#sell_search_stock_submit").removeClass("hidden");
-            var symbol = $("#sell_stock_symbol").val();
+            var sym = $("#sell_stock_symbol").val();
 
                 $.ajax({
                     url: "/query_api/",
                     type: "POST",
                     data: {
                         csrfmiddlewaretoken: csrf,
-                        symbol: symbol,
-                        ni: ni,
-                        price: recent_close
+                        symbol: sym,
+                        ni: ni
                     },
                     success: function (json) {
                         $("#sell_search_stock_submit").button('reset');
@@ -297,6 +298,7 @@ $(document).ready(function() {
                             $("#sell_symbol_title").addClass("hidden");
 
                         }else if(json["result"] == "success"){
+                            symbol = sym;
                             print_sell_results(json);
                         }
                     },
@@ -312,9 +314,9 @@ $(document).ready(function() {
 //Print sell stock results
 function print_sell_results(json) {
          var result = json.query.results.quote;
-         symbol = result[0]["Symbol"].toUpperCase();
-         recent_close = result[0]["Adj_Close"];
-         recent_date = result[0]["Date"];
+         symbol = result[result.length-1]["Symbol"].toUpperCase();
+         recent_close = result[result.length-1]["Adj_Close"];
+         recent_date = result[result.length-1]["Date"];
          shares_owned = json["shares_owned"]
          $("#sell_symbol_title").html(symbol);
          $("#sell_stock_not_found").addClass("hidden");
@@ -325,6 +327,7 @@ function print_sell_results(json) {
          $("#sell_modal_footer").removeClass("hidden");
          $("#stock_sell").removeClass("hidden");
          make_graph(result,"sell_stock_graph","sell_lineLegend");
+         setup_buysell_text()
      }
 
 //Create stock graph
@@ -480,6 +483,7 @@ function append_stock_table(data){
 function sell_button_listener(){
     $("button[data-target='#SellStockModal']").one('click',function(event){
         var sell_symbol =$(this).attr("data-symbol");
+
         $("#sell_stock_symbol").val(sell_symbol);
         $("#sellSharesForm").submit();
     });
