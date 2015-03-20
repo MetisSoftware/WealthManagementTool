@@ -79,7 +79,7 @@ $(document).ready(function() {
                     if(json["result"] == "success"){
                         bootbox.alert("Cash withdrawn");
                         cash= json["new_amount"];
-                        $(".client_cash_available").html(cash.toFixed(2));
+                        $(".client_cash_available").html(parseInt(cash).toFixed(2));
                         $("#WithdrawModal").modal("toggle");
                     }else if(json["result"] == "Insufficient funds"){
                         bootbox.alert('Insufficient funds');
@@ -134,6 +134,9 @@ $(document).ready(function(){
                             $("button[data-symbol='"+data['symbol']+"']").removeAttr("disabled")
                         }
                         $(".portfolio_worth").html(portfolio_worth.toFixed(2));
+                        var total = ($("#"+symbol+"total").html).replace("$","");
+                        total = parseInt(total)+(recent_close * quantity);
+                        $("#"+symbol+"total").html("$"+total);
                         $("#StockModal").modal("toggle");
                     }else if(json["result"] == "Insufficient funds"){
                         bootbox.alert('Insufficient funds');

@@ -64,17 +64,21 @@
             <table class="table  table-bordered table-condensed col-md-12" style="background-color: #ffffff; margin-bottom: 0; ">
                 <thead>
                     <th>Stock Symbol</th>
-                    <th>Stock owned</th>
+                    <th>Stock Owned</th>
+                    <th>Stock Worth</th>
                     <th></th>
                 </thead>
                 <tbody id="clients_stock_tbody">
                         {% for key,stock in shares.items %}
                         <script>
                             var target = ("{{ key }}").replace(".","");
+                            var stock_total=0;
                         </script>
                         <tr >
                             <td class="sort accordion-toggle"  data-toggle="collapse" data-target="#{{ key }}div" class=""><a href="/?symbol={{key}}">{{ key }}</a></td>
                             <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}td" >{{ owned_shares|get_item:key }}</td>
+                            <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}total" id="{{ key }}total" ></td>
+
                             <script>
                                 $("td[data-target='#{{ key }}td']").attr("id", target+"td")
                                 $("td[data-target='#{{ key }}td']").attr("data-target", "#"+target+"div")
@@ -89,7 +93,7 @@
                             </script>
                         </tr>
                             <tr class="hiddenRow">
-                            <td colspan="3" class="hiddenRow">
+                            <td colspan="4" class="hiddenRow">
                                 <div class="accordian-body collapse" id="{{ key }}div">
                                 <script>
                                     $("div[id='{{ key }}div']").attr("id", target+"div")
@@ -112,8 +116,12 @@
                                                         <script>
                                                         if('{{ share.buy }}'=="True"){
                                                             $(".writeHere").html("<span class='glyphicon glyphicon-chevron-up'></span>Bought")
+                                                            var t = ({{share.price}} * {{share.amount}});
+                                                            stock_total +=t;
                                                         }else{
                                                             $(".writeHere").html("<span class='glyphicon glyphicon-chevron-down'></span>Sold")
+                                                            var t = (-{{share.price}} * {{share.amount}});
+                                                            stock_total +=t;
                                                         }
                                                         $(".writeHere").removeClass("writeHere");
                                                         </script>
@@ -124,11 +132,9 @@
                                                     <td class="price">{{ share.price}}</td>
                                                     <td class="total writeHeretotal">
                                                         <script>
-                                                            var t = ({{share.price}} * {{share.amount}});
-                                                        portfolio_worth = (portfolio_worth + parseFloat(t));
+                                                            portfolio_worth = (portfolio_worth + parseFloat(t));
                                                             $(".writeHeretotal").html(t);
-                                                            $(".writeHeretotal").removeClass(".writeHere");
-
+                                                            $(".writeHeretotal").removeClass("writeHeretotal");
                                                         </script></td>
                                                 </tr>
                                             {% endfor %}
@@ -143,7 +149,8 @@
                                     var symbol = "{{ key }}".replace(".","");
                                     userList[symbol] = new List((symbol+"div"),options);
                                     //userList[symbol].sort("date", { order: "asc"});
-
+                                    $("td[data-target='#{{ key }}total']").html("$"+stock_total.toFixed(2));
+                                    $("td[data-target='#{{ key }}total']").attr("data-target", "#"+target+"div");
 
                                     $("th.sort").click(function(event){
                                             $("th.sort").children("span").removeClass("glyphicon glyphicon-triangle-top glyphicon-triangle-bottom");

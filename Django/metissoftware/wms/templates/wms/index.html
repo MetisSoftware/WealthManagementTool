@@ -152,15 +152,16 @@
 		}
 
 	]
-    }
+    };
     var opts = {scaleFontColor: "#000000",
         scaleLineColor: "#000000",
         scaleGridLineColor: "#000000",
         scaleShowLabels: true,
         bezierCurve: false,
         scaleShowVerticalLines: false,
-        responsive: true
-    }
+        responsive: true,
+        animation: false
+    };
 
     new Chart(stock_graph).Line(stockData, opts);
     legend(document.getElementById("lineLegend"),stockData);
