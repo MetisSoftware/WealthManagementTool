@@ -83,7 +83,7 @@ class Event(models.Model):
     title = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.fa.first_name + " " + self.fa.surname + " - " + self.title + " - " + datetime.strftime(self.startDateTime,"%c")
+        return self.fa.first_name + " " + self.fa.surname + " - " + self.title + " - " + datetime.strftime(self.startDateTime, "%c")
 
 
 class Client(models.Model):
@@ -124,6 +124,14 @@ class Client(models.Model):
         return reverse('edit_client', kwargs={'pk': self.pk})
 
 
+class MeetingNotes(models.Model):
+    client = models.ForeignKey(Client, default=None)
+    note = models.TextField()
+
+    def __str__(self):
+        return self.note
+
+
 class Market(models.Model):
     name = models.CharField(primary_key=True, max_length=10)
     full_name = models.CharField(max_length=64)
@@ -159,7 +167,7 @@ class ClientForm(ModelForm):
         fields = '__all__'
         widgets = {
             'cash': TextInput(
-                attrs={'placeholder': '0.00', 'cols': '1', 'rows': '1'} ),
+                attrs={'placeholder': '0.00', 'cols': '1', 'rows': '1'}),
             'dob': DateTimePicker(
                 options={"format": "YYYY-MM-DD",
                          "viewMode": "years",

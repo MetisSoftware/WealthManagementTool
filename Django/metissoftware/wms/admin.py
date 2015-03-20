@@ -1,5 +1,5 @@
 from django.contrib import admin
-from wms.models import Client, FA, Market, Share, Stock, Event
+from wms.models import Client, FA, Market, Share, Stock, Event, MeetingNotes
 from django import forms
 from django.contrib.auth.admin import UserAdmin
 
@@ -73,3 +73,4 @@ admin.site.register(Market)
 admin.site.register(Share)
 admin.site.register(Stock)
 admin.site.register(Event)
+admin.site.register(MeetingNotes)
