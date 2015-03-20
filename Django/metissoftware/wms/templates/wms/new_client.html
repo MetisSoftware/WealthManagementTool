@@ -6,7 +6,6 @@
 <script src="{%static 'wms/js/sliding.form.js'%}"></script>
 {{ form.media }}
 <!--<div class="table-responsive col-md-offset-2 col-md-6 well" style="overflow:hidden;">-->
-<div class ="col-md-offset-3 contianer">
     <div id = "wrapper">
         <div id="steps">
             <form enctype="multipart/form-data" id="formElem" name="formElem" class="form-horizontal" role="form" action='new_client.html' method='post'>
@@ -38,7 +37,7 @@
                     
                           
                         
-</fieldset>
+                </fieldset>
                 </div>
                 <div class ="col-md-3 col-sm-3 col-xs-3">
                 <fieldset class = "step">
@@ -74,7 +73,9 @@
                 <fieldset class = "step">
                         <legend>Account Information</legend>
                     <div class="form-group">
-                        <label class="control-label col-sm-6 col-xs-6" for="id_dob"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Date Of Birth (YYYY-MM-DD)<font color="Red">*</font>:</label>
+                        <label class="control-label col-sm-6 col-xs-6" for="id_dob">
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Date Of Birth (YYYY-MM-DD
+                        <font color="Red">*</font>:</label>
                         {{ form.dob.errors }}
                         {{ form.dob }}
                     </div>
