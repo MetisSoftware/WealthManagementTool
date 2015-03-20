@@ -42,6 +42,13 @@
             <li>
                 <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Financial Adviser">FA:</strong> {{client_details.fa}}
             </li>
+            <li>
+
+                <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Notes">Notes:</strong> 
+	    {% for n in notes %}
+	    {{n}}<hr>
+		{% endfor %}
+            </li>
         </ul>
     </div>
     <div class = "col-md-9">

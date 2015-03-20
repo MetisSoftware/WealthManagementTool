@@ -280,6 +280,7 @@ def client_details(request):
         try:
             client = Client.objects.get(ni_number=get_params.get('client'))
             shares = Share.objects.filter(owner=get_params.get('client'))
+            Notes = MeetingNotes.objects.filter(client=get_params.get('client'))
             sorted_Shares = {}
             owned_shares = {}
             for share in shares:
@@ -302,7 +303,7 @@ def client_details(request):
             else:
                 twitter = True
             return render_to_response('wms/client_details.html',
-                                         {'client_details': client,'shares': sorted_Shares,'owned_shares':owned_shares,'twitter':twitter}, context_instance=RequestContext(request))
+                                      {'client_details': client,'shares': sorted_Shares,'owned_shares':owned_shares,'twitter':twitter,'notes':Notes}, context_instance=RequestContext(request))
         except ObjectDoesNotExist:
             return render_to_response('wms/client_details.html',{}, context_instance=RequestContext)
 

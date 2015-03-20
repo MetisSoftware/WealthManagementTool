@@ -130,7 +130,7 @@ class MeetingNotes(models.Model):
     note = models.TextField()
 
     def __str__(self):
-        return self.note + " - " + self.client.first_name
+        return self.note + " - " + self.client.first_name + " " + datetime.strftime(self.event.startDateTime, "%c")
 
 
 class Market(models.Model):
