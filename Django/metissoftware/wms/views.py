@@ -250,13 +250,16 @@ def new_client(request):
         form = ClientForm(request.POST, request.FILES)
         # Check if data is valid then redirect user (temporary measure)
         if form.is_valid():
+            current_user = request.user
             client = form.save(commit=False)
             client.user = request.user
+            client.fa = request.user
+            print(request.user)
             client.save()
             return HttpResponseRedirect('/clients/')
 
     return render(request, 'wms/new_client.html', {
-        'form': form,
+        'form': form, 'fa': request.user.pk
     })
 
 
