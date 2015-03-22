@@ -97,7 +97,7 @@ def buyStock(request):
             return;
         client = Client.objects.filter(ni_number = ni)[0]
         requestTotal = amount*price
-        clientTotal = client.cash
+        clientTotal = int(client.cash)
         if(clientTotal>=requestTotal):
             client.cash-=decimal.Decimal(requestTotal)
             client.save()

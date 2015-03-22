@@ -447,19 +447,28 @@ function append_stock_table(data){
         var stock_a = "<a href='/?symbol="+data['symbol']+"'>"+data['symbol']+"</a>";
         var stock_sell = "<button class='btn btn-default btn-xs' data-toggle='modal' data-target='#SellStockModal' data-symbol="+data["symbol"]+">Sell</button>";
         data['symbol'] = data['symbol'].replace(".","");
+        var s="";
         if (userList[data['symbol']]== undefined) {
             var t = (data['price'] * data["amount"]);
-            var s = '<tr >' +
-                '<td class="sort"  data-toggle="collapse" data-target="#' + data['symbol'] + 'div" class="accordion-toggle"><a href="/?symbol='+data['symbol']+'">' + data['symbol'] + '</td>' +
-                '<td class="accordion-toggle" data-toggle="collapse" data-target="#'+data["symbol"]+'div" >'+data["amount"]+'</td>' +
+            $("#clients_stock_tbody").append($.parseHTML('<tr >' +
+                '<td class="sort accordion-toggle"  data-toggle="collapse" data-target="#'+data['symbol']+'div" class=""><a id="'+data['symbol']+'a" data-toggle="modal" data-target="#StockModal" data-symbol="'+data['symbol']+'" ><span class="glyphicon glyphicon-search"></span></a>'+data['symbol']+'</td>'+
+                '<td class="accordion-toggle" data-toggle="collapse" data-target="#'+data['symbol']+'td" >'+data['amount']+'</td>'+
                 '<script>'+
-                '$("td[data-target=\'#'+data["symbol"]+'div\']").attr("data-target", "#'+data["symbol"]+'")'+
+                    'var target = "'+data['symbol']+'".replace(".","");'+
+                    '$("td[data-target=\'#'+data["symbol"]+'td\']").attr("id", target+"td");'+
+                    '$("td[data-target=\'#'+data["symbol"]+'td\']").attr("data-target", "#"+target+"div");'+
+                    '$("td[data-target=\'#'+data["symbol"]+'div\']").attr("data-target", "#"+target+"div");'+
+                    '$("#'+data['symbol']+'a").click(function(){'+
+                        '$("#stock_symbol").attr("value", "'+data['symbol']+'");'+
+                        '$("#search_stock_submit").submit();'+
+                    '});'+
+                    '$("#'+data['symbol']+'a").attr("id", target+"a");'+
                 '</script>'+
                 '<td ><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#SellStockModal" data-symbol="'+data["symbol"]+'">Sell</button> </td>'+
                 '</tr>' +
                 '<tr class="hiddenRow">' +
                 '<td colspan="3" class="hiddenRow" >' +
-                '<div class="accordian-body collapse" id="'+data["symbol"]+'">' +
+                '<div class="accordian-body collapse" id="'+data["symbol"]+'div">' +
                 '<table class="table table-condensed table-bordered" style="margin-bottom: 0px">' +
                 '<thead>' +
                 '<th class="sort" data-sort="buy">Purchase <span ></span></th>' +
@@ -472,7 +481,6 @@ function append_stock_table(data){
                 '<tbody class="list">' +
                    '<tr>'+
                         '<td class="buy '+data["symbol"]+'">'+purchase+
-
                         '</td>'+
                         '<td class="stock"><a href="/?symbol='+data["symbol"]+'">'+data["symbol"]+'</a></td>'+
                         '<td class="date">'+d.format("YYYY-MM-DD")+'</td>'+
@@ -496,15 +504,13 @@ function append_stock_table(data){
                 '$("th.sort.asc").children("span").addClass("glyphicon glyphicon-triangle-top");' +
                 '$("th.sort.desc").children("span").addClass("glyphicon glyphicon-triangle-bottom");' +
                 ' });' +
-                '</script></div></td></tr>';
-
-            $("#clients_stock_tbody").append(s);
+                '</script></div></td></tr>'));
             sell_button_listener();
         }else {
             if (data['buy'] == 'True') {
-                var s = "<span class='glyphicon glyphicon-chevron-up'></span>Bought"
+                s = "<span class='glyphicon glyphicon-chevron-up'></span>Bought"
             } else {
-                var s = "<span class='glyphicon glyphicon-chevron-down'></span>Sold"
+                s = "<span class='glyphicon glyphicon-chevron-down'></span>Sold"
             }
             userList[data['symbol']].add({buy: s, stock: stock_a, date: d.format("YYYY-MM-DD"), amount: data['amount'], price: data['price'], total: (data['price'] * data['amount']).toFixed(2)});
             //userList[data['symbol']].sort("stock", { order: "asc"});
