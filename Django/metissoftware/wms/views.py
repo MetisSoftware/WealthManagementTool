@@ -155,6 +155,7 @@ def sell_stock(request):
         else:
             total = amount * price
             client.cash += decimal.Decimal(total)
+            client.save()
             Share.objects.create(owner=client, date="2015-03-13", price=price, stock=stock, buy=False, amount=amount)
             return HttpResponse(json.dumps({"result": "success", "new_amount": str(client.cash), "stock_amount":ownedAmount}), content_type='application/json')
 

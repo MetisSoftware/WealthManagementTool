@@ -63,7 +63,7 @@
                 <div class="row panel-heading">
                     <h3 class="col-md-3 col-xs-3">Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></h3>
                     <div class="btn-group col-md-6 col-xs-6" style="margin-bottom:1%;">
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#StockModal">Buy Stock</button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#StockModal">Buy Shares</button>
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#DepositModal">Deposit Cash</button>
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#WithdrawModal">Withdraw Cash</button>
                      </div>
@@ -262,6 +262,19 @@
             </div>
         </div>
     </div>
+
+    <script>
+    $(document).ready(
+    $("*[data-toggle='modal']").click(function(event){
+        $("#buy_stock_graph").addClass("hidden");
+        $("#buy_lineLegend").addClass("hidden");
+        $("#buy_modal_footer").addClass("hidden");
+        $("#buy_stock_buy").addClass("hidden");
+        $("#symbol_title").addClass("hidden");
+        $("#stock_buy").addClass("hidden");
+        $("#buy_graph_timescale").addClass("hidden");
+    }));
+    </script>
 
     <!--Sell stock modal-->
     <div class=" modal fade" tabindex="-1" id="SellStockModal" role="dialog" >

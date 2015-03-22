@@ -11,6 +11,8 @@ var shares_owned;
 var cash;
 var userList={};
 
+
+
 //Initise tooltips
  $(function () {
                   $('[data-toggle="tooltip"]').tooltip()
@@ -127,14 +129,18 @@ $(document).ready(function(){
                     if(json["result"] == "success"){
                         bootbox.alert("Stocks bought");
                         append_stock_table(data);
+
                         portfolio_worth += (recent_close * quantity);
-                        var sym = data["symbol"].replace(".","");
+                        var sym = data["symbol"].replace(".","").toUpperCase();
                         var count = parseInt(parseInt($("#"+sym+"td").html())+data["amount"]);
                         $("#"+sym+"td").html(count);
+
                         if (count >0){
                             $("button[data-symbol='"+sym+"']").removeAttr("disabled")
                         }
                         portfolio_worth = parseFloat(portfolio_worth);
+                        cash = parseFloat(json["new_amount"]);
+                        $(".client_cash_available").html(cash.toFixed(2));
                         $(".portfolio_worth").html(portfolio_worth.toFixed(2));
                         $("#"+sym+"td").html(json["stock_amount"]);
                         $("#StockModal").modal("toggle");
@@ -181,14 +187,15 @@ $("#sell_buttonForm").submit(function (event){
                     $(".client_cash_available").html(cash);
                     portfolio_worth -= (recent_close * quantity);
                     $(".portfolio_worth").html(portfolio_worth.toFixed(2));
-                    var sym = data["symbol"].replace(".","");
+                    var sym = data["symbol"].replace(".","").toUpperCase();
                     var count = parseInt(json["stock_amount"])-data["amount"];
+
                     $("#"+sym+"td").html(count);
-                    if (count ==0){
+                    if (count <=0){
                         $("button[data-symbol='"+data['symbol']+"']").attr("disabled","disabled")
                     }
                     portfolio_worth = parseFloat(portfolio_worth);
-                    $("#"+sym+"td").html(json["stock_amount"]);
+                    $("#"+sym+"td").html(count);
                     $(".portfolio_worth").html(portfolio_worth.toFixed(2));
                     $("#SellStockModal").modal("toggle");
                 } else if (json["result"] == "Insufficient funds") {
@@ -267,7 +274,7 @@ function print_results(json) {
         symbol = result[result.length-1]["Symbol"].toUpperCase();
         recent_close = result[result.length-1]["Adj_Close"];
         recent_date = result[result.length-1]["Date"];
-        shares_owned = json["shares_owned"]
+        shares_owned = json["shares_owned"];
         $("#symbol_title").html(symbol);
 
         $("#stock_not_found").addClass("hidden");
@@ -341,11 +348,11 @@ function do_sell_lookup(d){
 
 //Print sell stock results
 function print_sell_results(json) {
-         var result = json.query.results.quote;
-         symbol = result[result.length-1]["Symbol"].toUpperCase();
-         recent_close = result[result.length-1]["Adj_Close"];
-         recent_date = result[result.length-1]["Date"];
-         shares_owned = json["shares_owned"]
+         var result = json.query.results.quote.reverse();
+        symbol = result[result.length-1]["Symbol"].toUpperCase();
+        recent_close = result[result.length-1]["Adj_Close"];
+        recent_date = result[result.length-1]["Date"];
+        shares_owned = json["shares_owned"];
          $("#sell_symbol_title").html(symbol);
          $("#sell_stock_not_found").addClass("hidden");
          $("#sell_symbol_title").removeClass("hidden");
@@ -512,6 +519,7 @@ function append_stock_table(data){
             } else {
                 s = "<span class='glyphicon glyphicon-chevron-down'></span>Sold"
             }
+
             userList[data['symbol']].add({buy: s, stock: stock_a, date: d.format("YYYY-MM-DD"), amount: data['amount'], price: data['price'], total: (data['price'] * data['amount']).toFixed(2)});
             //userList[data['symbol']].sort("stock", { order: "asc"});
             sell_button_listener();
