@@ -100,11 +100,11 @@
                         $("#symbol_title").addClass("hidden");
                         $("#buy_graph_timescale").addClass("hidden")
                     }else if (json.result == "success"){
-                        recent_close = result[result.length-1]["Adj_Close"];
-                        recent_date = result[result.length-1]["Date"];
+                        recent_close = json["query"]["results"]["quote"][0]["Adj_Close"];
+                        recent_date = json["query"]["results"]["quote"][0]["Date"];
                         shares_owned = json["shares_owned"];
                         $("#stock_name").html(symbol);
-                        var result = json.query.results.quote;
+                        var result = json.query.results.quote.reverse();
                         make_graph(result,"buy_stock_graph","lineLegend");
                     }else{
                          bootbox.alert('Error, please seek the system administrator')
@@ -200,15 +200,15 @@
 	]
     };
     var opts = {scaleFontColor: "#000000",
-        pointDot : false,
-        scaleLineColor: "#000000",
-        scaleGridLineColor: "#000000",
-        scaleShowLabels: true,
-        bezierCurve: false,
-        scaleShowVerticalLines: false,
-        responsive: true,
-        animation: false
-    };
+            scaleLineColor: "#000000",
+            scaleGridLineColor: "#000000",
+            scaleShowLabels: true,
+            bezierCurve: false,
+            scaleShowVerticalLines: true,
+            responsive: true,
+            animation: false,
+            pointDot : false
+        };
 
     new Chart(stock_graph).Line(stockData, opts);
     legend(document.getElementById("lineLegend"),stockData);

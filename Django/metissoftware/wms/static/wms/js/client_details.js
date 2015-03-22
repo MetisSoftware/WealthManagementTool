@@ -263,7 +263,7 @@ function do_buy_lookup(num){
 
 //Print buy stock results
 function print_results(json) {
-        var result = json.query.results.quote;
+        var result = json.query.results.quote.reverse();
         symbol = result[result.length-1]["Symbol"].toUpperCase();
         recent_close = result[result.length-1]["Adj_Close"];
         recent_date = result[result.length-1]["Date"];
