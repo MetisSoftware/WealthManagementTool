@@ -18,34 +18,27 @@
         <ul class="list-unstyled list">
         {% for client in client_list %}
 	    <script> 
-$(document).ready(function(){
+        $(document).ready(function(){
 		$("#rmvclient").click(function() {
-			$("#rmvimage{{client.ni_number}}").toggle();
+			$("#rmvimage{{ client.ni_number }}").toggle();
 			}); 
 		});
 	    </script>
         <li>
-            <div class="col-sm-6 col-md-4">
+            <div class="col-sm-4 col-md-3">
                 <div class="thumbnail">
 			<a href="/client_details/?client={{client.ni_number}}"><img src="{{ client.image.url }}" class="img-responsive img-thumbnail" style="max-width: 200px"></a>
-			</script>
+{#			</script>#}
 			<a href="#" onclick='deleteClient("{{client.ni_number}}");'><img style="display: none" id="rmvimage{{client.ni_number}}" src="{% static "wms/images/delete_cross.png" %}"></a>
                     <div class="caption">
-                        <h3 class="name"><a href="/client_details/?client={{client.ni_number}}">{{client.first_name}} {{client.surname}}</a></h3>
+                        <p class="hidden name ">{{client.first_name | lower}} {{client.surname | lower }}</p>
+                        <h3 class=""><a href="/client_details/?client={{client.ni_number}}">{{client.first_name}} {{client.surname}}</a></h3>
                         <p>
                             <table>
-                            <tr>
-                                <td><strong>Email: </strong></td>
-                                <td class="email">{{client.email}}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Mobile Phone: </strong></td>
-                                <td class="home_phone">{{client.mob_phone}}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Home Phone: </strong></td>
-                                <td class="mob_phone">{{client.home_phone}}</td>
-                            </tr>
+                                <tr>
+                                    <td><strong>Email: </strong></td>
+                                    <td class="email">{{client.email}}</td>
+                                </tr>
 
                             </table>
                         </p>
@@ -61,6 +54,7 @@ $(document).ready(function(){
             valueNames:['name','email', 'home_phone', 'mob_phone']
         };
         var userList = new List('users',options);
+        userList.sort("name", { order: "asc"});
     </script>
      <script type="text/javascript">
         function deleteClient(ni_number){

@@ -451,7 +451,7 @@ function append_stock_table(data){
         if (userList[data['symbol']]== undefined) {
             var t = (data['price'] * data["amount"]);
             $("#clients_stock_tbody").append($.parseHTML('<tr >' +
-                '<td class="sort accordion-toggle"  data-toggle="collapse" data-target="#'+data['symbol']+'div" class=""><a id="'+data['symbol']+'a" data-toggle="modal" data-target="#StockModal" data-symbol="'+data['symbol']+'" ><span class="glyphicon glyphicon-search"></span></a>'+data['symbol']+'</td>'+
+                '<td class="sort accordion-toggle"  data-toggle="collapse" data-target="#'+data['symbol']+'div" class=""><a id="'+data['symbol']+'a" data-toggle="modal" data-target="#StockModal" data-symbol="'+data['symbol']+'" ><span class="glyphicon glyphicon-search"></span></a> '+data['symbol']+'</td>'+
                 '<td class="accordion-toggle" data-toggle="collapse" data-target="#'+data['symbol']+'td" >'+data['amount']+'</td>'+
                 '<script>'+
                     'var target = "'+data['symbol']+'".replace(".","");'+

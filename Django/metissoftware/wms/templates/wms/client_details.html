@@ -11,185 +11,186 @@
     var csrf = '{{ csrf_token }}';
     var ni = '{{client_details.ni_number}}';
     </script>
-    <div class="col-md-3 ">
-	    <img class="img-responsive img-thumbnail" src="{{ client_details.image.url }}" alt="Person Placeholder">
-        <p class="lead">{{client_details.first_name}} {{client_details.middle_name}} {{client_details.surname}}</p>
-        <ul class="list-unstyled">
-            <li>
-	            <span class="glyphicon glyphicon-pencil"></span> <strong><a href="{% url "edit_client" client_details.ni_number %}">Edit Client </a></strong>
-	            <span class="glyphicon glyphicon-pencil"></span> <strong><a href="{% url "create_note" client_details.ni_number %}">Create Note </a></strong>
-	        </li>
-            <li>
-                <span class="glyphicon glyphicon-envelope"> </span> <strong>Email:</strong> {{ client_details.email}}
-            </li>
-            <li>
-                <span class="glyphicon glyphicon-earphone"></span> <strong>Phone:</strong>
-                <ul class="">
-                    <li>
-                        <span class="glyphicon glyphicon-phone"></span> <strong>Mobile:</strong> {{ client_details.mob_phone}}
-                    </li>
-                    <li>
-                        <span class="glyphicon glyphicon-phone-alt"></span> <strong>Home:</strong> {{ client_details.home_phone}}
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <span class="glyphicon glyphicon-user"></span> <strong data-toggle="tooltip" data-placement="right" title="National Insurance Number">NI:</strong> {{client_details.ni_number}}
-            </li>
-            <li>
-                <span class="glyphicon glyphicon-gift"></span> <strong data-toggle="tooltip" data-placement="right" title="Date of Birth">Dob:</strong> {{client_details.dob}}
-            </li>
-            <li>
-                <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Financial Adviser">FA:</strong> {{client_details.fa}}
-            </li>
-            <li>
+    <div class="container">
+        <div class="col-md-3">
+            <img class="img-responsive img-thumbnail" src="{{ client_details.image.url }}" alt="Person Placeholder">
+            <p class="lead">{{client_details.first_name}} {{client_details.middle_name}} {{client_details.surname}}</p>
+            <ul class="list-unstyled">
+                <li>
+                    <span class="glyphicon glyphicon-pencil"></span> <strong><a href="{% url "edit_client" client_details.ni_number %}">Edit Client </a></strong>
+                    <span class="glyphicon glyphicon-pencil"></span> <strong><a href="{% url "create_note" client_details.ni_number %}">Create Note </a></strong>
+                </li>
+                <li>
+                    <span class="glyphicon glyphicon-envelope"> </span> <strong>Email:</strong> {{ client_details.email}}
+                </li>
+                <li>
+                    <span class="glyphicon glyphicon-earphone"></span> <strong>Phone:</strong>
+                    <ul class="">
+                        <li>
+                            <span class="glyphicon glyphicon-phone"></span> <strong>Mobile:</strong> {{ client_details.mob_phone}}
+                        </li>
+                        <li>
+                            <span class="glyphicon glyphicon-phone-alt"></span> <strong>Home:</strong> {{ client_details.home_phone}}
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="glyphicon glyphicon-user"></span> <strong data-toggle="tooltip" data-placement="right" title="National Insurance Number">NI:</strong> {{client_details.ni_number}}
+                </li>
+                <li>
+                    <span class="glyphicon glyphicon-gift"></span> <strong data-toggle="tooltip" data-placement="right" title="Date of Birth">Dob:</strong> {{client_details.dob}}
+                </li>
+                <li>
+                    <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Financial Adviser">FA:</strong> {{client_details.fa}}
+                </li>
+                <li>
 
-                <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Notes">Notes:</strong> 
-	    {% for n in notes %}
-	    {{n}}<hr>
-		{% endfor %}
-            </li>
-        </ul>
-    </div>
-    <div class = "col-md-9">
-    <div class="col-md-12  container-fluid" id="users" >
-        <div class="row">
-            <h1 class="col-md-3">Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></h1>
-            <div class="btn-group col-md-6" style="margin-bottom:1%;">
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#StockModal">Buy Stock</button>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#DepositModal">Deposit Cash</button>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#WithdrawModal">Withdraw Cash</button>
-             </div>
-            <h1 class="col-md-3">Portfolio worth: $<span class="portfolio_worth"></span> </h1>
+                    <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Notes">Notes:</strong>
+            {% for n in notes %}
+            {{n}}<hr>
+            {% endfor %}
+                </li>
+            </ul>
         </div>
-        <div class=" hidden row">
-            <div>
-                <label class="sr-only">Stock Symbol</label>
-                <input id="symbol_input" class="form-control search" type="text" name="symbol" placeholder="Stock Symbol"style="margin-bottom:1%;"/>
+        <div class = "col-md-9">
+            <div class="container-fluid panel panel-default" id="users" >
+                <div class="row panel-heading">
+                    <h3 class="col-md-3 col-xs-3">Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></h3>
+                    <div class="btn-group col-md-6 col-xs-6" style="margin-bottom:1%;">
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#StockModal">Buy Stock</button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#DepositModal">Deposit Cash</button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#WithdrawModal">Withdraw Cash</button>
+                     </div>
+                    <h3 class="col-md-3 col-xs-3">Portfolio worth: $<span class="portfolio_worth"></span> </h3>
+                </div>
+                <div class=" hidden row">
+                    <div>
+                        <label class="sr-only">Stock Symbol</label>
+                        <input id="symbol_input" class="form-control search" type="text" name="symbol" placeholder="Stock Symbol"style="margin-bottom:1%;"/>
+                    </div>
+                </div>
+                <div class="panel-body row table-responsive" style="height: 70%; padding: 1px 1px 1px 1px;">
+                    <table class="table table-bordered table-condensed table-hover col-md-12" style="background-color: #ffffff; margin-bottom: 0; ">
+                        <thead>
+                            <th>Stock Symbol</th>
+                            <th>Shares Currently Owned</th>
+{#                            <th>Stock Worth</th>#}
+                            <th></th>
+                        </thead>
+                        <tbody id="clients_stock_tbody">
+                                {% for key,stock in shares.items %}
+                                <script>
+                                    var target = ("{{ key }}").replace(".","");
+                                    var stock_total=0;
+                                </script>
+                                <tr >
+                                    <td class="sort accordion-toggle"  data-toggle="collapse" data-target="#{{ key }}div" class=""><a id='{{ key }}a' data-toggle="modal" data-target="#StockModal" data-symbol="{{ key }}" ><span class="glyphicon glyphicon-search"></span></a> {{ key }}</td>
+                                    <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}td" >{{ owned_shares|get_item:key }}</td>
+{#                                    <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}total" id="{{ key }}total" ></td>#}
+                                    <script>
+                                        $("td[data-target='#{{ key }}td']").attr("id", target+"td")
+                                        $("td[data-target='#{{ key }}td']").attr("data-target", "#"+target+"div")
+                                        $("td[data-target='#{{ key }}div']").attr("data-target", "#"+target+"div")
+                                        $("#{{ key }}a").click(function(){
+                                            $("#stock_symbol").attr("value", "{{ key }}");
+                                            $("#search_stock_submit").submit();
+                                        })
+                                        $("#{{ key }}a").attr("id", target+"a")
+                                    </script>
+                                    <td ><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#SellStockModal" data-symbol="{{ key }}">Sell</button> </td>
+                                    <script>
+                                        if('{{ owned_shares|get_item:key }}'==0){
+                                            $("button[data-symbol='{{ key }}']").attr("disabled","disabled")
+                                        }
+                                    </script>
+                                </tr>
+                                    <tr class="hiddenRow">
+                                    <td colspan="3" class="hiddenRow">
+                                        <div class="accordian-body collapse" id="{{ key }}div">
+                                        <script>
+                                            $("div[id='{{ key }}div']").attr("id", target+"div")
+                                        </script>
+                                            <table class="table table-condensed table-bordered" style="margin-bottom: 0px">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="sort" data-sort="buy">Transaction <span ></span></th>
+                                                        <th class="sort" data-sort="stock" id="stock_th">Stock <span></span></th>
+                                                        <th class="sort" data-sort="date">Date<span class="glyphicon glyphicon-triangle-top"></span></th>
+                                                        <th class="sort" data-sort="amount">Amount <span></span></th>
+                                                        <th class="sort" data-sort="price">Price($) <span></span></th>
+                                                        <th class="sort" data-sort="total">Total($) <span></span></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="list">
+                                                    {% for share in stock %}
+                                                        <tr >
+                                                            <td class="buy writeHere">
+                                                                <script>
+                                                                if('{{ share.buy }}'=="True"){
+                                                                    $(".writeHere").html("<span class='glyphicon glyphicon-chevron-up'></span>Bought")
+                                                                    var t = ({{share.price}} * {{share.amount}});
+                                                                    stock_total +=t;
+                                                                }else{
+                                                                    $(".writeHere").html("<span class='glyphicon glyphicon-chevron-down'></span>Sold")
+                                                                    var t = (-{{share.price}} * {{share.amount}});
+                                                                    stock_total +=t;
+                                                                }
+                                                                $(".writeHere").removeClass("writeHere");
+                                                                </script>
+                                                            </td>
+                                                            <td class="stock">{{ share.stock}}</td>
+                                                            <td class="date">{{ share.date|date:"c"}}</td>
+                                                            <td class="amount">{{ share.amount}}</td>
+                                                            <td class="price">{{ share.price}}</td>
+                                                            <td class="total writeHeretotal">
+                                                                <script>
+                                                                    portfolio_worth = (portfolio_worth + parseFloat(t));
+                                                                    $(".writeHeretotal").html(t);
+                                                                    $(".writeHeretotal").removeClass("writeHeretotal");
+                                                                </script></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        <script>
+                                            $(".portfolio_worth").html(portfolio_worth.toFixed(2));
+                                            //Table sorting and searching setup
+                                            var options ={
+                                                    valueNames: ['buy', 'stock', 'date', 'amount', 'price', 'total']
+                                                };
+                                            var symbol = "{{ key }}".replace(".","");
+                                            userList[symbol] = new List((symbol+"div"),options);
+                                            //userList[symbol].sort("date", { order: "asc"});
+                                            $("td[data-target='#{{ key }}total']").html("$"+stock_total.toFixed(2));
+                                            $("td[data-target='#{{ key }}total']").attr("data-target", "#"+target+"div");
+
+                                            $("th.sort").click(function(event){
+                                                    $("th.sort").children("span").removeClass("glyphicon glyphicon-triangle-top glyphicon-triangle-bottom");
+                                                    $("th.sort.asc").children("span").addClass("glyphicon glyphicon-triangle-top");
+                                                    $("th.sort.desc").children("span").addClass("glyphicon glyphicon-triangle-bottom");
+                                                });
+
+                                        </script>
+                                        </div>
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+                            </tbody>
+                            </table>
+
+                </div>
+            <script>
+                 $("button[data-target='#SellStockModal']").click(function(event){
+                    var sell_symbol =$(this).attr("data-symbol");
+                    $("#sell_stock_symbol").val(sell_symbol);
+                    $("#sellSharesForm").submit();
+            });
+            </script>
+
             </div>
         </div>
-        <div class="row table-responsive" style="height: 70%">
-            <table class="table  table-bordered table-condensed table-hover col-md-12" style="background-color: #ffffff; margin-bottom: 0; ">
-                <thead>
-                    <th>Stock Symbol</th>
-                    <th>Shares Currently Owned</th>
-{#                    <th>Stock Worth</th>#}
-                    <th></th>
-                </thead>
-                <tbody id="clients_stock_tbody">
-                        {% for key,stock in shares.items %}
-                        <script>
-                            var target = ("{{ key }}").replace(".","");
-                            var stock_total=0;
-                        </script>
-                        <tr >
-                            <td class="sort accordion-toggle"  data-toggle="collapse" data-target="#{{ key }}div" class=""><a id='{{ key }}a' data-toggle="modal" data-target="#StockModal" data-symbol="{{ key }}" ><span class="glyphicon glyphicon-search"></span></a>{{ key }}</td>
-                            <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}td" >{{ owned_shares|get_item:key }}</td>
-{#                            <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}total" id="{{ key }}total" ></td>#}
-                            <script>
-                                $("td[data-target='#{{ key }}td']").attr("id", target+"td")
-                                $("td[data-target='#{{ key }}td']").attr("data-target", "#"+target+"div")
-                                $("td[data-target='#{{ key }}div']").attr("data-target", "#"+target+"div")
-                                $("#{{ key }}a").click(function(){
-                                    $("#stock_symbol").attr("value", "{{ key }}");
-                                    $("#search_stock_submit").submit();
-                                })
-                                $("#{{ key }}a").attr("id", target+"a")
-                            </script>
-                            <td ><button class="btn btn-default btn-xs" data-toggle="modal" data-target="#SellStockModal" data-symbol="{{ key }}">Sell</button> </td>
-                            <script>
-                                if('{{ owned_shares|get_item:key }}'==0){
-                                    $("button[data-symbol='{{ key }}']").attr("disabled","disabled")
-                                }
-                            </script>
-                        </tr>
-                            <tr class="hiddenRow">
-                            <td colspan="3" class="hiddenRow">
-                                <div class="accordian-body collapse" id="{{ key }}div">
-                                <script>
-                                    $("div[id='{{ key }}div']").attr("id", target+"div")
-                                </script>
-                                    <table class="table table-condensed table-bordered" style="margin-bottom: 0px">
-                                        <thead>
-                                            <tr>
-                                                <th class="sort" data-sort="buy">Transaction <span ></span></th>
-                                                <th class="sort" data-sort="stock" id="stock_th">Stock <span></span></th>
-                                                <th class="sort" data-sort="date">Date<span class="glyphicon glyphicon-triangle-top"></span></th>
-                                                <th class="sort" data-sort="amount">Amount <span></span></th>
-                                                <th class="sort" data-sort="price">Price($) <span></span></th>
-                                                <th class="sort" data-sort="total">Total($) <span></span></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="list">
-                                            {% for share in stock %}
-                                                <tr >
-                                                    <td class="buy writeHere">
-                                                        <script>
-                                                        if('{{ share.buy }}'=="True"){
-                                                            $(".writeHere").html("<span class='glyphicon glyphicon-chevron-up'></span>Bought")
-                                                            var t = ({{share.price}} * {{share.amount}});
-                                                            stock_total +=t;
-                                                        }else{
-                                                            $(".writeHere").html("<span class='glyphicon glyphicon-chevron-down'></span>Sold")
-                                                            var t = (-{{share.price}} * {{share.amount}});
-                                                            stock_total +=t;
-                                                        }
-                                                        $(".writeHere").removeClass("writeHere");
-                                                        </script>
-                                                    </td>
-                                                    <td class="stock">{{ share.stock}}</td>
-                                                    <td class="date">{{ share.date|date:"c"}}</td>
-                                                    <td class="amount">{{ share.amount}}</td>
-                                                    <td class="price">{{ share.price}}</td>
-                                                    <td class="total writeHeretotal">
-                                                        <script>
-                                                            portfolio_worth = (portfolio_worth + parseFloat(t));
-                                                            $(".writeHeretotal").html(t);
-                                                            $(".writeHeretotal").removeClass("writeHeretotal");
-                                                        </script></td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                <script>
-                                    $(".portfolio_worth").html(portfolio_worth.toFixed(2));
-                                    //Table sorting and searching setup
-                                    var options ={
-                                            valueNames: ['buy', 'stock', 'date', 'amount', 'price', 'total']
-                                        };
-                                    var symbol = "{{ key }}".replace(".","");
-                                    userList[symbol] = new List((symbol+"div"),options);
-                                    //userList[symbol].sort("date", { order: "asc"});
-                                    $("td[data-target='#{{ key }}total']").html("$"+stock_total.toFixed(2));
-                                    $("td[data-target='#{{ key }}total']").attr("data-target", "#"+target+"div");
-
-                                    $("th.sort").click(function(event){
-                                            $("th.sort").children("span").removeClass("glyphicon glyphicon-triangle-top glyphicon-triangle-bottom");
-                                            $("th.sort.asc").children("span").addClass("glyphicon glyphicon-triangle-top");
-                                            $("th.sort.desc").children("span").addClass("glyphicon glyphicon-triangle-bottom");
-                                        });
-
-                                </script>
-                                </div>
-                                </td>
-                            </tr>
-
-                        {% endfor %}
-                    </tbody>
-                    </table>
-
-        </div>
-    <script>
-         $("button[data-target='#SellStockModal']").click(function(event){
-            var sell_symbol =$(this).attr("data-symbol");
-            $("#sell_stock_symbol").val(sell_symbol);
-            $("#sellSharesForm").submit();
-    });
-    </script>
-
     </div>
-    </div>
-
     <!--Buy stock modal-->
     <div class=" modal fade" tabindex="-1" id="StockModal" role="dialog" >
         <div class="modal-dialog modal-lg">
