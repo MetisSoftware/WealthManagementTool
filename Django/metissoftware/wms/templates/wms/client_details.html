@@ -57,23 +57,7 @@
 		{% endif %}
         </ul>
     </div>
-    <div class = "col-md-9">
-    <div class="col-md-12  container-fluid" id="users" >
-        <div class="row">
-            <h1 class="col-md-3">Cash available: $<span class="client_cash_available">{{ client_details.cash }}</span></h1>
-            <div class="btn-group col-md-6" style="margin-bottom:1%;">
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#StockModal">Buy Stock</button>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#DepositModal">Deposit Cash</button>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#WithdrawModal">Withdraw Cash</button>
-             </div>
-            <h1 class="col-md-3">Portfolio worth: $<span class="portfolio_worth"></span> </h1>
-        </div>
-        <div class=" hidden row">
-            <div>
-                <label class="sr-only">Stock Symbol</label>
-                <input id="symbol_input" class="form-control search" type="text" name="symbol" placeholder="Stock Symbol"style="margin-bottom:1%;"/>
-            </div>
-        </div>
+
         <div class = "col-md-9">
             <div class="container-fluid panel panel-default" id="users" >
                 <div class="row panel-heading">
