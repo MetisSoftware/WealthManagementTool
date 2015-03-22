@@ -320,9 +320,13 @@ class EditClient(UpdateView):
 
 class CreateNote(CreateView):
     model = MeetingNotes
-    fields = '__all__'
+    fields = ['event', 'note']
     template_name = 'wms/create_note.html'
     success_url = reverse_lazy('print_clients')
+
+    def form_valid(self, form):
+        form.instance.client = Client.objects.get(ni_number=self.kwargs['pk'])
+        return super(CreateView, self).form_valid(form)
 
 
 class LoginView(FormView):

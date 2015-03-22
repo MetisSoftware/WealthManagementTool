@@ -82,6 +82,7 @@ class Event(models.Model):
     type = models.CharField(max_length=64, default="meeting")
     title = models.CharField(max_length=128)
 
+
     def __str__(self):
         return self.fa.first_name + " " + self.fa.surname + " - " + self.title + " - " + datetime.strftime(self.startDateTime, "%c")
 
