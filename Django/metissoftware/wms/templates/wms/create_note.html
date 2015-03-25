@@ -2,9 +2,27 @@
 {% load staticfiles %}
 
 {% block content %}
-<form action="" method="post">{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="Create" />
+<link href="{%static 'wms/css/formstyle.css'%}" rel="stylesheet">
+<div class="col-md-12 notes">
+ <form enctype="multipart/form-data" id="formElem" name="formElem" class="form-horizontal" role="form" action="" method='post'>
+ {% csrf_token %}
+ <legend style="text-align:center;">Meeting Notes</legend>
+<div class="form-group">    
+    <label class="control-label col-sm-6 col-xs-6" for="id_first_name"> <span class="glyphicon glyphicon-calendar " aria-hidden="true"></span> Event:</label>
+    {{ form.event.errors }}
+    {{ form.event }}
+    </div>
+<div class="form-group">
+    
+    <label class="control-label col-sm-6 col-xs-6" for="id_middle_name"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Note</font>:</label>
+
+    {{ form.note.errors }}
+    {{ form.note }}
+</div>
+<div style="text-align:center"> 
+<input class="btn btn-success" value="Create" type="submit">
+</div>
 </form>
+</div>
 
 {% endblock %}
