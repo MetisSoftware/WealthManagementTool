@@ -6,84 +6,135 @@
     <script>
     var csrf = '{{ csrf_token }}';
     var ni = '{{client_details.ni_number}}';
-    var symbol = 'GOOG'
+    var symbol = ''
     </script>
-    <div id="stock_info" class="col-md-12">
-    <div class="col-md-3" ></div>
-        <div class="col-md-6 text-center" style="padding-top: 10">
-            <div class="col-md-4" >
+    <div class="col-md-12">
+    <div class="row">
+        <div class="panel-group col-md-12" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                    Markets
+                </a>
+              </h4>
             </div>
-            <div class="col-md-4">
-                <span id="stock_name" class="text-uppercase" style="font-size: 150%">Goog</span>
-            </div>
-            <div class="col-md-4">
-            </div>
-
-        </div>
-        <div class="col-md-3" style="padding-top: 5">
-                <form id="buy_stock_index"class="form-inline "action="" method="post">
-                    <div class="col-md-10">
-                        <label class="sr-only">Stock Symbol</label>
-                        <input id="symbol_input" class="form-control" type="text" name="symbol" placeholder="Stock Symbol"/>
-                    </div>
-                    <div class="col-md-2">
-                        <button id="search_stock_submit" class="btn btn-default " type="submit" value="Submit" >Go</button>
-                    </div>
-
-
-                </form>
-        </div>
-        <div id="buy_stock_graph_loading" class="hidden text-center col-md-12"><i  class="fa fa-spinner fa-pulse fa-5x "></i></div>
-        <div id="buy_stock_graph_container" class="col-md-11">
-            <canvas id="buy_stock_graph" ></canvas>
-
-
-        </div>
-        <div class="col-md-1">
-            <div id="lineLegend" style="border:1px solid black "></div>
-        </div>
-        <div class="col-md-12 text-center">
-            <form id="buy_graph_timescale_index" class="form-inline" method="post">
-                <div class="btn-group btn-group-xs" role="group">
-                    <input id="symbol_i" class="hidden" name="symbol" value="{{ symbol }}"/>
-                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> Timescale
-                    <br><button type="submit" class="btn btn-default" name="days" value="3">3 days</button>
-                    <button type="submit" class="btn btn-default active" name="days" value="7">1 week</button>
-                    <button type="submit" class="btn btn-default" name="days" value="30">1 month</button>
-                    <button type="submit" class="btn btn-default" name="days" value="90">3 months</button>
-                    <button type="submit" class="btn btn-default" name="days" value="180">6 months</button>
-                    <button type="submit" class="btn btn-default" name="days" value="365">1 year</button>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body text-center">
+                <div id="buy_stock_graph1_container" class="col-md-4" style="padding:0 0 0 0;">
+                    <h5>FTSE</h5>
+                    <div id="buy_stock_graph1_loading" class="hidden text-center col-md-12"><i  class="fa fa-spinner fa-pulse fa-5x "></i></div>
+                    <canvas id="buy_stock_graph1" ></canvas>
                 </div>
-            </form>
-
+                <div id="buy_stock_graph2_container" class="col-md-4" style="padding:0 0 0 0;">
+                    <h5>DAX</h5>
+                    <div id="buy_stock_graph2_loading" class="hidden text-center col-md-12"><i  class="fa fa-spinner fa-pulse fa-5x "></i></div>
+                    <canvas id="buy_stock_graph2" ></canvas>
+                </div>
+                <div id="buy_stock_graph3_container" class="col-md-4" style="padding:0 0 0 0;">
+                    <h5>NASDAQ</h5>
+                    <div id="buy_stock_graph3_loading" class="hidden text-center col-md-12"><i  class="fa fa-spinner fa-pulse fa-5x "></i></div>
+                    <canvas id="buy_stock_graph3" ></canvas>
+                </div>
+                <div class="col-md-12 table-bordered" >
+                    <div class="list-unstyled text-center">
+                        <span> <font style="color:#DFB511">Open</font></span>
+                        <span> <font style="color:#006BC3">Close</font></span>
+                        <span> <font style="color:#09C009">High</font></span>
+                        <span> <font style="color:#DA0707">Low</font></span>
+                     </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+    </div>
+    <div id="stock_info" class="row">
+        <div class="col-md-12" style="padding-top: 5">
+                    <form id="buy_stock_index"class="form-inline "action="" method="post">
+                        <div class="form-group">
+                            <label class="sr-only">Stock Symbol</label>
+                            <input id="symbol_input" class="form-control" type="text" name="symbol" placeholder="Enter Stock Symbol" />
+                        </div>
+                        <div class="form-group">
+                            <button id="search_stock_submit" class="btn btn-primary form-control glyphicon glyphicon-search " type="submit" value="Submit" > Search</button>
+                        </div>
+
+
+                    </form>
+            </div>
+    </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-6 text-center" style="padding-top: 10">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4">
+                    <span id="stock_name" class="text-uppercase hidden" style="font-size: 150%"></span>
+                </div>
+                <div class="col-md-4">
+                </div>
+
+            </div>
+
+            </div>
+        <div class="row" style="margin: 5px 5px 5px 5px">
+                <div id="buy_stock_graph_loading" class="hidden text-center col-md-12"><i  class="fa fa-spinner fa-pulse fa-5x "></i></div>
+                <div id="buy_stock_graph_container" class="col-md-11" style="padding: 0 0 0 0">
+                    <canvas id="buy_stock_graph" ></canvas>
+                </div>
+                <div class="col-md-1" style="padding-top: 10px">
+                    <div id="lineLegend" class="hidden" style="border:1px solid black; margin: 5px 5px 5px 5px"></div>
+                </div>
+            <div class="col-md-12 text-center">
+                <form id="buy_stock_graph_timescale_index" class="form-inline hidden" method="post">
+                    <div class="btn-group btn-group-xs" role="group">
+                        <input id="symbol_i" class="hidden" name="symbol" value=""/>
+                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span> Timescale
+                        <br><button type="submit" class="btn btn-default" name="days" value="3">3 days</button>
+                        <button type="submit" class="btn btn-default active" name="days" value="7">1 week</button>
+                        <button type="submit" class="btn btn-default" name="days" value="30">1 month</button>
+                        <button type="submit" class="btn btn-default" name="days" value="90">3 months</button>
+                        <button type="submit" class="btn btn-default" name="days" value="180">6 months</button>
+                        <button type="submit" class="btn btn-default" name="days" value="365">1 year</button>
+                    </div>
+                </form>
+
+            </div>
 
     <script>
     $(document).ready(function() {
+        $("#stock_name").removeClass("hidden");
+
         $('#buy_stock_index').submit( function(event){
             event.preventDefault();
             var symbol_input = $("#symbol_input").val();
-            $("#buy_graph_timescale_index > div > button.active").removeClass("active");
+            $("#buy_stock_graph_timescale_index > div > button.active").removeClass("active");
             $("button[type=submit][value='7']").addClass("active");
-            buy_lookup(7,symbol_input);
+            buy_lookup(7,symbol_input,"buy_stock_graph", "lineLegend");
+            $("#stock_name").html(symbol_input);
+
         });
-        $("#buy_graph_timescale_index").submit(function(event){
+        $("#buy_stock_graph_timescale_index").submit(function(event){
             event.preventDefault();
             var symbol_input = $("#stock_name").html();
 
-            $("#buy_graph_timescale_index > div > button.active").removeClass("active");
+            $("#buy_stock_graph_timescale_index > div > button.active").removeClass("active");
             $(this).find("button[type=submit]:focus").addClass("active");
-            buy_lookup($(this).find("button[type=submit]:focus").attr("value"),symbol_input);
+            buy_lookup($(this).find("button[type=submit]:focus").attr("value"),symbol_input, "buy_stock_graph","lineLegend");
+            $("#stock_name").html(symbol_input);
 
-        })
+
+        });
+
     });
-    function buy_lookup(num,sym){
-            console.log("ping");
+    function buy_lookup(num,sym,graph,line){
             $("#search_stock_submit").button('loading');
             num_days = parseInt(num);
             symbol = sym;
-            $("#buy_stock_graph").addClass('hidden');
-            $("#buy_stock_graph_loading").removeClass('hidden');
+            $("#"+graph).addClass('hidden');
+            $("#"+line).addClass('hidden');
+            $("#"+graph+"_loading").removeClass('hidden');
 
             $.ajax({
                 url: "/query_api/",
@@ -97,7 +148,8 @@
                 success: function (json){
                     result = json.result;
                     $("#search_stock_submit").button('reset');
-                    $("#buy_stock_graph_loading").addClass('hidden');
+                    $("#"+line).removeClass("hidden");
+                    $("#"+graph+"_loading").addClass('hidden');
                     if (json.result == "Stock not found"){
                         $("#stock_not_found").removeClass("hidden");
                         $("#buy_stock_graph").addClass("hidden");
@@ -105,14 +157,16 @@
                         $("#modal_footer").addClass("hidden");
                         $("#stock_buy").addClass("hidden");
                         $("#symbol_title").addClass("hidden");
-                        $("#buy_graph_timescale").addClass("hidden")
+                        $("#"+graph+"_timescale_index").addClass("hidden")
                     }else if (json.result == "success"){
                         recent_close = json["query"]["results"]["quote"][0]["Adj_Close"];
                         recent_date = json["query"]["results"]["quote"][0]["Date"];
                         shares_owned = json["shares_owned"];
-                        $("#stock_name").html(symbol);
+                        symbol = sym;
+                        $("#"+graph+"_timescale_index").removeClass("hidden");
+                        console.log("#"+graph+"_timescale_index");
                         var result = json.query.results.quote.reverse();
-                        make_graph(result,"buy_stock_graph","lineLegend");
+                        make_graph(result,graph,line);
                     }else{
                          bootbox.alert('Error, please seek the system administrator')
                     }
@@ -124,103 +178,19 @@
                 }
             });
     }
+    $(document).ready(function() {
+        buy_lookup(14,"^FTSE","buy_stock_graph1");
+        buy_lookup(14,"^GDAXI","buy_stock_graph2");
+        buy_lookup(14,"^NDX","buy_stock_graph3","marketline");
+        $("#buy_graph_timescale_index").addClass("hidden")
+
+
+    });
 
     </script>
 
     </div>
-{#    <div class="table-responsive col-md-12">#}
-{#        <h1 class="text-center" style="color: #000000">Results</h1>#}
-{#        <table class = "table table-hover table-condensed table-bordered" style="background-color: #ffffff">#}
-{##}
-{#        {% for key in stock_json.0 %}#}
-{#            <th>{{ key }}</th>#}
-{#        {% endfor %}#}
-{#        <tbody >#}
-{#            {% for result in stock_json %}#}
-{#                <tr>#}
-{#                    {% for key,data in result.items %}#}
-{#                        <td>{{ data }}</td>#}
-{#                    {% endfor %}#}
-{#                </tr>#}
-{#            {% endfor %}#}
-{#        </tbody>#}
-{##}
-{##}
-{#        </table>#}
-{#    </div>#}
-{##}
-{##}
-    <script>
+    </div>
 
-
-    var dates = [];
-    var open = [];
-    var close = [];
-	var high = [];
-	var low = [];
-
-    {% for result in stock_json reversed%}
-        dates[dates.length] = "{{result.Date}}";
-        open[open.length] = "{{ result.Open }}";
-        close[close.length] = "{{ result.Close }}";
-		high[high.length] = "{{ result.High }}";
-		low[low.length] = "{{ result.Low }}";
-    {% endfor %}
-
-    var stock_graph = document.getElementById('buy_stock_graph').getContext('2d');
-    var stockData = {
-	labels : dates,
-	datasets : [
-		{
-            label : "Open",
-			fillColor : "rgba(223,181,17,0)",
-			strokeColor : "#DFB511",
-			pointColor : "#DFB511",
-			pointStrokeColor : "#34495e",
-			data : open
-		},
-         {
-            label : "Close",
-			fillColor : "rgba(0,107,195,0)",
-			strokeColor : "#006BC3",
-			pointColor : "#006BC3",
-			pointStrokeColor : "#34495e",
-			data : close
-		},
-		{
-            label : "High",
-			fillColor : "rgba(9,192,9,0)",
-			strokeColor : "#09C009",
-			pointColor : "#09C009",
-			pointStrokeColor : "#34495e",
-			data : high
-		},
-		{
-            label : "Low",
-			fillColor : "rgba(218,7,7,0)",
-			strokeColor : "#DA0707",
-			pointColor : "#DA0707",
-			pointStrokeColor : "#34495e",
-			data : low
-		}
-
-	]
-    };
-    var opts = {scaleFontColor: "#000000",
-            scaleLineColor: "#000000",
-            scaleGridLineColor: "#000000",
-            scaleShowLabels: true,
-            bezierCurve: false,
-            scaleShowVerticalLines: true,
-            responsive: true,
-            animation: false,
-            pointDot : false,
-            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend list-unstyled text-center\"><% for (var i=0; i<datasets.length; i++){\%><li><span> <font style=\"color:<%=datasets[i].strokeColor%>\"><%if(datasets[i].label){\%><%=datasets[i].label%><%}%></li><%}%></font></span></ul>"
-        };
-
-    var chart = new Chart(stock_graph).Line(stockData, opts);
-    $("#lineLegend").html(chart.generateLegend());
-    //legend(document.getElementById("lineLegend"),stockData);
-</script>
 
 {%  endblock %}

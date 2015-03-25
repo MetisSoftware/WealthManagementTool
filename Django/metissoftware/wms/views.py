@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_protect
-from django.core.mail import send_mail
 from django.core.urlresolvers import reverse_lazy
 
 from django.template import RequestContext
@@ -17,27 +16,13 @@ from wms import scripts
 import datetime
 import decimal
 import json
+import math
 # Create your views here.
 
 
 def index(request):
-    get_params = request.GET
-    symbol = get_params.get("symbol")
-    if symbol is None or symbol is None:
-        symbol = "GOOG"
-    if get_params.get("days") is not None:
-        days = int(get_params.get("days"))
-    else:
-        days = 7
-    yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
-    yesterdayminus5 = yesterday - datetime.timedelta(days=days)
-    query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
-            "' and startDate = '"+yesterdayminus5.strftime("%Y-%m-%d")+"' and endDate = '"+\
-    yesterday.strftime("%Y-%m-%d")+"'"
-    stock_result = scripts.query_api(query)
-    return render_to_response('wms/index.html', {'symbol':symbol,'stock_json': stock_result['query']['results']['quote']}, context_instance=RequestContext(request))
+    return render_to_response('wms/index.html', {}, context_instance=RequestContext(request))
 
-    #return render_to_response('wms/index.html',{})
 
 
 def queryAPI(request):
@@ -46,20 +31,41 @@ def queryAPI(request):
         ni = get_args.get("ni")
         symbol = get_args.get("symbol")
         if symbol == None or symbol == "":
-            return HttpResponse(json.dumps({"result":"No Symbol"}), content_type='application/json');
+            return HttpResponse(json.dumps({"result":"No Symbol"}), content_type='application/json')
         days = get_args.get("days")
         if days != None:
-            days = int(days);
+            days = int(days)
+            new_days = days + (math.ceil((days/7))*2)
         else:
-            days = 5
+            new_days = 9
+
+
         yesterday = (datetime.datetime.now() - datetime.timedelta(days=1))#Get today and remove 1 day
-        yesterday_minus_days = yesterday - datetime.timedelta(days=days)
+        yesterday_minus_days = yesterday - datetime.timedelta(days=new_days)
         query = "select * from yahoo.finance.historicaldata where symbol = '"+symbol+\
                 "' and startDate = '"+yesterday_minus_days.strftime("%Y-%m-%d")+"' and endDate = '"+\
                 yesterday.strftime("%Y-%m-%d")+"'"
         stock_result = scripts.query_api(query)
+
         if(stock_result["query"]["results"])==None:
-            return HttpResponse(json.dumps({"result":"Stock not found"}), content_type='application/json');
+            return HttpResponse(json.dumps({"result":"Stock not found"}), content_type='application/json')
+
+        if(new_days >40):
+            list = stock_result["query"]["results"]["quote"]
+            l =len(list)
+            if(new_days <150 ):
+                count = math.ceil(l/(3*8))
+            elif(new_days < 250):
+                count = math.ceil(l/(6*8))
+            else:
+                count = math.ceil(l/(12*4))
+            newStock_result = {"query":{"results":{"quote":[]}}}
+            for i in range(1,math.floor(l/count)):
+                newStock_result["query"]["results"]["quote"].append(list[i*count])
+            stock_result = newStock_result
+
+        if ni==None:
+            return HttpResponse(json.dumps(stock_result), content_type='application/json')
 
         stock = Stock.objects.filter(symbol=symbol)
         if not stock:
@@ -216,7 +222,6 @@ def create_appointment(request):
         client = post_text.get("client","")
         if(client!=""):
             c = Client.objects.filter(ni_number=client)[0]
-            print(c)
             m.Event.objects.create(fa=request.user, startDateTime=start, endDateTime=end, title=title, type=type, client=c)
         else:
             m.Event.objects.create(fa=request.user, startDateTime=start, endDateTime=end, title=title, type=type)
