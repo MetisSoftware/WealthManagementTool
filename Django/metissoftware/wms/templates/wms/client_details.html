@@ -256,11 +256,12 @@
                         <h3 id="symbol_title" class="text-center"></h3>
                         <div id="stock_not_found" class="alert alert-danger hidden">Unable to find stock! Please check you have entered a valid stock symbol.</div>
                         <div class="row">
+                            <div id="buy_stock_graph_loading" class="hidden text-center col-md-12"><i  class="fa fa-spinner fa-pulse fa-5x "></i></div>
                             <div id="buy_stock_graph_container" class="col-md-11">
                                    <canvas id="buy_stock_graph" class="hidden"></canvas>
                             </div>
                             <div class="col-md-1">
-                                <div id="buy_lineLegend" class="hidden"></div>
+                                <div id="buy_lineLegend" class="hidden" style="border:1px solid black "></div>
                             </div>
 
 
@@ -333,11 +334,12 @@
                         <h3 id="sell_symbol_title" class="text-center"></h3>
                         <div id="sell_stock_not_found" class="alert alert-danger hidden">Unable to find stock! Please check you have entered a valid stock symbol.</div>
                         <div class="row">
+                            <div id="sell_stock_graph_loading" class="hidden text-center col-md-12"><i  class="fa fa-spinner fa-pulse fa-5x "></i></div>
                             <div id="sell_stock_graph_container" class="col-md-11">
                                    <canvas id="sell_stock_graph" class="hidden"></canvas>
                             </div>
                             <div class="col-md-1">
-                                <div id="sell_lineLegend" class="hidden"></div>
+                                <div id="sell_lineLegend" class="hidden" style="border:1px solid black "></div>
                             </div>
                         </div>
                         <form id="sell_graph_timescale" class="form-inline text-center hidden" action="" method="post">

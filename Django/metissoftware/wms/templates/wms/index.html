@@ -33,13 +33,14 @@
 
                 </form>
         </div>
+        <div id="buy_stock_graph_loading" class="hidden text-center col-md-12"><i  class="fa fa-spinner fa-pulse fa-5x "></i></div>
         <div id="buy_stock_graph_container" class="col-md-11">
             <canvas id="buy_stock_graph" ></canvas>
 
-            <p id="buy_stock_graph_loading" class="hidden text-center"><i  class="fa fa-spinner fa-pulse fa-5x "></i></p>
+
         </div>
         <div class="col-md-1">
-            <div id="lineLegend" ></div>
+            <div id="lineLegend" style="border:1px solid black "></div>
         </div>
         <div class="col-md-12 text-center">
             <form id="buy_graph_timescale_index" class="form-inline" method="post">
@@ -213,11 +214,13 @@
             scaleShowVerticalLines: true,
             responsive: true,
             animation: false,
-            pointDot : false
+            pointDot : false,
+            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend list-unstyled text-center\"><% for (var i=0; i<datasets.length; i++){\%><li><span> <font style=\"color:<%=datasets[i].strokeColor%>\"><%if(datasets[i].label){\%><%=datasets[i].label%><%}%></li><%}%></font></span></ul>"
         };
 
-    new Chart(stock_graph).Line(stockData, opts);
-    legend(document.getElementById("lineLegend"),stockData);
+    var chart = new Chart(stock_graph).Line(stockData, opts);
+    $("#lineLegend").html(chart.generateLegend());
+    //legend(document.getElementById("lineLegend"),stockData);
 </script>
 
 {%  endblock %}

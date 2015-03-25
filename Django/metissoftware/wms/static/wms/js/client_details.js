@@ -235,6 +235,8 @@ function do_buy_lookup(num){
     $("#search_stock_submit").button('loading');
             days = parseInt(num);
             var symbol = $("#stock_symbol").val();
+            $("#buy_stock_graph").addClass('hidden');
+            $("#buy_stock_graph_loading").removeClass('hidden');
                 $.ajax({
                     url: "/query_api/",
                     type: "POST",
@@ -245,6 +247,7 @@ function do_buy_lookup(num){
                         ni: ni
                     },
                     success: function (json){
+                        $("#buy_stock_graph_loading").addClass('hidden');
                         $("#search_stock_submit").button('reset');
                         if (json.result == "Stock not found"){
                             $("#stock_not_found").removeClass("hidden");
@@ -283,7 +286,7 @@ function print_results(json) {
         $("#symbol_title").removeClass("hidden");
         $("#table_div").removeClass("hidden");
         $("#buy_stock_graph").removeClass("hidden");
-        $("#lineLegend").removeClass("hidden");
+        $("#buy_lineLegend").removeClass("hidden");
         $("#modal_footer").removeClass("hidden");
         $("#stock_buy").removeClass("hidden");
 
@@ -312,6 +315,8 @@ $(document).ready(function() {
 function do_sell_lookup(d){
                 var days = parseInt(d);
                 var sym = $("#sell_stock_symbol").val();
+                $("#sell_stock_graph").addClass('hidden');
+                $("#sell_stock_graph_loading").removeClass('hidden');
                 $.ajax({
                     url: "/query_api/",
                     type: "POST",
@@ -324,7 +329,7 @@ function do_sell_lookup(d){
                     success: function (json) {
                         $("#sell_search_stock_submit").button('reset');
                         $("#sell_search_stock_submit").addClass('hidden');
-
+                        $("#sell_stock_graph_loading").addClass('hidden');
                         if (json["result"] == "Stock not found") {
                             $("#sell_stock_not_found").removeClass("hidden");
                             $("#sell_stock_graph").addClass("hidden");
@@ -430,11 +435,13 @@ function make_graph(result, graph_str, legend_str) {
             scaleShowVerticalLines: true,
             responsive: true,
             animation: false,
-            pointDot : false
+            pointDot : false,
+            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend list-unstyled text-center\"><% for (var i=0; i<datasets.length; i++){\%><li><span> <font style=\"color:<%=datasets[i].strokeColor%>\"><%if(datasets[i].label){\%><%=datasets[i].label%><%}%></li><%}%></font></span></ul>"
         };
 
-        new Chart(stock_graph).Line(stockData, opts);
-        legend(document.getElementById(legend_str), stockData);
+        var chart = new Chart(stock_graph).Line(stockData, opts);
+        $("#"+legend_str).html(chart.generateLegend());
+        //legend(document.getElementById(legend_str), stockData);
     }
 
 //Setup text for buy sell footer
