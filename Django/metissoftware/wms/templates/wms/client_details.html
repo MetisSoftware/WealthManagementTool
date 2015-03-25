@@ -6,7 +6,7 @@
 <script src="{% static "wms/js/fullcalendar/moment.min.js" %}" type="text/javascript" ></script>
 <script src="{% static "wms/js/bootbox.js" %}" type="text/javascript" ></script>
 <script src="{% static "wms/js/client_details.js" %}" type="text/javascript" ></script>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
 {% if client_details %}
     <script>
     var csrf = '{{ csrf_token }}';
@@ -24,17 +24,23 @@
                 <li>
                     <span class="glyphicon glyphicon-envelope"> </span> <strong>Email:</strong> {{ client_details.email}}
                 </li>
+                {% if client_details.mob_phone or  client_details.home_phone%}
                 <li>
                     <span class="glyphicon glyphicon-earphone"></span> <strong>Phone:</strong>
                     <ul class="">
+                        {% if client_details.mob_phone %}
                         <li>
                             <span class="glyphicon glyphicon-phone"></span> <strong>Mobile:</strong> {{ client_details.mob_phone}}
                         </li>
+                        {% endif %}
+                        {% if client_details.home_phone %}
                         <li>
                             <span class="glyphicon glyphicon-phone-alt"></span> <strong>Home:</strong> {{ client_details.home_phone}}
                         </li>
+                        {% endif %}
                     </ul>
                 </li>
+                {% endif %}
                 <li>
                     <span class="glyphicon glyphicon-user"></span> <strong data-toggle="tooltip" data-placement="right" title="National Insurance Number">NI:</strong> {{client_details.ni_number}}
                 </li>
@@ -46,22 +52,22 @@
                 </li>
                 {% if client_details.twitter_username %}
                 <li>
-                    <span class="fa fa-twitter-square" ></span> <strong >Twitter:</strong> {{client_details.twitter_username}}
+                    <span class="fa fa-twitter-square" ></span> <a href="https://twitter.com/{{client_details.twitter_username}}"><strong > Twitter</strong></a>
                 </li>
                 {% endif %}
                 {% if client_details.facebook_username %}
                     <li>
-                        <span class="fa fa-facebook-official" ></span> <strong >Facebook:</strong> {{client_details.facebook_username}}
+                        <span class="fa fa-facebook-official" ></span> <a href="https://www.facebook.com/{{client_details.facebook_username}}"><strong > Facebook</strong></a>
                     </li>
                 {% endif %}
                 {% if client_details.linkedin_username %}
                         <li>
-                            <span class="fa fa-linkedin-square" ></span> <strong >Linked In:</strong> {{client_details.linkedin_username}}
+                            <span class="fa fa-linkedin-square" ></span> <a href="https://www.linkedin.com/in/{{client_details.linkedin_username}}"><strong > Linked In</strong></a>
                         </li>
                 {% endif %}
                 {% if client_details.googleplus_username %}
                         <li>
-                            <span class="fa fa-google-plus-square" ></span> <strong>Google+:</strong> {{client_details.googleplus_username}}
+                            <span class="fa fa-google-plus-square" ></span> <a href="https://plus.google.com/u/0/{{client_details.googleplus_username}}"><strong > Google+</strong></a>
                         </li>
                 {% endif %} 
                 <li>
