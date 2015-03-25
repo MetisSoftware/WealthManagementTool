@@ -5,7 +5,6 @@ from django.contrib.auth.admin import UserAdmin
 
 
 class FACreationForm(forms.ModelForm):
-    # For creating FAs
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
     class Meta:
@@ -56,7 +55,7 @@ class FAAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('first_name', 'surname', 'ni_number',
-                       'email', 'dob', 'is_staff',
+                       'email', 'dob', 'is_staff', 'is_active',
                        'is_superuser', 'is_admin', 'password')
         }),
     )

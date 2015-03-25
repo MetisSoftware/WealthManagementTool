@@ -56,9 +56,9 @@ class FA(AbstractBaseUser, PermissionsMixin):
         max_length=9, validators=[ni_regex], primary_key=True)
     is_staff=models.BooleanField(default=False)
     is_admin=models.BooleanField(default=False)
-    is_active=models.BooleanField(default=False)
+    is_active=models.BooleanField(default=True)
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'surname', 'dob', 'ni_number']
+    REQUIRED_FIELDS = ['first_name', 'surname', 'dob', 'ni_number', 'is_active']
 
     def get_full_name(self):
         return "%s" % self.email
