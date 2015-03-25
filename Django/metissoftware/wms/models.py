@@ -102,11 +102,10 @@ class Client(models.Model):
                                                     message="Not a valid username,please remove @ and max of 15 cahracters"
                                                     )],
                                         blank=True, max_length= 15)
-    twitter_widget_id = models.CharField(max_length=18, blank=True,
-                                         validators=[RegexValidator(
-                                             regex='[\d]{18}',
-                                             message="Not a valid Twitter widget id. must be 18 digits"
-                                         )])
+    facebook_username = models.CharField(blank=True, null=True, max_length=15)
+    linkedin_username = models.CharField(blank=True, null=True, max_length=15)
+    googleplus_username = models.CharField(blank=True, null=True, max_length=15)
+
 
     def __str__(self):
         return self.surname + " - " + self.ni_number

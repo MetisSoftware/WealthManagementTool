@@ -6,6 +6,7 @@
 <script src="{% static "wms/js/fullcalendar/moment.min.js" %}" type="text/javascript" ></script>
 <script src="{% static "wms/js/bootbox.js" %}" type="text/javascript" ></script>
 <script src="{% static "wms/js/client_details.js" %}" type="text/javascript" ></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 {% if client_details %}
     <script>
     var csrf = '{{ csrf_token }}';
@@ -43,17 +44,43 @@
                 <li>
                     <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Financial Adviser">FA:</strong> {{client_details.fa}}
                 </li>
+                {% if client_details.twitter_username %}
                 <li>
-
-                <span class="glyphicon glyphicon-flag" ></span> <strong data-toggle="tooltip" data-placement="right" title="Notes">Notes:</strong> 
-            </li>
+                    <span class="fa fa-twitter-square" ></span> <strong >Twitter:</strong> {{client_details.twitter_username}}
+                </li>
+                {% endif %}
+                {% if client_details.facebook_username %}
+                    <li>
+                        <span class="fa fa-facebook-official" ></span> <strong >Facebook:</strong> {{client_details.facebook_username}}
+                    </li>
+                {% endif %}
+                {% if client_details.linkedin_username %}
+                        <li>
+                            <span class="fa fa-linkedin-square" ></span> <strong >Linked In:</strong> {{client_details.linkedin_username}}
+                        </li>
+                {% endif %}
+                {% if client_details.googleplus_username %}
+                        <li>
+                            <span class="fa fa-google-plus-square" ></span> <strong>Google+:</strong> {{client_details.googleplus_username}}
+                        </li>
+                {% endif %} 
+                <li>
+                    <span class="glyphicon glyphicon-paperclip" ></span> <strong>Notes:</strong>
+                </li>
 	    {% if notes %}
 	    {% for n in notes %}
-	    <li>{{n.event.startDateTime.date}}</li>
-	    <li>{{n.note}}</li>
+
+        <li>Title: {{n.event.title}}</li>
+        <li>Date: {{n.event.startDateTime.date}}</li>
+        <li class="well" style="padding: 0px 0px 0px 0px">
+
+            <ul class="list-unstyled">
+                <li>{{n.note}}</li>
+            </ul>
+        </li>
 		{% endfor %}
 		{% else %}
-		<strong> No Notes for this client </strong>
+		<p>No notes for this client </p>
 		{% endif %}
         </ul>
     </div>
