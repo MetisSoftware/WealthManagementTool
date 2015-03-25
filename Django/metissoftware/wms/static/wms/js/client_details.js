@@ -456,13 +456,15 @@ function append_stock_table(data){
         data['symbol'] = data['symbol'].replace(".","");
         var s="";
         if (userList[data['symbol']]== undefined) {
+            console.log('$("td[data-target=\'#'+data["symbol"]+'td\']").attr("data-target", "#"+target+"div");');
             var t = (data['price'] * data["amount"]);
             $("#clients_stock_tbody").append($.parseHTML('<tr >' +
                 '<td class="sort accordion-toggle"  data-toggle="collapse" data-target="#'+data['symbol']+'div" class=""><a id="'+data['symbol']+'a" data-toggle="modal" data-target="#StockModal" data-symbol="'+data['symbol']+'" ><span class="glyphicon glyphicon-search"></span></a> '+data['symbol']+'</td>'+
-                '<td class="accordion-toggle" data-toggle="collapse" data-target="#'+data['symbol']+'td" >'+data['amount']+'</td>'+
+                '<td class="accordion-toggle" id="'+data['symbol']+'td" data-toggle="collapse" data-target="#'+data['symbol']+'div" >'+data['amount']+'</td>'+
                 '<script>'+
-                    'var target = "'+data['symbol']+'".replace(".","");'+
+                    'var target = ("'+data['symbol']+'").replace(".","");'+
                     '$("td[data-target=\'#'+data["symbol"]+'td\']").attr("id", target+"td");'+
+
                     '$("td[data-target=\'#'+data["symbol"]+'td\']").attr("data-target", "#"+target+"div");'+
                     '$("td[data-target=\'#'+data["symbol"]+'div\']").attr("data-target", "#"+target+"div");'+
                     '$("#'+data['symbol']+'a").click(function(){'+
@@ -512,6 +514,8 @@ function append_stock_table(data){
                 '$("th.sort.desc").children("span").addClass("glyphicon glyphicon-triangle-bottom");' +
                 ' });' +
                 '</script></div></td></tr>'));
+            var options ={valueNames: ["buy", "stock", "date", "amount", "price", "total"]};
+            userList[data['symbol']] = new List((symbol+"div"),options);
             sell_button_listener();
         }else {
             if (data['buy'] == 'True') {
