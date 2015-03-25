@@ -75,16 +75,6 @@ class FA(AbstractBaseUser, PermissionsMixin):
     objects = FAUserManager()
 
 
-class Event(models.Model):
-    fa = models.ForeignKey(FA)
-    startDateTime = models.DateTimeField()
-    endDateTime = models.DateTimeField()
-    type = models.CharField(max_length=64, default="meeting")
-    title = models.CharField(max_length=128)
-
-
-    def __str__(self):
-        return self.fa.first_name + " " + self.fa.surname + " - " + self.title + " - " + datetime.strftime(self.startDateTime, "%c")
 
 
 class Client(models.Model):
@@ -123,6 +113,19 @@ class Client(models.Model):
 
     def get_absolute_url(self):
         return reverse('edit_client', kwargs={'pk': self.pk})
+
+class Event(models.Model):
+    fa = models.ForeignKey(FA)
+    client = models.ForeignKey(Client, blank=True, null=True)
+    startDateTime = models.DateTimeField()
+    endDateTime = models.DateTimeField()
+    type = models.CharField(max_length=64, default="meeting")
+    title = models.CharField(max_length=128)
+
+
+    def __str__(self):
+        return self.fa.first_name + " " + self.fa.surname + " - " + self.title + " - " + datetime.strftime(self.startDateTime, "%c")
+
 
 
 class MeetingNotes(models.Model):

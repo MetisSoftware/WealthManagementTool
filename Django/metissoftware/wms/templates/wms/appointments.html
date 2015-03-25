@@ -39,7 +39,9 @@
                                         title : '{{event.title}}',
                                         start : '{{event.startDateTime|date:"c"}}',
                                         end : '{{event.endDateTime|date:"c"}}',
-                                        backgroundColor : get_type_color('{{ event.type }}')
+                                        backgroundColor : get_type_color('{{ event.type }}'),
+                                        client : '{{ event.client.ni_number }}'
+
                                     },
                                 {% endfor %}
                             ];
@@ -48,7 +50,8 @@
                     title:"",
                     start:"",
                     end:"",
-                    backgroundColor:""
+                    backgroundColor:"",
+                    client:""
                 };
 
                 $(document).ready(function(){
@@ -86,6 +89,7 @@
                        event.preventDefault();
                        eventData.title = $('#title').val();
                        eventData.type = $('#type').val();
+                       eventData.client = $("#clients_select").val();
                         $.ajax({
                                     url: "/create_appointment/",
                                     type: "POST",
@@ -95,7 +99,9 @@
                                             title: eventData.title,
                                             start : eventData.start,
                                             end : eventData.end,
+                                            client : eventData.client,
                                             type : eventData.type
+
                                     },
 
                                     success: function (json){
@@ -103,6 +109,7 @@
                                         if(json["result"]=="success"){
                                             eventData.id=json["id"];
                                         }
+
                                         eventData.backgroundColor = get_type_color(eventData.type);
                                         console.log(eventData);
                                         $('#calendar').fullCalendar('renderEvent', eventData, true);
@@ -134,12 +141,21 @@
             <p id="event_title">Event Details</p>
             <script>
                 function event_data(data) {
-                    document.getElementById("event_title").innerHTML=(
-                            "<H1>"+data.title+"</H1>" +
-                            "<p>Start: "+data.start.toString()+"</p>"+
-                            "<p>End: "+data.end.toString()+"</p>"+
-                            "<p>Type: "+get_type_from_color(data.backgroundColor)+"</p>"+
-                            "<button class='btn btn-danger' onclick='deleteApp("+data.id+")'>Delete</button>");
+                    if(data.client!=""){
+                        document.getElementById("event_title").innerHTML = (
+                                "<H1>" + data.title + "</H1>" +
+                                "<p>Start: " + data.start.toString() + "</p>" +
+                                "<p>End: " + data.end.toString() + "</p>" +
+                                "<p>Type: <a alt='Link to clients details' href=/client_details/?client="+data.client+">" + get_type_from_color(data.backgroundColor) + "</a></p>" +
+                                "<button class='btn btn-danger' onclick='deleteApp(" + data.id + ")'>Delete</button>");
+                    }else {
+                        document.getElementById("event_title").innerHTML = (
+                                "<H1>" + data.title + "</H1>" +
+                                "<p>Start: " + data.start.toString() + "</p>" +
+                                "<p>End: " + data.end.toString() + "</p>" +
+                                "<p>Type: " + get_type_from_color(data.backgroundColor) + "</p>" +
+                                "<button class='btn btn-danger' onclick='deleteApp(" + data.id + ")'>Delete</button>");
+                    }
                 }
                 </script>
                 <script type="text/javascript">
@@ -167,15 +183,41 @@
                         {% csrf_token %}
                         <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="title">Title</label>
-                                    <input id="title" class="form-control" placeholder="Meeting with...">
-                                    <label for="type">Type</label>
-                                    <Select id="type" class="form-control" placeholder="Meeting with...">
+                                    <label for="type">Type of meeting</label>
+                                    <select id="type" class="form-control" placeholder="Meeting with...">
+                                        <option>...</option>
                                         <option value="client">Client</option>
                                         <option value="fa">Financial Adviser</option>
                                         <option value="pot_client">Potential Client</option>
                                         <option value="holiday">Holidays</option>
-                                    </Select>
+                                    </select>
+                                    <div class="form-group">
+                                        <label for="title">Title</label>
+                                        <input id="title" class="form-control" placeholder="Meeting with...">
+                                    </div>
+                                    <div id="clients_form" class="form-group hidden">
+                                        <label for="clients_select">Clients</label>
+                                        <select id="clients_select" class="form-control">
+                                            <option></option>
+                                            {%for client in clients%}
+                                                <option value="{{ client.ni_number }}">{{ client.first_name }} {{ client.surname }}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </div>
+                                    <script>
+                                        $("#type").on("change",function(){
+                                            console.log("test");
+                                            v = this.value;
+                                            console.log(v);
+                                            if(v=="client"){
+                                                $("#clients_form").removeClass("hidden");
+                                            }else{
+                                                $("#clients_form").addClass("hidden");
+                                            }
+
+                                        })
+                                    </script>
 
                                 </div>
                         </div>

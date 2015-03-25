@@ -202,7 +202,8 @@ def withdraw_cash(request):
 def appointments(request):
     current_user = request.user
     events = Event.objects.filter(fa__ni_number=current_user.ni_number)
-    return render_to_response('wms/appointments.html',{'events': events}, context_instance=RequestContext(request))
+    clients = Client.objects.filter(fa__ni_number=current_user.ni_number)
+    return render_to_response('wms/appointments.html',{'events': events,'clients':clients}, context_instance=RequestContext(request))
 
 @csrf_protect
 def create_appointment(request):
@@ -212,7 +213,13 @@ def create_appointment(request):
         start = post_text.get("start","")
         end = post_text.get("end","")
         type = post_text.get("type","")
-        m.Event.objects.create(fa=request.user, startDateTime=start, endDateTime=end, title=title, type=type)
+        client = post_text.get("client","")
+        if(client!=""):
+            c = Client.objects.filter(ni_number=client)[0]
+            print(c)
+            m.Event.objects.create(fa=request.user, startDateTime=start, endDateTime=end, title=title, type=type, client=c)
+        else:
+            m.Event.objects.create(fa=request.user, startDateTime=start, endDateTime=end, title=title, type=type)
         event = Event.objects.filter(fa=request.user, startDateTime=start, endDateTime=end, title=title, type=type)[0]
         data = {"result":"success","id":event.id}
         return HttpResponse(
