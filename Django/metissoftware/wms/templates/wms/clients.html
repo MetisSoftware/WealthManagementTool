@@ -5,9 +5,9 @@
 <script src="{% static "wms/js/bootbox.js" %}" type="text/javascript" ></script>
     <div class="col-md-12 col-sm-12 ">
         <div class="col-md-12" style="margin-bottom:1%;">
-            <a class="btn btn-success" href="/new_client.html" role="button">Add Client</a>
+            <a class="btn btn-success" href="/new_client.html" role="button"><i class="fa fa-user-plus"></i> Add Client</a>
             <!--<a class = "btn btn-danger" href="#RemoveClient" role="button">Remove Client</a>-->
-	    <button id="rmvclient" type="button" class="btn btn-danger">Remove Client</button>
+	    <button id="rmvclient" type="button" class="btn btn-danger"><i class="fa fa-user-times"></i> Remove Client</button>
         </div>
     </div>
     <div class=" col-md-12 col-sm-12">
@@ -29,7 +29,8 @@
                 <div class="thumbnail">
 			<a href="/client_details/?client={{client.ni_number}}"><img src="{{ client.image.url }}" class="img-responsive img-thumbnail" style="max-width: 200px"></a>
 {#			</script>#}
-			<a href="#" onclick='deleteClient("{{client.ni_number}}");'><img style="display: none" id="rmvimage{{client.ni_number}}" src="{% static "wms/images/delete_cross.png" %}"></a>
+{#			<a href="#" onclick='deleteClient("{{client.ni_number}}");'><img style="display: none" id="rmvimage{{client.ni_number}}" src="{% static "wms/images/delete_cross.png" %}"></a>#}
+			<a href="#" style="color: #d9534f" onclick='deleteClient("{{client.ni_number}}");'><p  style="display: none;" id="rmvimage{{client.ni_number}}"class="text-center "><i  class="fa fa-times fa-4x"></i></p></a>
                     <div class="caption">
                         <p class="hidden name ">{{client.first_name | lower}} {{client.surname | lower }}</p>
                         <h3 class=""><a href="/client_details/?client={{client.ni_number}}">{{client.first_name}} {{client.surname}}</a></h3>

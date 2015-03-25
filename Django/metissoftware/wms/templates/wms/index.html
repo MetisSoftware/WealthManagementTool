@@ -35,6 +35,8 @@
         </div>
         <div id="buy_stock_graph_container" class="col-md-11">
             <canvas id="buy_stock_graph" ></canvas>
+
+            <p id="buy_stock_graph_loading" class="hidden text-center"><i  class="fa fa-spinner fa-pulse fa-5x "></i></p>
         </div>
         <div class="col-md-1">
             <div id="lineLegend" ></div>
@@ -75,10 +77,13 @@
         })
     });
     function buy_lookup(num,sym){
-            console.log("ping")
+            console.log("ping");
             $("#search_stock_submit").button('loading');
             num_days = parseInt(num);
             symbol = sym;
+            $("#buy_stock_graph").addClass('hidden');
+            $("#buy_stock_graph_loading").removeClass('hidden');
+
             $.ajax({
                 url: "/query_api/",
                 type: "POST",
@@ -91,9 +96,10 @@
                 success: function (json){
                     result = json.result;
                     $("#search_stock_submit").button('reset');
+                    $("#buy_stock_graph_loading").addClass('hidden');
                     if (json.result == "Stock not found"){
                         $("#stock_not_found").removeClass("hidden");
-                        $("#stock_graph").addClass("hidden");
+                        $("#buy_stock_graph").addClass("hidden");
                         $("#lineLegend").addClass("hidden");
                         $("#modal_footer").addClass("hidden");
                         $("#stock_buy").addClass("hidden");
