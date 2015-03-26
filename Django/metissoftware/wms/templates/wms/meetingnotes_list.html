@@ -1,0 +1,15 @@
+{% extends "wms/base_boot.html" %}
+{% load staticfiles %}
+
+{% block content %}
+{% for note in object_list %}
+<strong>{{ note.event }}</strong>
+<hr>
+<li>{{ note.note }}
+<hr>
+{% empty %}
+<li>There are no notes for this client</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

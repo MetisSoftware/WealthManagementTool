@@ -126,14 +126,13 @@ class Event(models.Model):
         return self.fa.first_name + " " + self.fa.surname + " - " + self.title + " - " + datetime.strftime(self.startDateTime, "%c")
 
 
-
 class MeetingNotes(models.Model):
-    client = models.ForeignKey(Client, default=None)
     event = models.OneToOneField(Event, null=True)
     note = models.TextField()
 
     def __str__(self):
-        return self.note + " - " + self.client.first_name + " " + datetime.strftime(self.event.startDateTime, "%c")
+        return self.note + " - " + self.event +\
+            " " + datetime.strftime(self.event.startDateTime, "%c")
 
 
 class Market(models.Model):

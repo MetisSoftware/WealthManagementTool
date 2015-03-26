@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.views.generic.edit import FormView, UpdateView, CreateView
+from django.views.generic.list import ListView
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -297,7 +298,6 @@ def client_details(request):
         try:
             client = Client.objects.get(ni_number=get_params.get('client'))
             shares = Share.objects.filter(owner=get_params.get('client'))
-            Notes = MeetingNotes.objects.filter(client=get_params.get('client'))
             sorted_Shares = {}
             owned_shares = {}
             for share in shares:
@@ -320,7 +320,7 @@ def client_details(request):
             else:
                 twitter = True
             return render_to_response('wms/client_details.html',
-                                      {'client_details': client,'shares': sorted_Shares,'owned_shares':owned_shares,'twitter':twitter,'notes':Notes}, context_instance=RequestContext(request))
+                                      {'client_details': client,'shares': sorted_Shares,'owned_shares':owned_shares,'twitter':twitter}, context_instance=RequestContext(request))
         except ObjectDoesNotExist:
             return render_to_response('wms/client_details.html',{}, context_instance=RequestContext)
 
@@ -338,9 +338,13 @@ class CreateNote(CreateView):
     template_name = 'wms/create_note.html'
     success_url = reverse_lazy('print_clients')
 
-    def form_valid(self, form):
-        form.instance.client = Client.objects.get(ni_number=self.kwargs['pk'])
-        return super(CreateView, self).form_valid(form)
+    #def form_valid(self, form):
+        #form.instance.client = Client.objects.get(ni_number=self.kwargs['pk'])
+        #return super(CreateView, self).form_valid(form)
+
+
+class ListNotes(ListView):
+    model = MeetingNotes
 
 
 class LoginView(FormView):

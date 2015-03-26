@@ -72,22 +72,8 @@
                 {% endif %} 
                 <li>
                     <span class="glyphicon glyphicon-paperclip" ></span> <strong>Notes:</strong>
+		    <a href="/view_note/">View Notes</a>
                 </li>
-	    {% if notes %}
-	    {% for n in notes %}
-
-        <li>Title: {{n.event.title}}</li>
-        <li>Date: {{n.event.startDateTime.date}}</li>
-        <li class="well" style="padding: 0px 0px 0px 0px">
-
-            <ul class="list-unstyled">
-                <li>{{n.note}}</li>
-            </ul>
-        </li>
-		{% endfor %}
-		{% else %}
-		<p>No notes for this client </p>
-		{% endif %}
         </ul>
     </div>
 
