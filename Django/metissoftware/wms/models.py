@@ -113,6 +113,7 @@ class Client(models.Model):
     def get_absolute_url(self):
         return reverse('edit_client', kwargs={'pk': self.pk})
 
+
 class Event(models.Model):
     fa = models.ForeignKey(FA)
     client = models.ForeignKey(Client, blank=True, null=True)

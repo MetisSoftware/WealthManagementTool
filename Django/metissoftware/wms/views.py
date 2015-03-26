@@ -346,6 +346,11 @@ class CreateNote(CreateView):
 class ListNotes(ListView):
     model = MeetingNotes
 
+    def get_queryset(self):
+        event = Event.objects.filter(client=self.kwargs['pk'])
+        return MeetingNotes.objects.filter(event=event)
+
+
 
 class LoginView(FormView):
     template_name = 'wms/login.html'
