@@ -96,7 +96,7 @@ class Client(models.Model):
         max_length=11, validators=[phone_regex], blank=True
     )
     cash = models.DecimalField(max_digits=20, decimal_places=2)
-    fa = models.ForeignKey(FA)
+    fa = models.ForeignKey(FA, null=True, blank=True)
     twitter_username = models.CharField(validators=[RegexValidator(
                                                     regex="^(\w){1,15}$",
                                                     message="Not a valid username,please remove @ and max of 15 cahracters"

@@ -283,7 +283,8 @@ def delete_client(request):
         return HttpResponseRedirect('/clients/')
     else:
         client = Client.objects.get(ni_number=get_params.get('client'))
-        client.delete()
+        client.fa = None
+        client.save()
         return HttpResponseRedirect('/clients/')
 
 
