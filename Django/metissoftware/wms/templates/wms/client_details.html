@@ -122,7 +122,9 @@
                                     var target = ("{{ key }}").replace(".","");
                                     var stock_total=0;
                                 </script>
-                                <tr >
+
+                                <tr class="warning">
+
                                     <td class="sort accordion-toggle"  data-toggle="collapse" data-target="#{{ key }}div" class=""><a id='{{ key }}a' data-toggle="modal" data-target="#StockModal" data-symbol="{{ key }}" ><span class="glyphicon glyphicon-search"></span></a> {{ key }}</td>
                                     <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}td" >{{ owned_shares|get_item:key }}</td>
 {#                                    <td class="accordion-toggle" data-toggle="collapse" data-target="#{{ key }}total" id="{{ key }}total" ></td>#}
@@ -213,6 +215,7 @@
                                         </div>
                                         </td>
                                     </tr>
+
 
                                 {% endfor %}
                             </tbody>
