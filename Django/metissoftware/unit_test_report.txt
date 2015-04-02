@@ -1,0 +1,22 @@
+Name                              Stmts   Miss  Cover
+-----------------------------------------------------
+__init__                              1      1     0%
+manage                                6      0   100%
+metissoftware/__init__                0      0   100%
+metissoftware/settings               21      0   100%
+metissoftware/urls                    7      0   100%
+metissoftware/wsgi                    4      4     0%
+views                                 6      6     0%
+wms/__init__                          0      0   100%
+wms/admin                            42     10    76%
+wms/migrations/0001_initial           8      0   100%
+wms/migrations/__init__               0      0   100%
+wms/models                          119     35    71%
+wms/scripts                          13      7    46%
+wms/templatetags/__init__             1      1     0%
+wms/templatetags/custom_filters       4      4     0%
+wms/tests                            25      0   100%
+wms/urls                              4      4     0%
+wms/views                           275    224    19%
+-----------------------------------------------------
+TOTAL                               536    296    45%

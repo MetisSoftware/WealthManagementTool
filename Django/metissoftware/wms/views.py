@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.test import TestCase
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.views.generic.edit import FormView, UpdateView, CreateView
